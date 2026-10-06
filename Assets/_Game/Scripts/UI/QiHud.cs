@@ -19,6 +19,11 @@ namespace TanShadow.UI
         [Tooltip("С какой доли шкалы она начинает мигать, 0–1")]
         [Range(0, 1)] public float dangerFrom = 0.75f;
 
+        [Header("Хуацзинь")]
+        [Tooltip("Подпись 化劲 над шкалой, пока заряд активен")]
+        public Text huajinLabel;
+        public Color huajinColor = new Color(0.45f, 0.95f, 0.7f);
+
         [Header("Враг")]
         public GameObject enemyPanel;
         [Tooltip("Заливка ци врага; растёт от центра в обе стороны")]
@@ -36,6 +41,7 @@ namespace TanShadow.UI
 
         LockOnTargeting lockOn;
         Combatant player;
+        Huajin huajin;
         Camera view;
 
         void Start()
@@ -45,8 +51,15 @@ namespace TanShadow.UI
             {
                 player = playerQi.GetComponent<Combatant>();
                 lockOn = playerQi.GetComponent<LockOnTargeting>();
+                huajin = playerQi.GetComponent<Huajin>();
             }
             view = Camera.main;
+            if (huajinLabel != null)
+            {
+                huajinLabel.font = CjkFont.Get();
+                huajinLabel.text = "化劲";
+                huajinLabel.gameObject.SetActive(false);
+            }
         }
 
         void LateUpdate()
@@ -70,6 +83,16 @@ namespace TanShadow.UI
                 color = Color.Lerp(color, edgeColor, pulse * Mathf.InverseLerp(dangerFrom, 1f, edge));
             }
             playerFillImage.color = color;
+
+            if (huajinLabel == null) return;
+            bool charged = huajin != null && huajin.IsCharged;
+            huajinLabel.gameObject.SetActive(charged);
+            if (charged)
+            {
+                var c = huajinColor;
+                c.a = Mathf.Clamp01(huajin.TimeLeft / 0.4f) * (0.75f + 0.25f * Mathf.Sin(Time.time * 14f));
+                huajinLabel.color = c;
+            }
         }
 
         void UpdateEnemy()

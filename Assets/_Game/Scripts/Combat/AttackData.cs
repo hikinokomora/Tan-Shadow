@@ -44,6 +44,8 @@ namespace TanShadow.Combat
         [Min(0)] public float hitstop = 0.06f;
         [Tooltip("Чем атака предупреждает игрока")]
         public AttackTelegraph telegraph = AttackTelegraph.BladeGlint;
+        [Tooltip("Дальность удара, м. 0 — по умолчанию оружия (AttackExecutor)")]
+        [Min(0)] public float range = 0f;
 
         public float Duration => windup + active + recovery;
     }

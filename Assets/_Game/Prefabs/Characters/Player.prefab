@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 4404106697124447868}
   - component: {fileID: 7820327898567095444}
   - component: {fileID: 6817628491591954481}
+  - component: {fileID: 5612352811958954964}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -142,7 +143,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Player.PlayerController
   controls: {fileID: -944628639613478452, guid: 9471b0ea5cf298a41b4a99e58d72a78c, type: 3}
   settings: {fileID: 11400000, guid: af37788c4db299a47bb11d3acd17fe44, type: 2}
-  lightAttack: {fileID: 11400000, guid: 541babbaf79963b428862949c0e98328, type: 2}
+  combo:
+  - {fileID: 11400000, guid: c5c62a5c40094e64888e7132838a06e9, type: 2}
+  - {fileID: 11400000, guid: 1510eeae5e5ae494ba1079dad4c6e28c, type: 2}
+  - {fileID: 11400000, guid: 7d70d6c744f8c99488dc77b583547dcb, type: 2}
+  - {fileID: 11400000, guid: 1c7c391a7366c8d42b8374454976c46d, type: 2}
   cameraTransform: {fileID: 0}
 --- !u!114 &1073662717553965597
 MonoBehaviour:
@@ -166,6 +171,7 @@ MonoBehaviour:
   deflectFlash: {r: 0.6, g: 1, b: 1, a: 1}
   brokenColor: {r: 0.55, g: 0.05, b: 0.35, a: 1}
   deadColor: {r: 0.12, g: 0.12, b: 0.12, a: 1}
+  huajinColor: {r: 0.35, g: 0.9, b: 0.6, a: 1}
   flashTime: 0.15
 --- !u!114 &8098582496843050592
 MonoBehaviour:
@@ -262,6 +268,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123457af56f7a1444b71db291e69540d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Combat.YinYangQi
+--- !u!114 &5612352811958954964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991727482571536687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c3ae9243b60ce44e8679b4bf452140c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Combat.Huajin
 --- !u!1 &2574754862730650387
 GameObject:
   m_ObjectHideFlags: 0

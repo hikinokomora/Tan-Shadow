@@ -41,7 +41,8 @@ namespace TanShadow.Combat
 
         void OnAttackLanded(HitInfo hit)
         {
-            if (hit.result == HitResult.Hit) impulse.GenerateImpulseWithForce(Settings.landShake);
+            if (hit.result != HitResult.Hit) return;
+            impulse.GenerateImpulseWithForce(hit.qiMultiplier > 1f ? Settings.huajinShake : Settings.landShake);
         }
 
         void Play(float shake, Rumble rumble)

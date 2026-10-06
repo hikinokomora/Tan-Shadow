@@ -7,6 +7,9 @@ namespace TanShadow.Combat
     {
         public ParticleSystem deflectSparks;
         public ParticleSystem blockSparks;
+        [Tooltip("Искры усиленного хуацзинем удара")]
+        public ParticleSystem huajinSparks;
+        [Min(0)] public float huajinFlashIntensity = 30000f;
         [Tooltip("Точечный свет для вспышки; держим выключенным")]
         public Light flash;
         [Tooltip("Яркость вспышки на дефлекте и на блоке")]
@@ -66,6 +69,10 @@ namespace TanShadow.Combat
                 case HitResult.Blocked:
                     Spawn(blockSparks, point, rotation);
                     Flash(point, blockFlashIntensity);
+                    break;
+                case HitResult.Hit when hit.qiMultiplier > 1f:
+                    Spawn(huajinSparks, point, rotation);
+                    Flash(point, huajinFlashIntensity);
                     break;
             }
         }

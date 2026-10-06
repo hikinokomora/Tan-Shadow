@@ -10,8 +10,15 @@ namespace TanShadow.Audio
         public AudioClip[] block;
         public AudioClip[] hit;
         public AudioClip[] whoosh;
+        [Tooltip("Звуковой телеграф обычной атаки (блик клинка)")]
+        public AudioClip[] glint;
+        [Tooltip("Звуковой телеграф неблокируемой атаки (危)")]
+        public AudioClip[] danger;
+        [Tooltip("Усиленный хуацзинем удар")]
+        public AudioClip[] huajin;
 
         [Range(0, 1)] public float deflectVolume = 1f;
+        [Range(0, 1)] public float telegraphVolume = 0.7f;
         [Range(0, 1)] public float blockVolume = 0.8f;
         [Range(0, 1)] public float hitVolume = 0.9f;
         [Range(0, 1)] public float whooshVolume = 0.35f;
@@ -68,14 +75,23 @@ namespace TanShadow.Audio
             {
                 case HitResult.Deflected: Play(deflect, deflectVolume, at); break;
                 case HitResult.Blocked: Play(block, blockVolume, at); break;
-                case HitResult.Hit: Play(hit, hitVolume, at); break;
+                case HitResult.Hit:
+                    Play(hit, hitVolume, at);
+                    if (info.qiMultiplier > 1f) Play(huajin, deflectVolume, at);
+                    break;
             }
         }
 
         void OnPhase(AttackExecutor executor, AttackPhase phase)
         {
+            Vector3 at = executor.transform.position + Vector3.up * 1.2f;
             if (phase == AttackPhase.Active)
-                Play(whoosh, whooshVolume, executor.transform.position + Vector3.up * 1.2f);
+                Play(whoosh, whooshVolume, at);
+
+            var attack = executor.Current;
+            if (phase != AttackPhase.Windup || attack == null || (attack.telegraph & AttackTelegraph.Sound) == 0) return;
+            bool isDanger = attack.type == AttackType.Unblockable || (attack.telegraph & AttackTelegraph.DangerKanji) != 0;
+            Play(isDanger ? danger : glint, telegraphVolume, at);
         }
 
         void Play(AudioClip[] clips, float volume, Vector3 at)

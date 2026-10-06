@@ -35,7 +35,7 @@ namespace TanShadow.Combat
         void OnHurt(HitInfo hit)
         {
             if (hit.result != HitResult.Hit) return;
-            Add(hit.attack.qiDamage);
+            Add(hit.QiDamage);
             if (combatant.Health <= 0f) Break();
         }
 

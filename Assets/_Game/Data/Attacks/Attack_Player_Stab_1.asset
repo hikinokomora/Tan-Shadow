@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb408618cdc08d54d82ca73da5b0f6c3, type: 3}
-  m_Name: Attack_Player_Light
+  m_Name: Attack_Player_Stab_1
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Combat.AttackData
-  damage: 10
-  qiDamage: 15
-  windup: 0.12
-  active: 0.1
-  recovery: 0.25
+  damage: 8
+  qiDamage: 10
+  windup: 0.1
+  active: 0.08
+  recovery: 0.22
   type: 0
   force: 1
-  hitstop: 0.06
+  hitstop: 0.05
   telegraph: 0
+  range: 0

@@ -74,6 +74,19 @@ namespace TanShadow.Combat
         [Tooltip("Сколько секунд враг сломлен и открыт для добивания")]
         [Min(0)] public float brokenDuration = 4f;
 
+        [Header("Хуацзинь (化劲)")]
+        [Tooltip("Сколько секунд после дефлекта следующий удар усилен")]
+        [Min(0)] public float huajinWindow = 1.5f;
+        [Tooltip("Урон по ци × (1 + force отражённой атаки × этот множитель)")]
+        [Min(0)] public float huajinForceFactor = 0.5f;
+        [Tooltip("Дополнительный хитстоп на усиленном ударе, с")]
+        [Min(0)] public float huajinHitstopBonus = 0.05f;
+        [Min(0)] public float huajinShake = 0.45f;
+
+        [Header("Комбо")]
+        [Tooltip("Сколько секунд после конца удара следующий удар ещё продолжает цепочку")]
+        [Min(0)] public float comboChainGrace = 0.3f;
+
         [Header("Добивание")]
         [Tooltip("С какой дистанции можно добить сломленного врага, м")]
         [Min(0)] public float finisherRange = 2.8f;

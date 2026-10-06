@@ -18,6 +18,10 @@ namespace TanShadow.Combat
         public Combatant attacker;
         public Combatant defender;
         public HitResult result;
+        // Множитель урона по ци (хуацзинь); 1 — обычный удар.
+        public float qiMultiplier;
+
+        public float QiDamage => attack.qiDamage * qiMultiplier;
     }
 
     // Боец: здоровье, блок, дефлект и собственное время.
@@ -115,7 +119,7 @@ namespace TanShadow.Combat
             AnyFinisher?.Invoke(attacker, this);
         }
 
-        public HitResult ReceiveHit(AttackData attack, Combatant attacker)
+        public HitResult ReceiveHit(AttackData attack, Combatant attacker, float qiMultiplier = 1f)
         {
             HitResult result;
             if (IsInvulnerable || IsDead)
@@ -137,7 +141,7 @@ namespace TanShadow.Combat
                 attacker.Freeze(stop);
             }
 
-            var info = new HitInfo { attack = attack, attacker = attacker, defender = this, result = result };
+            var info = new HitInfo { attack = attack, attacker = attacker, defender = this, result = result, qiMultiplier = qiMultiplier };
             Hurt?.Invoke(info);
             attacker.AttackLanded?.Invoke(info);
             AnyHit?.Invoke(info);

@@ -41,9 +41,13 @@ namespace TanShadow.Combat
 
         void Awake() => self = GetComponent<Combatant>();
 
-        public void Begin(AttackData attack)
+        // Множитель урона по ци для текущей атаки (хуацзинь).
+        public float QiMultiplier { get; private set; } = 1f;
+
+        public void Begin(AttackData attack, float qiMultiplier = 1f)
         {
             Current = attack;
+            QiMultiplier = qiMultiplier;
             alreadyHit.Clear();
             SetPhase(AttackPhase.Windup, 0f);
         }
@@ -89,7 +93,9 @@ namespace TanShadow.Combat
             AnyPhaseChanged?.Invoke(this, phase);
         }
 
-        Vector3 HitCenter => transform.position + Vector3.up * height + transform.forward * reach;
+        // У атаки со своей дальностью дальний край зоны удара совпадает с range.
+        float Reach => Current != null && Current.range > 0f ? Mathf.Max(0f, Current.range - radius) : reach;
+        Vector3 HitCenter => transform.position + Vector3.up * height + transform.forward * Reach;
 
         void SweepHits()
         {
@@ -100,7 +106,7 @@ namespace TanShadow.Combat
                 if (target == null || target == self || target.IsDead || alreadyHit.Contains(target)) continue;
 
                 alreadyHit.Add(target);
-                target.ReceiveHit(Current, self);
+                target.ReceiveHit(Current, self, QiMultiplier);
                 // Реакция на дефлект могла отменить атаку.
                 if (!IsBusy) return;
             }

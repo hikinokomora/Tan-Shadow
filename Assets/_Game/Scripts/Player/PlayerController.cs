@@ -20,17 +20,20 @@ namespace TanShadow.Player
     {
         public InputActionAsset controls;
         public CombatSettings settings;
-        public AttackData lightAttack;
+        [Tooltip("Цепочка быстрых уколов кинжалом, по порядку")]
+        public AttackData[] combo;
         [Tooltip("Если пусто — Camera.main")]
         public Transform cameraTransform;
 
         public PlayerState State { get; private set; }
+        public int ComboStep { get; private set; } = -1;
 
         CharacterController body;
         Combatant combatant;
         AttackExecutor executor;
         LockOnTargeting lockOn;
         YinYangQi qi;
+        Huajin huajin;
         readonly InputBuffer buffer = new InputBuffer();
         InputActionMap map;
         InputAction move, attack, block, dash;
@@ -44,6 +47,7 @@ namespace TanShadow.Player
         Combatant finisherVictim;
         bool finisherImpactDone;
         Vector3 finisherStart, finisherEnd;
+        float comboChainUntil = float.NegativeInfinity;
 
         void Awake()
         {
@@ -53,6 +57,7 @@ namespace TanShadow.Player
             lockOn = GetComponent<LockOnTargeting>();
             qi = GetComponent<YinYangQi>();
             if (qi != null) qi.Overflow += OnQiOverflow;
+            huajin = GetComponent<Huajin>();
             if (cameraTransform == null && Camera.main != null) cameraTransform = Camera.main.transform;
 
             map = controls.FindActionMap("Player", true);
@@ -109,8 +114,12 @@ namespace TanShadow.Player
                 EnterBlock();
                 return;
             }
-            if (executor.Phase == AttackPhase.Recovery && TryStartDash()) return;
-            if (!executor.IsBusy) SetState(PlayerState.Locomotion);
+            if (executor.Phase == AttackPhase.Recovery && (TryStartAttack() || TryStartDash())) return;
+            if (!executor.IsBusy)
+            {
+                comboChainUntil = combatant.LocalTime + settings.comboChainGrace;
+                SetState(PlayerState.Locomotion);
+            }
         }
 
         void UpdateBlock(float dt)
@@ -211,9 +220,13 @@ namespace TanShadow.Player
                 return true;
             }
 
+            // Цепочка продолжается из восстановления прошлого удара или сразу после него.
+            bool chaining = State == PlayerState.Attack || combatant.LocalTime <= comboChainUntil;
+            ComboStep = chaining && ComboStep >= 0 ? (ComboStep + 1) % combo.Length : 0;
+
             combatant.StopBlock();
             FaceAttackTarget();
-            executor.Begin(lightAttack);
+            executor.Begin(combo[ComboStep], huajin != null ? huajin.Consume() : 1f);
             SetState(PlayerState.Attack);
             return true;
         }

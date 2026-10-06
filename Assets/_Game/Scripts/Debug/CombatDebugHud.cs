@@ -48,9 +48,11 @@ namespace TanShadow.DebugTools
             {
                 var c = player.GetComponent<Combatant>();
                 var lockOn = player.GetComponent<LockOnTargeting>();
-                string text = $"Игрок: {player.State}   HP {c.Health:0}   окно дефлекта {c.CurrentDeflectWindow * 1000f:0} мс" +
+                var qi = player.GetComponent<YinYangQi>();
+                var posture = enemy != null ? enemy.GetComponent<Posture>() : null;
+                string text = $"Игрок: {player.State}   HP {c.Health:0}   ци {(qi != null ? qi.Value : 0f):+0;-0;0}   окно дефлекта {c.CurrentDeflectWindow * 1000f:0} мс" +
                               (lockOn != null && lockOn.IsLocked ? $"   захват: {lockOn.Target.name}" : "") +
-                              (enemy != null ? $"\nВраг: {enemy.Phase}" : "") +
+                              (enemy != null ? $"\nВраг: {enemy.Phase}" + (posture != null ? $"   ци {posture.Value:0}/{posture.maxPosture:0}" + (posture.IsBroken ? "  СЛОМЛЕН" : "") : "") : "") +
                               $"\nДефлекты {deflects}   Блоки {blocks}   Пропущено {hits}";
                 GUI.Label(new Rect(16, 16, 900, 80), text, small);
             }

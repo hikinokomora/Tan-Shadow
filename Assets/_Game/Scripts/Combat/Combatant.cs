@@ -31,6 +31,7 @@ namespace TanShadow.Combat
         [Min(1)] public float maxHealth = 100f;
 
         public float Health { get; private set; }
+        public bool IsDead { get; private set; }
         public bool IsBlocking { get; private set; }
         public bool IsInvulnerable { get; set; }
         public bool InHitstop => hitstopLeft > 0f;
@@ -44,8 +45,12 @@ namespace TanShadow.Combat
 
         public event Action<HitInfo> Hurt;
         public event Action<HitInfo> AttackLanded;
+        // Нас добили (attacker — кто добил).
+        public event Action<Combatant> Finished;
         // Любой удар в сцене — для звука, эффектов и отладки.
         public static event Action<HitInfo> AnyHit;
+        // Любое добивание: (кто добил, кого добили).
+        public static event Action<Combatant, Combatant> AnyFinisher;
 
         float hitstopLeft;
         float blockStartTime;
@@ -58,6 +63,7 @@ namespace TanShadow.Combat
         {
             All.Clear();
             AnyHit = null;
+            AnyFinisher = null;
         }
 
         void Awake() => Health = maxHealth;
@@ -91,10 +97,28 @@ namespace TanShadow.Combat
 
         public void ResetHealth() => Health = maxHealth;
 
+        public void Revive()
+        {
+            IsDead = false;
+            Health = maxHealth;
+        }
+
+        public void ReceiveFinisher(Combatant attacker)
+        {
+            if (IsDead) return;
+            IsDead = true;
+            Health = 0f;
+            StopBlock();
+            Freeze(settings.finisherHitstop);
+            attacker.Freeze(settings.finisherHitstop);
+            Finished?.Invoke(attacker);
+            AnyFinisher?.Invoke(attacker, this);
+        }
+
         public HitResult ReceiveHit(AttackData attack, Combatant attacker)
         {
             HitResult result;
-            if (IsInvulnerable)
+            if (IsInvulnerable || IsDead)
                 result = HitResult.Evaded;
             else if (IsBlocking && attack.type != AttackType.Unblockable)
                 result = LocalTime - blockStartTime <= CurrentDeflectWindow ? HitResult.Deflected : HitResult.Blocked;

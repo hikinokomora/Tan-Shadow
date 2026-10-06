@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 8098582496843050592}
   - component: {fileID: 4404106697124447868}
   - component: {fileID: 7820327898567095444}
+  - component: {fileID: 6817628491591954481}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -163,6 +164,8 @@ MonoBehaviour:
   blockColor: {r: 0.25, g: 0.45, b: 0.9, a: 1}
   hitFlash: {r: 1, g: 0.2, b: 0.2, a: 1}
   deflectFlash: {r: 0.6, g: 1, b: 1, a: 1}
+  brokenColor: {r: 0.55, g: 0.05, b: 0.35, a: 1}
+  deadColor: {r: 0.12, g: 0.12, b: 0.12, a: 1}
   flashTime: 0.15
 --- !u!114 &8098582496843050592
 MonoBehaviour:
@@ -247,6 +250,18 @@ MonoBehaviour:
   mouseSwitchThreshold: 60
   stickSwitchThreshold: 0.7
   switchCooldown: 0.35
+--- !u!114 &6817628491591954481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991727482571536687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123457af56f7a1444b71db291e69540d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Combat.YinYangQi
 --- !u!1 &2574754862730650387
 GameObject:
   m_ObjectHideFlags: 0

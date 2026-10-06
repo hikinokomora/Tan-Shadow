@@ -51,7 +51,41 @@ namespace TanShadow.Combat
         [Min(0)] public float dashInvulnerability = 0.2f;
         [Min(0)] public float dashCooldown = 0.3f;
 
+        [Header("Ци игрока: шкала инь (−100) … ян (+100)")]
+        [Tooltip("Сдвиг к ян за каждую начатую атаку")]
+        [Min(0)] public float qiAttackShift = 12f;
+        [Tooltip("Сдвиг к инь при блоке: доля qiDamage заблокированной атаки")]
+        [Min(0)] public float qiBlockFactor = 0.8f;
+        [Tooltip("Идеальный дефлект возвращает к центру на столько")]
+        [Min(0)] public float qiDeflectRestore = 25f;
+        [Tooltip("Через сколько секунд без изменений шкала начинает сама идти к центру")]
+        [Min(0)] public float qiRecoverDelay = 1.5f;
+        [Tooltip("Скорость возврата к центру, единиц в секунду")]
+        [Min(0)] public float qiRecoverRate = 15f;
+        [Tooltip("Оглушение при выходе за край шкалы, с")]
+        [Min(0)] public float qiBreakStun = 1.5f;
+
+        [Header("Ци врага (постура)")]
+        [Tooltip("Враг получает такую долю qiDamage своей атаки, когда мы её отражаем")]
+        [Min(0)] public float postureDeflectFactor = 1f;
+        [Tooltip("Через сколько секунд без урона по ци она начинает восстанавливаться")]
+        [Min(0)] public float postureRecoverDelay = 2f;
+        [Min(0)] public float postureRecoverRate = 8f;
+        [Tooltip("Сколько секунд враг сломлен и открыт для добивания")]
+        [Min(0)] public float brokenDuration = 4f;
+
+        [Header("Добивание")]
+        [Tooltip("С какой дистанции можно добить сломленного врага, м")]
+        [Min(0)] public float finisherRange = 2.8f;
+        [Tooltip("Дистанция, на которую героиня подходит к врагу для добивания, м")]
+        [Min(0)] public float finisherDistance = 1.1f;
+        [Min(0.1f)] public float finisherDuration = 1.1f;
+        [Tooltip("Доля длительности, в которую проходит удар добивания")]
+        [Range(0, 1)] public float finisherImpactAt = 0.4f;
+        [Min(0)] public float finisherHitstop = 0.18f;
+
         [Header("Фидбек: тряска камеры (сила импульса)")]
+        [Min(0)] public float finisherShake = 1f;
         [Min(0)] public float deflectShake = 0.5f;
         [Min(0)] public float blockShake = 0.2f;
         [Min(0)] public float hurtShake = 0.6f;

@@ -27,6 +27,8 @@ namespace TanShadow.Player
 
         public PlayerState State { get; private set; }
         public int ComboStep { get; private set; } = -1;
+        public Vector3 DashDirection => dashDirection;
+        public float StaggerDuration => staggerDuration;
 
         CharacterController body;
         Combatant combatant;

@@ -50,6 +50,7 @@ namespace TanShadow.Player
         bool finisherImpactDone;
         Vector3 finisherStart, finisherEnd;
         float comboChainUntil = float.NegativeInfinity;
+        Quaternion attackFacing = Quaternion.identity;
 
         void Awake()
         {
@@ -109,6 +110,10 @@ namespace TanShadow.Player
 
         void UpdateAttack()
         {
+            // Доворот к цели во время замаха — плавно, без рывка
+            if (executor.Phase == AttackPhase.Windup)
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, attackFacing, settings.turnSpeed * 2.5f * combatant.DeltaTime);
+
             // До активной фазы атаку можно отменить в блок.
             if (executor.Phase == AttackPhase.Windup && block.WasPressedThisFrame())
             {
@@ -384,7 +389,7 @@ namespace TanShadow.Player
         {
             if (TryGetLockDirection(out var toTarget))
             {
-                transform.rotation = Quaternion.LookRotation(toTarget);
+                attackFacing = Quaternion.LookRotation(toTarget);
                 return;
             }
 
@@ -410,7 +415,7 @@ namespace TanShadow.Player
                 face = best.transform.position - transform.position;
                 face.y = 0f;
             }
-            if (face.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(face);
+            attackFacing = face.sqrMagnitude > 0.001f ? Quaternion.LookRotation(face) : transform.rotation;
         }
 
         void ApplyKnockbackAndGravity(float dt)

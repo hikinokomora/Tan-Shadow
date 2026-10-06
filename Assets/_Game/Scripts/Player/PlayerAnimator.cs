@@ -12,7 +12,9 @@ namespace TanShadow.Player
     {
         public Animator animator;
         [Tooltip("Плавность перехода между анимациями, с")]
-        [Min(0)] public float crossFade = 0.08f;
+        [Min(0)] public float crossFade = 0.12f;
+        [Tooltip("Возврат в передвижение после действия, с")]
+        [Min(0)] public float returnFade = 0.2f;
         [Tooltip("Сглаживание параметров передвижения, с")]
         [Min(0)] public float moveDamp = 0.1f;
         [Tooltip("За сколько секунд слой блока поднимает руки")]
@@ -89,7 +91,7 @@ namespace TanShadow.Player
             {
                 case PlayerState.Locomotion:
                 case PlayerState.Block:
-                    animator.CrossFadeInFixedTime("Locomotion", crossFade * 2f, 0);
+                    animator.CrossFadeInFixedTime("Locomotion", returnFade, 0);
                     break;
                 case PlayerState.Deflect:
                     Play("Deflect_BlockReact", deflectVisualDuration);

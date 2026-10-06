@@ -58,7 +58,7 @@ namespace TanShadow.Player
 
             if (!IsLocked) return;
 
-            if (!Target.isActiveAndEnabled || FlatDistance(Target) > breakRange)
+            if (!Target.isActiveAndEnabled || Target.IsDead || FlatDistance(Target) > breakRange)
             {
                 SetTarget(null);
                 return;
@@ -89,7 +89,7 @@ namespace TanShadow.Player
             float bestScore = float.MaxValue;
             foreach (var other in Combatant.All)
             {
-                if (other == self) continue;
+                if (other == self || other.IsDead) continue;
                 float distance = FlatDistance(other);
                 if (distance > acquireRange) continue;
 
@@ -113,7 +113,7 @@ namespace TanShadow.Player
             float bestGap = float.MaxValue;
             foreach (var other in Combatant.All)
             {
-                if (other == self || other == Target || FlatDistance(other) > acquireRange) continue;
+                if (other == self || other == Target || other.IsDead || FlatDistance(other) > acquireRange) continue;
                 Vector3 vp = Viewport(other);
                 if (vp.z <= 0f) continue;
                 float gap = (vp.x - currentX) * direction;

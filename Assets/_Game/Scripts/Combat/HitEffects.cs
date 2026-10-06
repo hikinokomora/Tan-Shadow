@@ -21,8 +21,28 @@ namespace TanShadow.Combat
         float flashPeak;
         float flashLeft;
 
-        void OnEnable() => Combatant.AnyHit += OnHit;
-        void OnDisable() => Combatant.AnyHit -= OnHit;
+        [Min(0)] public float finisherFlashIntensity = 60000f;
+
+        void OnEnable()
+        {
+            Combatant.AnyHit += OnHit;
+            Combatant.AnyFinisher += OnFinisher;
+        }
+
+        void OnDisable()
+        {
+            Combatant.AnyHit -= OnHit;
+            Combatant.AnyFinisher -= OnFinisher;
+        }
+
+        void OnFinisher(Combatant attacker, Combatant victim)
+        {
+            Vector3 toAttacker = attacker.transform.position - victim.transform.position;
+            toAttacker.y = 0f;
+            Vector3 point = victim.transform.position + Vector3.up * contactHeight + toAttacker.normalized * contactForward;
+            Spawn(deflectSparks, point, Quaternion.LookRotation(Vector3.up));
+            Flash(point, finisherFlashIntensity);
+        }
 
         void Awake()
         {

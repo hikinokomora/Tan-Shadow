@@ -22,6 +22,13 @@ namespace TanShadow.Combat
             combatant.AttackLanded += OnAttackLanded;
         }
 
+        void OnEnable() => Combatant.AnyFinisher += OnFinisher;
+
+        void OnFinisher(Combatant attacker, Combatant victim)
+        {
+            if (attacker == combatant) Play(Settings.finisherShake, Settings.hurtRumble);
+        }
+
         void OnHurt(HitInfo hit)
         {
             switch (hit.result)
@@ -53,7 +60,11 @@ namespace TanShadow.Combat
             StopRumble();
         }
 
-        void OnDisable() => StopRumble();
+        void OnDisable()
+        {
+            Combatant.AnyFinisher -= OnFinisher;
+            StopRumble();
+        }
 
         void StopRumble()
         {

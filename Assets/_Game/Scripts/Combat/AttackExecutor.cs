@@ -97,7 +97,7 @@ namespace TanShadow.Combat
             for (int i = 0; i < count; i++)
             {
                 var target = overlap[i].GetComponentInParent<Combatant>();
-                if (target == null || target == self || alreadyHit.Contains(target)) continue;
+                if (target == null || target == self || target.IsDead || alreadyHit.Contains(target)) continue;
 
                 alreadyHit.Add(target);
                 target.ReceiveHit(Current, self);

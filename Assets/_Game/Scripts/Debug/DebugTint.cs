@@ -15,12 +15,15 @@ namespace TanShadow.DebugTools
         public Color blockColor = new Color(0.25f, 0.45f, 0.9f);
         public Color hitFlash = new Color(1f, 0.2f, 0.2f);
         public Color deflectFlash = new Color(0.6f, 1f, 1f);
+        public Color brokenColor = new Color(0.55f, 0.05f, 0.35f);
+        public Color deadColor = new Color(0.12f, 0.12f, 0.12f);
         [Min(0)] public float flashTime = 0.15f;
 
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         Combatant combatant;
         AttackExecutor executor;
+        Posture posture;
         MaterialPropertyBlock block;
         Color flashColor;
         float flashLeft;
@@ -29,6 +32,7 @@ namespace TanShadow.DebugTools
         {
             combatant = GetComponent<Combatant>();
             executor = GetComponent<AttackExecutor>();
+            posture = GetComponent<Posture>();
             block = new MaterialPropertyBlock();
             combatant.Hurt += hit => Flash(hit.result == HitResult.Hit ? hitFlash : deflectFlash, hit.result);
             combatant.AttackLanded += hit => Flash(deflectFlash, hit.result);
@@ -49,7 +53,9 @@ namespace TanShadow.DebugTools
             flashLeft -= Time.deltaTime;
 
             Color color = baseColor;
-            if (flashLeft > 0f) color = flashColor;
+            if (combatant.IsDead) color = deadColor;
+            else if (flashLeft > 0f) color = flashColor;
+            else if (posture != null && posture.IsBroken) color = Color.Lerp(baseColor, brokenColor, 0.5f + 0.5f * Mathf.Sin(Time.time * 10f));
             else if (executor != null && executor.Phase == AttackPhase.Windup) color = WindupColor();
             else if (executor != null && executor.Phase == AttackPhase.Active) color = activeColor;
             else if (combatant.IsBlocking) color = blockColor;

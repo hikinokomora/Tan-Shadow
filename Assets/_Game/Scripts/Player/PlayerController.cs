@@ -11,8 +11,8 @@ namespace TanShadow.Player
         Block,
         Deflect,
         Stagger,
-        Dash
-        // Finisher — день 4, вместе с ци.
+        Dash,
+        Finisher
     }
 
     [RequireComponent(typeof(CharacterController), typeof(Combatant), typeof(AttackExecutor))]
@@ -30,6 +30,7 @@ namespace TanShadow.Player
         Combatant combatant;
         AttackExecutor executor;
         LockOnTargeting lockOn;
+        YinYangQi qi;
         readonly InputBuffer buffer = new InputBuffer();
         InputActionMap map;
         InputAction move, attack, block, dash;
@@ -39,6 +40,10 @@ namespace TanShadow.Player
         Vector3 dashDirection;
         float dashReadyTime;
         Vector3 knockback;
+        float staggerDuration;
+        Combatant finisherVictim;
+        bool finisherImpactDone;
+        Vector3 finisherStart, finisherEnd;
 
         void Awake()
         {
@@ -46,6 +51,8 @@ namespace TanShadow.Player
             combatant = GetComponent<Combatant>();
             executor = GetComponent<AttackExecutor>();
             lockOn = GetComponent<LockOnTargeting>();
+            qi = GetComponent<YinYangQi>();
+            if (qi != null) qi.Overflow += OnQiOverflow;
             if (cameraTransform == null && Camera.main != null) cameraTransform = Camera.main.transform;
 
             map = controls.FindActionMap("Player", true);
@@ -77,6 +84,7 @@ namespace TanShadow.Player
                 case PlayerState.Deflect: UpdateDeflect(); break;
                 case PlayerState.Stagger: UpdateStagger(); break;
                 case PlayerState.Dash: UpdateDash(dt); break;
+                case PlayerState.Finisher: UpdateFinisher(); break;
             }
 
             ApplyKnockbackAndGravity(dt);
@@ -137,7 +145,32 @@ namespace TanShadow.Player
 
         void UpdateStagger()
         {
-            if (stateTime >= settings.staggerDuration) SetState(PlayerState.Locomotion);
+            if (stateTime >= staggerDuration) SetState(PlayerState.Locomotion);
+        }
+
+        void UpdateFinisher()
+        {
+            float impactTime = settings.finisherDuration * settings.finisherImpactAt;
+
+            // До удара подходим к врагу, дальше стоим.
+            Vector3 wanted = Vector3.Lerp(finisherStart, finisherEnd, Mathf.Clamp01(stateTime / impactTime));
+            Vector3 step = wanted - transform.position;
+            step.y = 0f;
+            body.Move(step);
+            FaceTowards(finisherVictim.transform.position);
+
+            if (!finisherImpactDone && stateTime >= impactTime)
+            {
+                finisherImpactDone = true;
+                finisherVictim.ReceiveFinisher(combatant);
+            }
+
+            if (stateTime >= settings.finisherDuration)
+            {
+                combatant.IsInvulnerable = false;
+                finisherVictim = null;
+                SetState(PlayerState.Locomotion);
+            }
         }
 
         void UpdateDash(float dt)
@@ -171,6 +204,13 @@ namespace TanShadow.Player
         {
             if (!buffer.Consume(BufferedAction.Attack, combatant.LocalTime, settings.inputBuffer)) return false;
 
+            var victim = FindFinisherTarget();
+            if (victim != null)
+            {
+                StartFinisher(victim);
+                return true;
+            }
+
             combatant.StopBlock();
             FaceAttackTarget();
             executor.Begin(lightAttack);
@@ -190,6 +230,76 @@ namespace TanShadow.Player
             dashReadyTime = combatant.LocalTime + settings.dashDuration + settings.dashCooldown;
             SetState(PlayerState.Dash);
             return true;
+        }
+
+        void EnterStagger(float duration)
+        {
+            staggerDuration = duration;
+            SetState(PlayerState.Stagger);
+        }
+
+        // Сломленный враг рядом: сначала захваченный, иначе ближайший перед нами.
+        Combatant FindFinisherTarget()
+        {
+            if (lockOn != null && lockOn.IsLocked && CanFinish(lockOn.Target, 180f)) return lockOn.Target;
+
+            Combatant best = null;
+            float bestDistance = float.MaxValue;
+            foreach (var other in Combatant.All)
+            {
+                if (other == combatant || !CanFinish(other, 90f)) continue;
+                float distance = Vector3.Distance(other.transform.position, transform.position);
+                if (distance < bestDistance)
+                {
+                    best = other;
+                    bestDistance = distance;
+                }
+            }
+            return best;
+        }
+
+        bool CanFinish(Combatant other, float maxAngle)
+        {
+            if (other.IsDead) return false;
+            var posture = other.GetComponent<Posture>();
+            if (posture == null || !posture.IsBroken) return false;
+
+            Vector3 to = other.transform.position - transform.position;
+            to.y = 0f;
+            return to.magnitude <= settings.finisherRange && Vector3.Angle(transform.forward, to) <= maxAngle;
+        }
+
+        void StartFinisher(Combatant victim)
+        {
+            executor.Cancel();
+            combatant.StopBlock();
+            combatant.IsInvulnerable = true;
+            finisherVictim = victim;
+            finisherImpactDone = false;
+
+            Vector3 to = victim.transform.position - transform.position;
+            to.y = 0f;
+            finisherStart = transform.position;
+            finisherEnd = victim.transform.position - to.normalized * settings.finisherDistance;
+            finisherEnd.y = transform.position.y;
+            FaceTowards(victim.transform.position);
+            SetState(PlayerState.Finisher);
+        }
+
+        void FaceTowards(Vector3 point)
+        {
+            Vector3 to = point - transform.position;
+            to.y = 0f;
+            if (to.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(to);
+        }
+
+        void OnQiOverflow(int side)
+        {
+            if (State == PlayerState.Finisher) return;
+            executor.Cancel();
+            combatant.StopBlock();
+            buffer.Clear();
+            EnterStagger(settings.qiBreakStun);
         }
 
         void OnHurt(HitInfo hit)
@@ -212,7 +322,7 @@ namespace TanShadow.Player
                     combatant.StopBlock();
                     buffer.Clear();
                     knockback = away * settings.hitKnockback;
-                    SetState(PlayerState.Stagger);
+                    EnterStagger(settings.staggerDuration);
                     if (combatant.Health <= 0f) combatant.ResetHealth(); // смерти пока нет
                     break;
             }

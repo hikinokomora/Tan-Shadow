@@ -42,13 +42,23 @@ namespace TanShadow.Audio
         void OnEnable()
         {
             Combatant.AnyHit += OnHit;
+            Combatant.AnyFinisher += OnFinisher;
             AttackExecutor.AnyPhaseChanged += OnPhase;
         }
 
         void OnDisable()
         {
             Combatant.AnyHit -= OnHit;
+            Combatant.AnyFinisher -= OnFinisher;
             AttackExecutor.AnyPhaseChanged -= OnPhase;
+        }
+
+        // Пока нет отдельного звука: удар плюс звон.
+        void OnFinisher(Combatant attacker, Combatant victim)
+        {
+            Vector3 at = victim.transform.position + Vector3.up * 1.3f;
+            Play(hit, hitVolume, at);
+            Play(deflect, deflectVolume * 0.7f, at);
         }
 
         void OnHit(HitInfo info)

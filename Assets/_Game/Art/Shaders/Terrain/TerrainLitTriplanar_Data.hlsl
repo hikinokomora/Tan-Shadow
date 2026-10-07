@@ -160,8 +160,9 @@ void GetSurfaceAndBuiltinData(inout FragInputs input, float3 V, inout PositionIn
 
     TerrainLitSurfaceData terrainLitSurfaceData;
     InitializeTerrainLitSurfaceData(terrainLitSurfaceData);
-    // Трипланар: позиция относительно начала террейна и нормаль поверхности (попиксельная, если включена)
-    float3 triPositionOS = GetAbsolutePositionWS(input.positionRWS) - GetObjectToWorldMatrix()._14_24_34;
+    // Трипланар: позиция относительно начала террейна и нормаль поверхности (попиксельная, если включена).
+    // positionRWS и матрица объекта в HDRP обе относительно камеры — вычитаем в одном пространстве, иначе проекция едет за камерой.
+    float3 triPositionOS = input.positionRWS - GetObjectToWorldMatrix()._14_24_34;
 #ifdef ENABLE_TERRAIN_PERPIXEL_NORMAL
     float3 triNormalOS = SAMPLE_TEXTURE2D(_TerrainNormalmapTexture, sampler_TerrainNormalmapTexture, terrainNormalMapUV).rgb * 2 - 1;
 #else

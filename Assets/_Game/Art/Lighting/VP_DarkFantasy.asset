@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3468815261817806801
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e6e962fd39eeb46a65dbc59ba5fa60, type: 3}
+  m_Name: DarkFantasy
+  m_EditorClassIdentifier: Assembly-CSharp::DarkFantasyPostProcess
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  exposure:
+    m_OverrideState: 1
+    m_Value: 0.24
+  contrast:
+    m_OverrideState: 1
+    m_Value: 0
+  contrastPivot:
+    m_OverrideState: 1
+    m_Value: 0.312
+  blackCrush:
+    m_OverrideState: 1
+    m_Value: 0
+  blackLift:
+    m_OverrideState: 1
+    m_Value: 0.065
+  saturation:
+    m_OverrideState: 1
+    m_Value: 0.66
+  nonRedDesaturation:
+    m_OverrideState: 1
+    m_Value: 0.36
+  redBoost:
+    m_OverrideState: 1
+    m_Value: 0.271
+  keepHue:
+    m_OverrideState: 1
+    m_Value: 0
+  keepHueWidth:
+    m_OverrideState: 1
+    m_Value: 0.07
+  shadowTint:
+    m_OverrideState: 1
+    m_Value: {r: 0.45, g: 0.06, b: 0.05, a: 1}
+  shadowTintStrength:
+    m_OverrideState: 1
+    m_Value: 0.4
+  highlightTint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.85, b: 0.68, a: 1}
+  highlightTintStrength:
+    m_OverrideState: 1
+    m_Value: 0.25
+  toneBalance:
+    m_OverrideState: 1
+    m_Value: 0.4
+  colorFilter:
+    m_OverrideState: 1
+    m_Value: {r: 0.8, g: 0.22, b: 0.16, a: 1}
+  colorFilterStrength:
+    m_OverrideState: 1
+    m_Value: 0.1
+  moonHue:
+    m_OverrideState: 1
+    m_Value: 0.6
+  moonHueWidth:
+    m_OverrideState: 1
+    m_Value: 0.1
+  moonPreserve:
+    m_OverrideState: 1
+    m_Value: 0.8
+  moonTintProtect:
+    m_OverrideState: 1
+    m_Value: 0.8
+  bloomIntensity:
+    m_OverrideState: 1
+    m_Value: 0.57
+  bloomThreshold:
+    m_OverrideState: 1
+    m_Value: 0.718
+  bloomKnee:
+    m_OverrideState: 1
+    m_Value: 0.602
+  bloomScatter:
+    m_OverrideState: 1
+    m_Value: 0.807
+  bloomTint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.88, b: 0.8, a: 1}
+  halationIntensity:
+    m_OverrideState: 1
+    m_Value: 0.3
+  halationColor:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.15, b: 0.04, a: 1}
+  painterlyStrength:
+    m_OverrideState: 1
+    m_Value: 0.332
+  painterlyRadius:
+    m_OverrideState: 1
+    m_Value: 6
+  paintSharpness:
+    m_OverrideState: 1
+    m_Value: 5.3
+  paintHardness:
+    m_OverrideState: 1
+    m_Value: 9.3
+  paintAnisotropy:
+    m_OverrideState: 1
+    m_Value: 0.35
+  paintHalfResolution:
+    m_OverrideState: 1
+    m_Value: 1
+  impastoStrength:
+    m_OverrideState: 1
+    m_Value: 0.217
+  brushBristles:
+    m_OverrideState: 1
+    m_Value: 0.325
+  strokeLength:
+    m_OverrideState: 1
+    m_Value: 10
+  canvasStrength:
+    m_OverrideState: 1
+    m_Value: 0.3
+  canvasScale:
+    m_OverrideState: 1
+    m_Value: 3
+  chromaticAberration:
+    m_OverrideState: 1
+    m_Value: 0.25
+  vignetteIntensity:
+    m_OverrideState: 1
+    m_Value: 0.25
+  vignetteSmoothness:
+    m_OverrideState: 1
+    m_Value: 0.5
+  vignetteColor:
+    m_OverrideState: 1
+    m_Value: {r: 0.07, g: 0, b: 0, a: 1}
+  grainIntensity:
+    m_OverrideState: 1
+    m_Value: 0.151
+  grainSize:
+    m_OverrideState: 1
+    m_Value: 1.35
+  grainResponse:
+    m_OverrideState: 1
+    m_Value: 0.169
+  grainColor:
+    m_OverrideState: 1
+    m_Value: 0.228
+  grainFps:
+    m_OverrideState: 1
+    m_Value: 24
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: VP_DarkFantasy
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
+  components:
+  - {fileID: -3468815261817806801}

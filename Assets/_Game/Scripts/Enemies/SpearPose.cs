@@ -3,7 +3,9 @@ using UnityEngine;
 
 namespace TanShadow.Enemies
 {
-    // Процедурная поза копья по фазам атаки — читаемый телеграф до появления анимаций.
+    // Процедурная поза копья по фазам атаки: клипов ударов копьём нет, а пока поза читается как телеграф.
+    // Считается в Update (после AttackExecutor), чтобы IK рук в SpearGrip видел позу этого же кадра.
+    [DefaultExecutionOrder(40)]
     public class SpearPose : MonoBehaviour
     {
         [Tooltip("Точка хвата; копьё смотрит вдоль её +Z")]
@@ -33,7 +35,7 @@ namespace TanShadow.Enemies
             };
         }
 
-        void LateUpdate()
+        void Update()
         {
             if (spear == null || executor == null) return;
             var rest = new Pose(restPosition, restEuler);

@@ -54,6 +54,7 @@ namespace TanShadow.DebugTools
         void LateUpdate()
         {
             if (target == null) return;
+            if (block == null) block = new MaterialPropertyBlock(); // после горячей перезагрузки скриптов поле обнуляется
             flashLeft -= Time.deltaTime;
 
             Color color = baseColor;

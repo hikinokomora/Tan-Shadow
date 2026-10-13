@@ -28,6 +28,79 @@ MonoBehaviour:
   saturation:
     m_OverrideState: 1
     m_Value: -12
+--- !u!114 &-7132212402771483148
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90f75a9da58f3424dbb8f0418a24addf, type: 3}
+  m_Name: InkWashEffect
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Rendering.InkWashEffect
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  paint:
+    m_OverrideState: 1
+    m_Value: 0.9
+  focusDistance:
+    m_OverrideState: 0
+    m_Value: 7
+  focusRange:
+    m_OverrideState: 0
+    m_Value: 9
+  sharpen:
+    m_OverrideState: 1
+    m_Value: 0.5
+  stroke:
+    m_OverrideState: 1
+    m_Value: 0.2
+  strokeWorld:
+    m_OverrideState: 1
+    m_Value: 0.5
+  grain:
+    m_OverrideState: 1
+    m_Value: 0.07
+  grainWorld:
+    m_OverrideState: 1
+    m_Value: 0.025
+  outline:
+    m_OverrideState: 1
+    m_Value: 0.35
+  outlineWidth:
+    m_OverrideState: 0
+    m_Value: 1.4
+  outlineColor:
+    m_OverrideState: 0
+    m_Value: {r: 0.03, g: 0.04, b: 0.05, a: 1}
+  contrast:
+    m_OverrideState: 1
+    m_Value: 1
+  saturation:
+    m_OverrideState: 1
+    m_Value: 1
+  depthTint:
+    m_OverrideState: 1
+    m_Value: 0.4
+  vignette:
+    m_OverrideState: 1
+    m_Value: 0.35
+  focusLift:
+    m_OverrideState: 1
+    m_Value: 0
+  shadowTint:
+    m_OverrideState: 1
+    m_Value: {r: 0.45, g: 0.58, b: 0.62, a: 1}
+  highlightTint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.86, b: 0.62, a: 1}
+  fogTint:
+    m_OverrideState: 1
+    m_Value: {r: 0.52, g: 0.66, b: 0.66, a: 1}
 --- !u!114 &-4328441060746753169
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -220,6 +293,7 @@ MonoBehaviour:
   - {fileID: 5804869653919597633}
   - {fileID: 7955540501610782972}
   - {fileID: 8778031953205149436}
+  - {fileID: -7132212402771483148}
 --- !u!114 &738502889308902464
 MonoBehaviour:
   m_ObjectHideFlags: 3

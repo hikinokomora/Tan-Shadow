@@ -15,10 +15,10 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 0.24
+    m_Value: -0.56
   contrast:
     m_OverrideState: 1
     m_Value: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 0.15, b: 0.04, a: 1}
   painterlyStrength:
     m_OverrideState: 1
-    m_Value: 0.332
+    m_Value: 1
   painterlyRadius:
     m_OverrideState: 1
     m_Value: 6
@@ -120,13 +120,13 @@ MonoBehaviour:
     m_Value: 1
   impastoStrength:
     m_OverrideState: 1
-    m_Value: 0.217
+    m_Value: 0.415
   brushBristles:
     m_OverrideState: 1
-    m_Value: 0.325
+    m_Value: 0.433
   strokeLength:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 12.7
   canvasStrength:
     m_OverrideState: 1
     m_Value: 0.3

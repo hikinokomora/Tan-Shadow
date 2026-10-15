@@ -30,6 +30,12 @@ namespace TanShadow.Player
         public Vector3 DashDirection => dashDirection;
         public float StaggerDuration => staggerDuration;
 
+        // Для анимации: куда игрок жмёт стик (относительно камеры), и два крючка для разворота на месте:
+        // пока идёт клип разворота, поворот корпуса ведёт PlayerAnimator, а шаг вперёд приторможен.
+        public Vector3 MoveInput { get; private set; }
+        public bool AnimationDrivesFacing { get; set; }
+        public float MoveSpeedScale { get; set; } = 1f;
+
         CharacterController body;
         Combatant combatant;
         AttackExecutor executor;
@@ -80,6 +86,7 @@ namespace TanShadow.Player
             if (attack.WasPressedThisFrame()) buffer.Press(BufferedAction.Attack, now);
             if (dash.WasPressedThisFrame()) buffer.Press(BufferedAction.Dash, now);
 
+            MoveInput = CameraRelativeInput();
             float dt = combatant.DeltaTime;
             stateTime += dt;
 
@@ -358,7 +365,8 @@ namespace TanShadow.Player
         void MoveAndTurn(float speed, float dt)
         {
             Vector3 input = CameraRelativeInput();
-            body.Move(input * speed * dt);
+            body.Move(input * speed * MoveSpeedScale * dt);
+            if (AnimationDrivesFacing) return;
 
             // В захвате стрейфим лицом к цели, иначе поворачиваемся по движению.
             Vector3 face = input;

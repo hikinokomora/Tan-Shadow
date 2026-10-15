@@ -1,0 +1,240 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d951ab929e5a40a4b9a08cd0070998d8, type: 3}
+  m_Name: PlayerAnimationSet_Yinniang
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Player.PlayerAnimationSet
+  comboSteps:
+  - variants:
+    - state: Attack_Torch_01
+      start: 0.72
+      impact: 0.93
+      offHandRest: 0.35
+    - state: Stab_2
+      start: 0
+      impact: 0.2
+      offHandRest: 0.75
+  - variants:
+    - state: Attack_Torch_02
+      start: 0.58
+      impact: 0.74
+      offHandRest: 0.35
+    - state: Stab_3
+      start: 0.05
+      impact: 0.25
+      offHandRest: 0.75
+  - variants:
+    - state: Attack_Torch_04
+      start: 2.05
+      impact: 2.27
+      offHandRest: 0.2
+    - state: Stab_4_ThrustSlash
+      start: 0.08
+      impact: 0.28
+      offHandRest: 0.3
+  - variants:
+    - state: Attack_Torch_Stab
+      start: 0.78
+      impact: 0.92
+      offHandRest: 0.45
+    - state: Attack_Torch_04
+      start: 0.86
+      impact: 1.1
+      offHandRest: 0.35
+  attackSpeedRange: {x: 0.6, y: 3.5}
+  runForwardSpeed: 4.23
+  runBackwardSpeed: 3.42
+  runSideSpeed: 4.4
+  walkForwardSpeed: 1.6
+  walkBackwardSpeed: 1.9
+  walkSideSpeed: 1.66
+  minWalkRate: 0.35
+  velocityDamp: 0.12
+  velocityDampStop: 0.16
+  maxPlaybackWarp: 1.35
+  turnClipRate: 109
+  turnDeadZone: 25
+  standSpeed: 0.35
+  turnStartAngle: 65
+  runPivotAngle: 135
+  turnStandMaxSpeed: 1.2
+  turn90Duration: 0.26
+  turn180Duration: 0.36
+  turnMoveScale: 0.35
+  turnProfile:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.07
+      value: 0.09
+      inSlope: 1.2857144
+      outSlope: 1.2857144
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.14
+      value: 0.18
+      inSlope: 1.2142857
+      outSlope: 1.2142857
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.21
+      value: 0.26
+      inSlope: 0.8666667
+      outSlope: 0.8666667
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.29
+      value: 0.31
+      inSlope: 0.7999999
+      outSlope: 0.7999999
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.36
+      value: 0.38
+      inSlope: 0.8571428
+      outSlope: 0.8571428
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.43
+      value: 0.43
+      inSlope: 0.857143
+      outSlope: 0.857143
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.57
+      value: 0.57
+      inSlope: 1.214286
+      outSlope: 1.214286
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.64
+      value: 0.67
+      inSlope: 1.5
+      outSlope: 1.5
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.71
+      value: 0.78
+      inSlope: 1.4666661
+      outSlope: 1.4666661
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.79
+      value: 0.89
+      inSlope: 1.0666666
+      outSlope: 1.0666666
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.86
+      value: 0.94
+      inSlope: 0.71428597
+      outSlope: 0.71428597
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.93
+      value: 0.99
+      inSlope: 0.28571406
+      outSlope: 0.28571406
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 137
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnBlendIn: 0.14
+  turnBlendOut: 0.18
+  leanPerTurn: 0.0045
+  leanPerAcceleration: 0.4
+  maxLean: 10
+  leanSmoothing: 0.15
+  lookWeight: 0.85
+  lookActionWeight: 0.5
+  maxLookYaw: 70
+  maxLookPitch: 35
+  lookTargetHeight: 1.5
+  lookDownAngle: 3
+  kickArm: 16
+  kickChest: 5
+  kickTime: 0.06
+  deflectKick: 1
+  blockKick: 0.6
+  idleVariants: 2
+  idleBlendTime: 0.8
+  idleSwitchInterval: {x: 5, y: 9}
+  attackBlend: 0.1
+  reactionBlend: 0.08
+  dodgeBlend: 0.1
+  finisherBlend: 0.15
+  toLocomotionBlend: 0.28
+  startBlend: 0.16
+  stopBlend: 0.24
+  offHandBlend: 0.12

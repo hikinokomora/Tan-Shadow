@@ -13,7 +13,11 @@ namespace TanShadow.Enemies
 
         public Vector3 restPosition = new Vector3(0.3f, 1.1f, 0.15f);
         public Vector3 restEuler = new Vector3(25f, 0f, 0f);
+        [Tooltip("Блок: древко поперёк груди")]
+        public Vector3 guardPosition = new Vector3(0.1f, 1.3f, 0.35f);
+        public Vector3 guardEuler = new Vector3(0f, -80f, 10f);
         [Min(0)] public float returnSpeed = 10f;
+        [Min(0)] public float guardSpeed = 25f;
 
         struct Pose
         {
@@ -40,9 +44,11 @@ namespace TanShadow.Enemies
 
             if (!executor.IsBusy || executor.Current == null)
             {
-                float k = 1f - Mathf.Exp(-returnSpeed * Time.deltaTime);
-                spear.localPosition = Vector3.Lerp(spear.localPosition, rest.position, k);
-                spear.localRotation = Quaternion.Slerp(spear.localRotation, rest.rotation, k);
+                bool guarding = ai != null && ai.State == GuardState.Guard;
+                var idle = guarding ? new Pose(guardPosition, guardEuler) : rest;
+                float k = 1f - Mathf.Exp(-(guarding ? guardSpeed : returnSpeed) * Time.deltaTime);
+                spear.localPosition = Vector3.Lerp(spear.localPosition, idle.position, k);
+                spear.localRotation = Quaternion.Slerp(spear.localRotation, idle.rotation, k);
                 return;
             }
 

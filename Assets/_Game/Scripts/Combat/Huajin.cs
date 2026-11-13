@@ -4,7 +4,7 @@ using UnityEngine;
 namespace TanShadow.Combat
 {
     // Хуацзинь (化劲) — «четыре ляна отводят тысячу цзиней».
-    // Идеальный дефлект копит силу вражеского удара: следующий удар в течение окна бьёт по ци сильнее.
+    // Идеальный дефлект копит силу вражеского удара: первый удар, дошедший до врага в течение окна, бьёт по ци сильнее.
     [RequireComponent(typeof(Combatant))]
     public class Huajin : MonoBehaviour
     {
@@ -37,20 +37,17 @@ namespace TanShadow.Combat
             Charged?.Invoke();
         }
 
-        // Забрать заряд в начале атаки.
-        public float Consume()
-        {
-            if (!IsCharged) return 1f;
-            float m = Multiplier;
-            chargedUntil = float.NegativeInfinity;
-            return m;
-        }
-
         void OnAttackLanded(HitInfo hit)
         {
-            if (hit.qiMultiplier <= 1f || hit.result != HitResult.Hit) return;
-            hit.defender.Freeze(Settings.huajinHitstopBonus);
-            combatant.Freeze(Settings.huajinHitstopBonus);
+            if (hit.qiMultiplier <= 1f || hit.result == HitResult.Evaded) return;
+            // Заряд тратится, только когда удар дошёл до врага: после дефлекта стражника отбрасывает,
+            // и укол мимо не должен сжигать хуацзинь.
+            chargedUntil = float.NegativeInfinity;
+            if (hit.result != HitResult.Hit) return;
+            // Freeze берёт максимум, а не сумму: бонус прибавляем к хитстопу самого удара.
+            float stop = hit.attack.hitstop + Settings.huajinHitstopBonus;
+            hit.defender.Freeze(stop);
+            combatant.Freeze(stop);
             Released?.Invoke(hit);
         }
     }

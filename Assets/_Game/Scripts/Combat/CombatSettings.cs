@@ -74,6 +74,14 @@ namespace TanShadow.Combat
         [Tooltip("Сколько секунд враг сломлен и открыт для добивания")]
         [Min(0)] public float brokenDuration = 4f;
 
+        [Header("Враг: блок против закликивания")]
+        [Tooltip("После скольких наших попаданий подряд враг закрывается блоком")]
+        [Min(1)] public int enemyGuardAfterHits = 3;
+        [Tooltip("Попадания считаются подряд, если между ними не больше, с")]
+        [Min(0)] public float enemyGuardHitGap = 1f;
+        [Tooltip("Сколько враг держит блок, прежде чем контратаковать, с")]
+        [Min(0)] public float enemyGuardDuration = 0.7f;
+
         [Header("Хуацзинь (化劲)")]
         [Tooltip("Сколько секунд после дефлекта следующий удар усилен")]
         [Min(0)] public float huajinWindow = 1.5f;

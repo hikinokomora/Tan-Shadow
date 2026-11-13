@@ -235,7 +235,7 @@ namespace TanShadow.Player
 
             combatant.StopBlock();
             FaceAttackTarget();
-            executor.Begin(combo[ComboStep], huajin != null ? huajin.Consume() : 1f);
+            executor.Begin(combo[ComboStep], huajin != null ? huajin.Multiplier : 1f);
             SetState(PlayerState.Attack);
             return true;
         }

@@ -43,6 +43,7 @@ namespace TanShadow.Enemies
         Circle,
         Attack,
         Recoil,
+        Guard, // закрылся блоком от серии ударов, затем контратакует
         Broken,
         Dead
     }
@@ -95,6 +96,8 @@ namespace TanShadow.Enemies
         float verticalSpeed;
         float recoilTime;
         float deadTime;
+        int hitStreak;
+        float lastHitTime = float.NegativeInfinity;
         Vector3 spawnPosition;
         Quaternion spawnRotation;
 
@@ -143,6 +146,7 @@ namespace TanShadow.Enemies
                 case GuardState.Recoil:
                     if (stateTime >= recoilTime) SetState(GuardState.Circle);
                     break;
+                case GuardState.Guard: UpdateGuard(dt); break;
             }
 
             UpdateVisualPose();
@@ -235,6 +239,15 @@ namespace TanShadow.Enemies
             stepDelay = step < CurrentPattern.steps.Length ? CurrentPattern.steps[step].delayBefore : 0f;
         }
 
+        void UpdateGuard(float dt)
+        {
+            Face(dt);
+            if (stateTime < combatant.settings.enemyGuardDuration) return;
+            // Отстоял блок — сразу контратака.
+            cooldown = 0f;
+            SetState(GuardState.Circle);
+        }
+
         GuardPattern ChoosePattern()
         {
             float distance = Distance();
@@ -263,6 +276,7 @@ namespace TanShadow.Enemies
 
         void SetState(GuardState next)
         {
+            if (State == GuardState.Guard && next != GuardState.Guard) combatant.StopBlock();
             State = next;
             stateTime = 0f;
         }
@@ -288,7 +302,22 @@ namespace TanShadow.Enemies
             Vector3 away = transform.position - hit.attacker.transform.position;
             away.y = 0f;
             knockback = away.normalized * 1.5f;
-            Recoil(flinchTime);
+
+            // Серия попаданий подряд — закрываемся блоком, чтобы стражника нельзя было просто закликать.
+            var settings = combatant.settings;
+            hitStreak = combatant.LocalTime - lastHitTime <= settings.enemyGuardHitGap ? hitStreak + 1 : 1;
+            lastHitTime = combatant.LocalTime;
+            if (hitStreak >= settings.enemyGuardAfterHits)
+                EnterGuard();
+            else
+                Recoil(flinchTime);
+        }
+
+        void EnterGuard()
+        {
+            hitStreak = 0;
+            combatant.StartBlock();
+            SetState(GuardState.Guard);
         }
 
         void Recoil(float duration)

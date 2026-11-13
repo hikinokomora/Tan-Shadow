@@ -16,6 +16,8 @@ namespace TanShadow.Audio
         public AudioClip[] danger;
         [Tooltip("Усиленный хуацзинем удар")]
         public AudioClip[] huajin;
+        [Tooltip("Слом ци игрока у края шкалы. Пока пусто — играет звук попадания")]
+        public AudioClip[] qiBreak;
 
         [Range(0, 1)] public float deflectVolume = 1f;
         [Range(0, 1)] public float telegraphVolume = 0.7f;
@@ -51,6 +53,7 @@ namespace TanShadow.Audio
             Combatant.AnyHit += OnHit;
             Combatant.AnyFinisher += OnFinisher;
             AttackExecutor.AnyPhaseChanged += OnPhase;
+            YinYangQi.AnyOverflow += OnQiBreak;
         }
 
         void OnDisable()
@@ -58,6 +61,13 @@ namespace TanShadow.Audio
             Combatant.AnyHit -= OnHit;
             Combatant.AnyFinisher -= OnFinisher;
             AttackExecutor.AnyPhaseChanged -= OnPhase;
+            YinYangQi.AnyOverflow -= OnQiBreak;
+        }
+
+        void OnQiBreak(YinYangQi qi, int side)
+        {
+            bool own = qiBreak != null && qiBreak.Length > 0;
+            Play(own ? qiBreak : hit, hitVolume, qi.transform.position + Vector3.up * 1.3f);
         }
 
         // Пока нет отдельного звука: удар плюс звон.

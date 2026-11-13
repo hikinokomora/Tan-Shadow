@@ -47,6 +47,7 @@ namespace TanShadow.Player
         const string DodgeState = "Dodge";
         const string DodgeLengthKey = "Dodge_F_Pack";
         const string FinisherState = "Finisher_DoubleStab";
+        const string DeathState = "Death_Back";
         const string TurnLeftState = "Turn90_L";
         const string TurnRightState = "Turn90_R";
 
@@ -490,6 +491,9 @@ namespace TanShadow.Player
                     break;
                 case PlayerState.Finisher:
                     Play(FinisherState, Speed(FinisherState, settings.finisherDuration), 0f, set.finisherBlend);
+                    break;
+                case PlayerState.Dead:
+                    Play(DeathState, 1f, set.deathClipStart, set.deathBlend);
                     break;
             }
         }

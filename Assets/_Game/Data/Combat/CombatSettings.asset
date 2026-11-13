@@ -21,11 +21,56 @@ MonoBehaviour:
   deflectWindow: 0.2
   deflectHitstop: 0.1
   deflectRecovery: 0.15
+  deflectSpamInterval: 0.5
+  deflectSpamFalloff: 0.5
+  minDeflectWindow: 0.04
   staggerDuration: 0.45
   hitKnockback: 4
   blockKnockback: 2
   knockbackDeceleration: 14
+  deathRestartDelay: 2.5
   dashDistance: 3.5
   dashDuration: 0.25
   dashInvulnerability: 0.2
   dashCooldown: 0.3
+  qiAttackShift: 12
+  qiBlockFactor: 1.2
+  qiDeflectRestore: 25
+  qiRecoverDelay: 1.5
+  qiRecoverRate: 15
+  qiBreakStun: 1.5
+  postureDeflectFactor: 1
+  postureRecoverDelay: 2
+  postureRecoverRate: 8
+  brokenDuration: 4
+  enemyGuardAfterHits: 3
+  enemyGuardHitGap: 1
+  enemyGuardDuration: 0.7
+  huajinWindow: 1.5
+  huajinForceFactor: 0.5
+  huajinHitstopBonus: 0.05
+  huajinShake: 0.45
+  comboChainGrace: 0.3
+  finisherRange: 2.8
+  finisherDistance: 1.1
+  finisherDuration: 1.1
+  finisherImpactAt: 0.4
+  finisherHitstop: 0.18
+  finisherShake: 1
+  deflectShake: 0.5
+  blockShake: 0.2
+  hurtShake: 0.6
+  qiBreakShake: 0.7
+  landShake: 0.15
+  deflectRumble:
+    low: 0.25
+    high: 0.9
+    duration: 0.1
+  blockRumble:
+    low: 0.3
+    high: 0.3
+    duration: 0.08
+  hurtRumble:
+    low: 0.8
+    high: 0.4
+    duration: 0.2

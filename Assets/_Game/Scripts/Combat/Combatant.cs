@@ -107,6 +107,15 @@ namespace TanShadow.Combat
             Health = maxHealth;
         }
 
+        // Смерть без добивания: кончилось здоровье (так умирает игрок).
+        public void Die()
+        {
+            if (IsDead) return;
+            IsDead = true;
+            Health = 0f;
+            StopBlock();
+        }
+
         public void ReceiveFinisher(Combatant attacker)
         {
             if (IsDead) return;

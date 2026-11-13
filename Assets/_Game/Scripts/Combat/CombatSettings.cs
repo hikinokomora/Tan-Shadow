@@ -44,6 +44,10 @@ namespace TanShadow.Combat
         [Tooltip("Торможение отбрасывания, м/с²")]
         [Min(0)] public float knockbackDeceleration = 14f;
 
+        [Header("Смерть игрока")]
+        [Tooltip("Сколько секунд героиня лежит после смерти до рестарта дуэли")]
+        [Min(0)] public float deathRestartDelay = 2.5f;
+
         [Header("Рывок")]
         [Min(0)] public float dashDistance = 3.5f;
         [Min(0.01f)] public float dashDuration = 0.25f;
@@ -110,6 +114,8 @@ namespace TanShadow.Combat
         [Min(0)] public float deflectShake = 0.5f;
         [Min(0)] public float blockShake = 0.2f;
         [Min(0)] public float hurtShake = 0.6f;
+        [Tooltip("Слом ци игрока у края шкалы инь/ян")]
+        [Min(0)] public float qiBreakShake = 0.7f;
         [Tooltip("Когда наш удар попал по врагу")]
         [Min(0)] public float landShake = 0.15f;
 

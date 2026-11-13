@@ -12,7 +12,8 @@ namespace TanShadow.Player
         Deflect,
         Stagger,
         Dash,
-        Finisher
+        Finisher,
+        Dead // лежит до рестарта дуэли
     }
 
     [RequireComponent(typeof(CharacterController), typeof(Combatant), typeof(AttackExecutor))]
@@ -56,9 +57,13 @@ namespace TanShadow.Player
         bool finisherImpactDone;
         Vector3 finisherStart, finisherEnd;
         float comboChainUntil = float.NegativeInfinity;
+        Vector3 spawnPosition;
+        Quaternion spawnRotation;
 
         void Awake()
         {
+            spawnPosition = transform.position;
+            spawnRotation = transform.rotation;
             body = GetComponent<CharacterController>();
             combatant = GetComponent<Combatant>();
             executor = GetComponent<AttackExecutor>();
@@ -86,7 +91,7 @@ namespace TanShadow.Player
             if (attack.WasPressedThisFrame()) buffer.Press(BufferedAction.Attack, now);
             if (dash.WasPressedThisFrame()) buffer.Press(BufferedAction.Dash, now);
 
-            MoveInput = CameraRelativeInput();
+            MoveInput = State == PlayerState.Dead ? Vector3.zero : CameraRelativeInput();
             float dt = combatant.DeltaTime;
             stateTime += dt;
 
@@ -99,6 +104,9 @@ namespace TanShadow.Player
                 case PlayerState.Stagger: UpdateStagger(); break;
                 case PlayerState.Dash: UpdateDash(dt); break;
                 case PlayerState.Finisher: UpdateFinisher(); break;
+                case PlayerState.Dead:
+                    if (stateTime >= settings.deathRestartDelay) Respawn();
+                    break;
             }
 
             ApplyKnockbackAndGravity(dt);
@@ -235,8 +243,10 @@ namespace TanShadow.Player
 
             combatant.StopBlock();
             FaceAttackTarget();
-            executor.Begin(combo[ComboStep], huajin != null ? huajin.Multiplier : 1f);
+            // Состояние ставим до Begin: начало удара сдвигает ци к ян, и переполнение
+            // прямо внутри Begin переводит нас в оглушение — его нельзя затирать.
             SetState(PlayerState.Attack);
+            executor.Begin(combo[ComboStep], huajin != null ? huajin.Multiplier : 1f);
             return true;
         }
 
@@ -344,10 +354,32 @@ namespace TanShadow.Player
                     combatant.StopBlock();
                     buffer.Clear();
                     knockback = away * settings.hitKnockback;
-                    EnterStagger(settings.staggerDuration);
-                    if (combatant.Health <= 0f) combatant.ResetHealth(); // смерти пока нет
+                    if (combatant.Health <= 0f) Die();
+                    else EnterStagger(settings.staggerDuration);
                     break;
             }
+        }
+
+        // Смерть — быстрый рестарт: героиня лежит deathRestartDelay и встаёт на точке старта.
+        // Враги сами видят, что она погибла и вернулась (см. GuardAI).
+        void Die()
+        {
+            combatant.Die();
+            SetState(PlayerState.Dead);
+        }
+
+        void Respawn()
+        {
+            body.enabled = false; // иначе CharacterController не даст переставить
+            transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+            body.enabled = true;
+
+            combatant.Revive();
+            if (qi != null) qi.ResetValue();
+            knockback = Vector3.zero;
+            buffer.Clear();
+            ComboStep = -1;
+            SetState(PlayerState.Locomotion);
         }
 
         // --- Движение ---

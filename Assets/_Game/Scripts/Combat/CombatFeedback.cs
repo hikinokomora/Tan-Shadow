@@ -20,6 +20,8 @@ namespace TanShadow.Combat
             impulse = GetComponent<CinemachineImpulseSource>();
             combatant.Hurt += OnHurt;
             combatant.AttackLanded += OnAttackLanded;
+            var qi = GetComponent<YinYangQi>();
+            if (qi != null) qi.Overflow += _ => Play(Settings.qiBreakShake, Settings.hurtRumble);
         }
 
         void OnEnable() => Combatant.AnyFinisher += OnFinisher;

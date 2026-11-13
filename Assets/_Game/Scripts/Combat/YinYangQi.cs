@@ -15,6 +15,11 @@ namespace TanShadow.Combat
 
         // Вышли за край: −1 — инь, +1 — ян.
         public event Action<int> Overflow;
+        // Слом ци у любого бойца — для звука.
+        public static event Action<YinYangQi, int> AnyOverflow;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStatics() => AnyOverflow = null;
 
         Combatant combatant;
         float lastChangeTime;
@@ -57,7 +62,11 @@ namespace TanShadow.Combat
             int side = Value > 0f ? 1 : -1;
             Value = 0f;
             Overflow?.Invoke(side);
+            AnyOverflow?.Invoke(this, side);
         }
+
+        // Рестарт после смерти: шкала с центра.
+        public void ResetValue() => Value = 0f;
 
         void Update()
         {

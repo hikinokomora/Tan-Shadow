@@ -125,5 +125,10 @@ namespace TanShadow.Player
         public float stopBlend = 0.24f;
         [Tooltip("За сколько секунд прижимается/отпускается свободная рука (слой OffHand)")]
         [Min(0.01f)] public float offHandBlend = 0.12f;
+
+        [Header("Смерть")]
+        [Tooltip("С какой секунды играть клип смерти: в его начале героиня долго шатается и не успевает упасть до рестарта")]
+        [Min(0)] public float deathClipStart = 1.2f;
+        public float deathBlend = 0.15f;
     }
 }

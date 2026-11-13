@@ -85,6 +85,8 @@ namespace TanShadow.Enemies
         AttackExecutor executor;
         Posture posture;
         Transform target;
+        Combatant targetCombatant;
+        bool targetWasDead;
 
         float stateTime;
         float cooldown;
@@ -98,6 +100,7 @@ namespace TanShadow.Enemies
         float deadTime;
         int hitStreak;
         float lastHitTime = float.NegativeInfinity;
+        float punishUntil = float.NegativeInfinity;
         Vector3 spawnPosition;
         Quaternion spawnRotation;
 
@@ -116,14 +119,20 @@ namespace TanShadow.Enemies
             if (posture != null)
             {
                 posture.Broken += OnBroken;
-                posture.Recovered += () => SetState(GuardState.Circle);
+                posture.Recovered += () => SetState(targetWasDead ? GuardState.Idle : GuardState.Circle);
             }
         }
 
         void Start()
         {
             var player = FindAnyObjectByType<Player.PlayerController>();
-            if (player != null) target = player.transform;
+            if (player == null) return;
+            target = player.transform;
+            targetCombatant = player.GetComponent<Combatant>();
+
+            // Игрок оглушён краем шкалы ци — наказываем: следующая атака без паузы, пока он не очнулся.
+            var playerQi = player.GetComponent<YinYangQi>();
+            if (playerQi != null) playerQi.Overflow += _ => punishUntil = Time.time + combatant.settings.qiBreakStun;
         }
 
         void Update()
@@ -135,6 +144,22 @@ namespace TanShadow.Enemies
             {
                 if (Time.time - deadTime >= reviveDelay) Revive();
                 return;
+            }
+
+            // Игрок погиб — опускаем копьё и ждём; вернулся с точки старта — дуэль с начала.
+            bool targetDead = targetCombatant != null && targetCombatant.IsDead;
+            if (targetDead != targetWasDead)
+            {
+                targetWasDead = targetDead;
+                if (targetDead)
+                {
+                    executor.Cancel();
+                    if (State != GuardState.Broken) SetState(GuardState.Idle);
+                }
+                else
+                {
+                    Revive();
+                }
             }
 
             switch (State)
@@ -159,7 +184,7 @@ namespace TanShadow.Enemies
 
         void UpdateIdle()
         {
-            if (target != null && Distance() <= aggroRange) SetState(GuardState.Approach);
+            if (target != null && !targetWasDead && Distance() <= aggroRange) SetState(GuardState.Approach);
         }
 
         void UpdateApproach(float dt)
@@ -187,6 +212,12 @@ namespace TanShadow.Enemies
             Vector3 radial = to.normalized * Mathf.Clamp(Distance() - preferredDistance, -1f, 1f) * moveSpeed;
             Vector3 lateral = Vector3.Cross(Vector3.up, to.normalized) * circleDirection * circleSpeed;
             MoveFlat((radial + lateral) * dt);
+
+            if (Time.time < punishUntil)
+            {
+                punishUntil = float.NegativeInfinity;
+                cooldown = 0f;
+            }
 
             cooldown -= dt;
             if (cooldown <= 0f) StartPattern(ChoosePattern());

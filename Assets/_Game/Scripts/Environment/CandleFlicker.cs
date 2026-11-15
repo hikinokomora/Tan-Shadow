@@ -15,6 +15,23 @@ namespace TanShadow.Environment
         float baseIntensity;
         Vector3 baseFlameScale;
         float seed;
+        float disturbUntil = float.NegativeInfinity;
+        float disturbAmount;
+        float gutterStart = float.NegativeInfinity, gutterEnd = float.NegativeInfinity;
+
+        // Порыв воздуха: кто-то прошёл рядом — пламя дрожит сильнее.
+        public void Disturb(float amount, float duration)
+        {
+            disturbAmount = Mathf.Max(disturbAmount * (Time.time < disturbUntil ? 1f : 0f), amount);
+            disturbUntil = Mathf.Max(disturbUntil, Time.time + duration);
+        }
+
+        // Пламя ложится и гаснет на время, потом разгорается снова.
+        public void Gutter(float duration)
+        {
+            gutterStart = Time.time;
+            gutterEnd = Time.time + duration;
+        }
 
         void Awake()
         {
@@ -25,10 +42,18 @@ namespace TanShadow.Environment
 
         void Update()
         {
-            float t = Time.time * speed + seed;
+            bool disturbed = Time.time < disturbUntil;
+            float t = Time.time * speed * (disturbed ? 3f : 1f) + seed;
             // два слоя шума: медленное «дыхание» и быстрая дрожь
             float n = Mathf.PerlinNoise(t, 0f) * 0.7f + Mathf.PerlinNoise(t * 3.7f, 1f) * 0.3f;
-            float k = 1f + (n - 0.5f) * 2f * intensityJitter;
+            float jitter = disturbed ? Mathf.Max(intensityJitter, disturbAmount) : intensityJitter;
+            float k = 1f + (n - 0.5f) * 2f * jitter;
+            if (Time.time < gutterEnd)
+            {
+                // Быстро гаснет, последнюю треть разгорается обратно.
+                float u = Mathf.InverseLerp(gutterStart, gutterEnd, Time.time);
+                k *= u < 0.66f ? Mathf.Lerp(1f, 0.03f, u / 0.15f) : Mathf.InverseLerp(0.66f, 1f, u);
+            }
 
             if (candleLight != null) candleLight.intensity = baseIntensity * k;
             if (flame != null)

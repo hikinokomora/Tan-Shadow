@@ -13,11 +13,13 @@ namespace TanShadow.Player
         Stagger,
         Dash,
         Finisher,
-        Dead // лежит до рестарта дуэли
+        Dead, // лежит до рестарта дуэли
+        Air, // цингун: прыжок и падение
+        WallRun // цингун: бег по стене
     }
 
     [RequireComponent(typeof(CharacterController), typeof(Combatant), typeof(AttackExecutor))]
-    public class PlayerController : MonoBehaviour
+    public partial class PlayerController : MonoBehaviour
     {
         public InputActionAsset controls;
         public CombatSettings settings;
@@ -45,7 +47,7 @@ namespace TanShadow.Player
         Huajin huajin;
         readonly InputBuffer buffer = new InputBuffer();
         InputActionMap map;
-        InputAction move, attack, block, dash;
+        InputAction move, attack, block, dash, jump;
 
         float stateTime;
         float verticalSpeed;
@@ -78,6 +80,7 @@ namespace TanShadow.Player
             attack = map.FindAction("Attack", true);
             block = map.FindAction("Block", true);
             dash = map.FindAction("Dash", true);
+            jump = map.FindAction("Jump", false);
 
             combatant.Hurt += OnHurt;
         }
@@ -90,10 +93,12 @@ namespace TanShadow.Player
             float now = combatant.LocalTime;
             if (attack.WasPressedThisFrame()) buffer.Press(BufferedAction.Attack, now);
             if (dash.WasPressedThisFrame()) buffer.Press(BufferedAction.Dash, now);
+            if (jump != null && jump.WasPressedThisFrame()) buffer.Press(BufferedAction.Jump, now);
 
             MoveInput = State == PlayerState.Dead ? Vector3.zero : CameraRelativeInput();
             float dt = combatant.DeltaTime;
             stateTime += dt;
+            UpdateStealthKillTarget();
 
             switch (State)
             {
@@ -107,15 +112,20 @@ namespace TanShadow.Player
                 case PlayerState.Dead:
                     if (stateTime >= settings.deathRestartDelay) Respawn();
                     break;
+                case PlayerState.Air: UpdateAir(dt); break;
+                case PlayerState.WallRun: UpdateWallRun(dt); break;
             }
 
             ApplyKnockbackAndGravity(dt);
+            TrackGround();
         }
 
         // --- Состояния ---
 
         void UpdateLocomotion(float dt)
         {
+            if (TryJumpFromGround()) return;
+            if (StartFallingIfUnsupported()) return;
             if (block.IsPressed()) { EnterBlock(); return; }
             if (TryStartAttack()) return;
             if (TryStartDash()) return;
@@ -230,7 +240,7 @@ namespace TanShadow.Player
         {
             if (!buffer.Consume(BufferedAction.Attack, combatant.LocalTime, settings.inputBuffer)) return false;
 
-            var victim = FindFinisherTarget();
+            var victim = FindFinisherTarget() ?? StealthKillTarget; // сломленный враг или убийство из тени
             if (victim != null)
             {
                 StartFinisher(victim);
@@ -377,6 +387,8 @@ namespace TanShadow.Player
             combatant.Revive();
             if (qi != null) qi.ResetValue();
             knockback = Vector3.zero;
+            verticalSpeed = 0f;
+            ResetAirState();
             buffer.Clear();
             ComboStep = -1;
             SetState(PlayerState.Locomotion);
@@ -455,9 +467,14 @@ namespace TanShadow.Player
 
         void ApplyKnockbackAndGravity(float dt)
         {
-            verticalSpeed = body.isGrounded ? -2f : verticalSpeed + settings.gravity * dt;
+            // Только что оттолкнулись от земли — земля ещё с прошлого кадра, скорость вверх не сбрасываем.
+            if (grounded && verticalSpeed <= 0f) verticalSpeed = -2f;
+            else verticalSpeed += settings.gravity * GravityScale * dt;
             knockback = Vector3.MoveTowards(knockback, Vector3.zero, settings.knockbackDeceleration * dt);
-            body.Move((knockback + Vector3.up * verticalSpeed) * dt);
+            var flags = body.Move((knockback + Vector3.up * verticalSpeed) * dt);
+            if ((flags & CollisionFlags.Above) != 0 && verticalSpeed > 0f) verticalSpeed = 0f; // ударились головой
+            // Запоминаем землю по этому, вертикальному, шагу: горизонтальный Move в следующем кадре сбросит isGrounded.
+            grounded = body.isGrounded;
         }
     }
 }

@@ -47,6 +47,83 @@ namespace TanShadow.Combat
         [Header("Смерть игрока")]
         [Tooltip("Сколько секунд героиня лежит после смерти до рестарта дуэли")]
         [Min(0)] public float deathRestartDelay = 2.5f;
+        [Tooltip("Сколько секунд враг стоит на месте после рестарта, прежде чем пойти в бой")]
+        [Min(0)] public float restartGrace = 1.5f;
+
+        [Header("Цингун (轻功): прыжки")]
+        [Tooltip("Высота прыжка с земли, м")]
+        [Min(0)] public float jumpHeight = 1.4f;
+        [Tooltip("Сколько раз можно оттолкнуться от воздуха")]
+        [Min(0)] public int airJumps = 1;
+        [Tooltip("Высота прыжка в воздухе, м")]
+        [Min(0)] public float airJumpHeight = 1.2f;
+        [Tooltip("Как быстро в воздухе меняется направление, м/с²")]
+        [Min(0)] public float airAcceleration = 18f;
+        [Tooltip("Сколько секунд после схода с края ещё можно прыгнуть с земли")]
+        [Min(0)] public float coyoteTime = 0.12f;
+        [Tooltip("Ниже этой высоты героиня считается упавшей: смерть и рестарт, м")]
+        public float killHeight = -25f;
+
+        [Header("Цингун (轻功): стены")]
+        [Tooltip("Скорость бега вдоль стены, м/с")]
+        [Min(0)] public float wallRunSpeed = 6.5f;
+        [Tooltip("Сколько секунд держится бег вдоль стены")]
+        [Min(0)] public float wallRunDuration = 1.1f;
+        [Tooltip("Подброс вверх в начале бега вдоль стены, м/с")]
+        [Min(0)] public float wallRunLift = 3f;
+        [Tooltip("Доля гравитации во время бега вдоль стены")]
+        [Range(0, 1)] public float wallRunGravityScale = 0.25f;
+        [Tooltip("Скорость бега вверх по стене, м/с")]
+        [Min(0)] public float wallClimbSpeed = 5f;
+        [Tooltip("Сколько секунд держится бег вверх по стене (один раз за прыжок)")]
+        [Min(0)] public float wallClimbDuration = 0.55f;
+        [Tooltip("Если стик смотрит в стену под таким углом или прямее — бежим вверх, иначе вдоль, градусы")]
+        [Range(0, 90)] public float wallClimbAngle = 35f;
+        [Tooltip("Высота прыжка от стены, м")]
+        [Min(0)] public float wallJumpHeight = 1.4f;
+        [Tooltip("Скорость, с которой прыжок отбрасывает от стены, м/с")]
+        [Min(0)] public float wallJumpPush = 6f;
+        [Tooltip("Подскок, когда бег вверх выносит за край стены, м")]
+        [Min(0)] public float ledgeHopHeight = 0.9f;
+        [Tooltip("Скорость вперёд на край после подскока, м/с")]
+        [Min(0)] public float ledgeHopForward = 3f;
+        [Tooltip("Через сколько секунд можно снова зацепиться за ту же стену")]
+        [Min(0)] public float wallReattachDelay = 0.35f;
+
+        [Header("Стелс: зрение стражника")]
+        [Tooltip("Дальность зрения, м")]
+        [Min(0)] public float viewDistance = 12f;
+        [Tooltip("Ширина поля зрения, градусы (вся, не половина)")]
+        [Range(0, 360)] public float viewAngle = 110f;
+        [Tooltip("Высота глаз стражника, м")]
+        [Min(0)] public float eyeHeight = 1.7f;
+        [Tooltip("Ближе этого героиню замечают сразу, м")]
+        [Min(0)] public float instantAlertDistance = 2.5f;
+        [Tooltip("Рост подозрения на краю зрения и вблизи, доля шкалы в секунду")]
+        [Min(0)] public float suspicionRiseFar = 0.3f;
+        [Min(0)] public float suspicionRiseNear = 1.5f;
+        [Tooltip("Спад подозрения, когда героиню не видно, доля в секунду")]
+        [Min(0)] public float suspicionDecay = 0.2f;
+        [Tooltip("Сколько стражник смотрит в сторону подозрительного, прежде чем пойти проверить, с")]
+        [Min(0)] public float searchDelay = 0.6f;
+        [Tooltip("Через сколько секунд без героини в поле зрения стражник теряет её и идёт искать")]
+        [Min(0)] public float loseTrackTime = 6f;
+        [Tooltip("Поднявший тревогу зовёт стражников в этом радиусе, м")]
+        [Min(0)] public float alertShareRadius = 10f;
+
+        [Header("Стелс: укрытия и убийство из тени")]
+        [Tooltip("Во тени героиню видно на такой доле дальности зрения")]
+        [Range(0, 1)] public float shadowVisibility = 0.35f;
+        [Tooltip("За занавесом героиню видно только вплотную, м")]
+        [Min(0)] public float coverRevealDistance = 1.5f;
+        [Tooltip("Убийство сзади: дальность, м")]
+        [Min(0)] public float stealthKillRange = 1.8f;
+        [Tooltip("Убийство сзади: насколько героиня должна быть за спиной (угол от взгляда стражника), градусы")]
+        [Range(0, 180)] public float stealthKillBehindAngle = 110f;
+        [Tooltip("Убийство сверху: дальность по горизонтали, м")]
+        [Min(0)] public float stealthKillFromAboveRange = 2.2f;
+        [Tooltip("Убийство сверху: насколько выше стражника должна быть героиня, м")]
+        [Min(0)] public float stealthKillFromAboveHeight = 0.8f;
 
         [Header("Рывок")]
         [Min(0)] public float dashDistance = 3.5f;

@@ -77,6 +77,8 @@ namespace TanShadow.Enemies
         public Transform visualRoot;
 
         public GuardState State { get; private set; }
+        // Вернулся на точку старта (рестарт героини или новая дуэль).
+        public event Action Revived;
         public SpearMotion CurrentMotion { get; private set; }
         public GuardPattern CurrentPattern { get; private set; }
 
@@ -84,6 +86,7 @@ namespace TanShadow.Enemies
         Combatant combatant;
         AttackExecutor executor;
         Posture posture;
+        GuardStealth stealth; // есть — стражник сначала патрулирует и замечает героиню, нет — сразу дуэль
         Transform target;
         Combatant targetCombatant;
         bool targetWasDead;
@@ -101,6 +104,7 @@ namespace TanShadow.Enemies
         int hitStreak;
         float lastHitTime = float.NegativeInfinity;
         float punishUntil = float.NegativeInfinity;
+        float idleUntil = float.NegativeInfinity;
         Vector3 spawnPosition;
         Quaternion spawnRotation;
 
@@ -110,6 +114,7 @@ namespace TanShadow.Enemies
             combatant = GetComponent<Combatant>();
             executor = GetComponent<AttackExecutor>();
             posture = GetComponent<Posture>();
+            stealth = GetComponent<GuardStealth>();
             spawnPosition = transform.position;
             spawnRotation = transform.rotation;
 
@@ -142,7 +147,15 @@ namespace TanShadow.Enemies
 
             if (State == GuardState.Dead)
             {
-                if (Time.time - deadTime >= reviveDelay) Revive();
+                // reviveDelay 0 — не встаёт (стелс); иначе встаёт для следующей дуэли.
+                if (reviveDelay > 0f && Time.time - deadTime >= reviveDelay) Revive();
+                // Героиня погибла и вернулась на чекпоинт — убитые встают на свои посты.
+                if (targetCombatant != null && targetWasDead && !targetCombatant.IsDead)
+                {
+                    targetWasDead = false;
+                    Revive();
+                }
+                else if (targetCombatant != null && targetCombatant.IsDead) targetWasDead = true;
                 return;
             }
 
@@ -159,8 +172,14 @@ namespace TanShadow.Enemies
                 else
                 {
                     Revive();
+                    // Передышка после рестарта: героиня успевает встать и оглядеться.
+                    idleUntil = Time.time + combatant.settings.restartGrace;
                 }
             }
+
+            // Стелс: потерял героиню из виду — выходит из боя и идёт искать (дальше им правит GuardStealth).
+            if (stealth != null && !stealth.IsAlert && (State == GuardState.Approach || State == GuardState.Circle))
+                SetState(GuardState.Idle);
 
             switch (State)
             {
@@ -184,7 +203,9 @@ namespace TanShadow.Enemies
 
         void UpdateIdle()
         {
-            if (target != null && !targetWasDead && Distance() <= aggroRange) SetState(GuardState.Approach);
+            if (Time.time < idleUntil) return;
+            bool noticed = stealth == null ? Distance() <= aggroRange : stealth.IsAlert;
+            if (target != null && !targetWasDead && noticed) SetState(GuardState.Approach);
         }
 
         void UpdateApproach(float dt)
@@ -379,7 +400,19 @@ namespace TanShadow.Enemies
             combatant.Revive();
             if (posture != null) posture.ResetPosture();
             if (visualRoot != null) visualRoot.localRotation = Quaternion.identity;
+            if (stealth != null) stealth.ResetAwareness();
             SetState(GuardState.Idle);
+            Revived?.Invoke();
+        }
+
+        // Встаёт там же, где упал, и сразу в бой (вторая фаза босса).
+        public void ReviveInPlace()
+        {
+            combatant.Revive();
+            if (posture != null) posture.ResetPosture();
+            if (visualRoot != null) visualRoot.localRotation = Quaternion.identity;
+            cooldown = 0.4f;
+            SetState(GuardState.Circle);
         }
 
         void UpdateVisualPose()
@@ -395,7 +428,9 @@ namespace TanShadow.Enemies
         Vector3 ToTarget()
         {
             if (target == null) return transform.forward;
-            Vector3 to = target.position - transform.position;
+            // В стелсе стражник не знает, где героиня, пока её не видит: идёт туда, где видел в последний раз.
+            Vector3 goal = stealth != null && !stealth.CanSeePlayer ? stealth.LastSeen : target.position;
+            Vector3 to = goal - transform.position;
             to.y = 0f;
             return to;
         }

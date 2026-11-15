@@ -238,3 +238,8 @@ MonoBehaviour:
   startBlend: 0.16
   stopBlend: 0.24
   offHandBlend: 0.12
+  jumpClipStart: 0.8
+  jumpClipSpeed: 0.67
+  jumpBlend: 0.1
+  deathClipStart: 1.2
+  deathBlend: 0.15

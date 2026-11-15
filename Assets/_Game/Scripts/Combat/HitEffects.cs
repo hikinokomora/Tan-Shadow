@@ -10,6 +10,8 @@ namespace TanShadow.Combat
         [Tooltip("Искры усиленного хуацзинем удара")]
         public ParticleSystem huajinSparks;
         [Min(0)] public float huajinFlashIntensity = 30000f;
+        [Tooltip("Цвет вспышки усиленного удара: нефрит, в отличие от холодного дефлекта")]
+        public Color huajinFlashColor = new Color(0.35f, 1f, 0.6f);
         [Tooltip("Точечный свет для вспышки; держим выключенным")]
         public Light flash;
         [Tooltip("Яркость вспышки на дефлекте и на блоке")]
@@ -23,6 +25,7 @@ namespace TanShadow.Combat
 
         float flashPeak;
         float flashLeft;
+        Color flashBaseColor = Color.white;
 
         [Min(0)] public float finisherFlashIntensity = 60000f;
 
@@ -49,7 +52,9 @@ namespace TanShadow.Combat
 
         void Awake()
         {
-            if (flash != null) flash.enabled = false;
+            if (flash == null) return;
+            flash.enabled = false;
+            flashBaseColor = flash.color;
         }
 
         void OnHit(HitInfo hit)
@@ -72,19 +77,35 @@ namespace TanShadow.Combat
                     break;
                 case HitResult.Hit when hit.qiMultiplier > 1f:
                     Spawn(huajinSparks, point, rotation);
-                    Flash(point, huajinFlashIntensity);
+                    Flash(point, huajinFlashIntensity, huajinFlashColor);
                     break;
             }
         }
+
+        // Звон нефрита: те же нефритовые искры и вспышка, что у удара хуацзиня (финал, нефрит на шее Лю).
+        public void JadeRing(Vector3 point, Vector3 from)
+        {
+            Vector3 dir = from - point;
+            dir.y = 0f;
+            Spawn(huajinSparks, point, Quaternion.LookRotation(dir.sqrMagnitude > 0.001f ? dir : Vector3.forward));
+            // В тесной комнате полная вспышка хуацзиня заливает весь экран — берём слабее.
+            Flash(point, huajinFlashIntensity * jadeRingFlashScale, huajinFlashColor);
+        }
+
+        [Tooltip("Яркость вспышки звона нефрита относительно вспышки хуацзиня")]
+        [Range(0, 1)] public float jadeRingFlashScale = 0.35f;
 
         static void Spawn(ParticleSystem prefab, Vector3 point, Quaternion rotation)
         {
             if (prefab != null) Instantiate(prefab, point, rotation); // stopAction = Destroy в префабе
         }
 
-        void Flash(Vector3 point, float intensity)
+        void Flash(Vector3 point, float intensity) => Flash(point, intensity, flashBaseColor);
+
+        void Flash(Vector3 point, float intensity, Color color)
         {
             if (flash == null || intensity <= 0f) return;
+            flash.color = color;
             flash.transform.position = point;
             flashPeak = intensity;
             flashLeft = flashTime;

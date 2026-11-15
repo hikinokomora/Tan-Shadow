@@ -126,6 +126,13 @@ namespace TanShadow.Player
         [Tooltip("За сколько секунд прижимается/отпускается свободная рука (слой OffHand)")]
         [Min(0.01f)] public float offHandBlend = 0.12f;
 
+        [Header("Цингун")]
+        [Tooltip("С какой секунды играть клип прыжка: до 0,8 с в клипе героиня приседает, а толчок в игре уже случился")]
+        [Min(0)] public float jumpClipStart = 0.8f;
+        [Tooltip("Скорость клипа прыжка: полёт в клипе (0,8–1,3 с) растягиваем на время прыжка в игре (~0,75 с)")]
+        [Min(0.1f)] public float jumpClipSpeed = 0.67f;
+        public float jumpBlend = 0.1f;
+
         [Header("Смерть")]
         [Tooltip("С какой секунды играть клип смерти: в его начале героиня долго шатается и не успевает упасть до рестарта")]
         [Min(0)] public float deathClipStart = 1.2f;

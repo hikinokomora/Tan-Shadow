@@ -29,6 +29,41 @@ MonoBehaviour:
   blockKnockback: 2
   knockbackDeceleration: 14
   deathRestartDelay: 2.5
+  restartGrace: 1.5
+  jumpHeight: 1.4
+  airJumps: 1
+  airJumpHeight: 1.2
+  airAcceleration: 18
+  coyoteTime: 0.12
+  killHeight: -25
+  wallRunSpeed: 6.5
+  wallRunDuration: 1.1
+  wallRunLift: 3
+  wallRunGravityScale: 0.25
+  wallClimbSpeed: 5
+  wallClimbDuration: 0.55
+  wallClimbAngle: 35
+  wallJumpHeight: 1.4
+  wallJumpPush: 6
+  ledgeHopHeight: 0.9
+  ledgeHopForward: 3
+  wallReattachDelay: 0.35
+  viewDistance: 12
+  viewAngle: 110
+  eyeHeight: 1.7
+  instantAlertDistance: 2.5
+  suspicionRiseFar: 0.3
+  suspicionRiseNear: 1.5
+  suspicionDecay: 0.2
+  searchDelay: 0.6
+  loseTrackTime: 6
+  alertShareRadius: 10
+  shadowVisibility: 0.35
+  coverRevealDistance: 1.5
+  stealthKillRange: 1.8
+  stealthKillBehindAngle: 110
+  stealthKillFromAboveRange: 2.2
+  stealthKillFromAboveHeight: 0.8
   dashDistance: 3.5
   dashDuration: 0.25
   dashInvulnerability: 0.2

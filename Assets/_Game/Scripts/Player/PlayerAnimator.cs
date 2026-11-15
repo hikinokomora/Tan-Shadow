@@ -48,6 +48,7 @@ namespace TanShadow.Player
         const string DodgeLengthKey = "Dodge_F_Pack";
         const string FinisherState = "Finisher_DoubleStab";
         const string DeathState = "Death_Back";
+        const string JumpState = "Jump";
         const string TurnLeftState = "Turn90_L";
         const string TurnRightState = "Turn90_R";
 
@@ -118,6 +119,7 @@ namespace TanShadow.Player
 
             executor.PhaseChanged += OnAttackPhase;
             combatant.Hurt += OnHurt;
+            player.Jumped += PlayJump;
             lastPosition = transform.position;
             lastYaw = transform.eulerAngles.y;
             nextIdleSwitch = set != null ? Random.Range(set.idleSwitchInterval.x, set.idleSwitchInterval.y) : 8f;
@@ -132,6 +134,7 @@ namespace TanShadow.Player
         {
             if (executor != null) executor.PhaseChanged -= OnAttackPhase;
             if (combatant != null) combatant.Hurt -= OnHurt;
+            if (player != null) player.Jumped -= PlayJump;
         }
 
         void OnDisable()
@@ -495,7 +498,22 @@ namespace TanShadow.Player
                 case PlayerState.Dead:
                     Play(DeathState, 1f, set.deathClipStart, set.deathBlend);
                     break;
+                case PlayerState.Air:
+                    // Сошли с края без толчка — тот же клип, но уже с середины полёта.
+                    if (currentState != JumpState) Play(JumpState, set.jumpClipSpeed, set.jumpClipStart + 0.2f, set.jumpBlend);
+                    break;
+                case PlayerState.WallRun:
+                    // Своей анимации бега по стене пока нет — бежим циклом бега.
+                    if (currentState != LocomotionState) Play(LocomotionState, 1f, 0f, set.jumpBlend);
+                    break;
             }
+        }
+
+        // Каждый толчок (с земли, от воздуха, от стены) — клип прыжка заново.
+        void PlayJump()
+        {
+            if (turning) EndTurn(false);
+            Play(JumpState, set.jumpClipSpeed, set.jumpClipStart, set.jumpBlend);
         }
 
         float Speed(string clip, float duration)

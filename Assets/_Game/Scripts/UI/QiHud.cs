@@ -43,16 +43,23 @@ namespace TanShadow.UI
         [Tooltip("Высота иероглифа 阴/阳 над ногами игрока, м")]
         public float breakMarkHeight = 2.3f;
         [Min(1)] public int breakMarkSize = 96;
+        [Tooltip("Где над врагом стоит 危 (высота, м, и размер, пиксели макета) — чтобы 阴/阳 его не закрывал")]
+        public float enemyMarkHeight = 2.4f;
+        public float enemyMarkSize = 140f;
 
         [Header("Здоровье и смерть игрока")]
         public Color playerHealthColor = new Color(0.75f, 0.12f, 0.1f);
         [Tooltip("Насколько полоса здоровья ниже шкалы ци, пикселей макета")]
         public float playerHealthOffset = 14f;
         [Min(1)] public int deathMarkSize = 200;
+        [Tooltip("Затемнение перед рестартом и проявление после него, с")]
+        [Min(0.05f)] public float deathFadeTime = 0.5f;
 
         RectTransform playerHealthFill;
         Text deathLabel;
+        Image deathFade;
         float deadSince = -1f;
+        float respawnedAt = float.NegativeInfinity;
 
         LockOnTargeting lockOn;
         Combatant player;
@@ -99,8 +106,26 @@ namespace TanShadow.UI
                 deathLabel.name = "DeathLabel";
                 deathLabel.text = "死";
                 deathLabel.fontSize = deathMarkSize;
+                BuildDeathFade(huajinLabel.transform.parent);
             }
             BuildPlayerHealthBar();
+        }
+
+        // Чёрный экран на весь холст: прячет перенос героини на точку старта. 死 остаётся поверх.
+        void BuildDeathFade(Transform canvasRoot)
+        {
+            var go = new GameObject("DeathFade", typeof(RectTransform), typeof(Image));
+            var rect = (RectTransform)go.transform;
+            rect.SetParent(canvasRoot, false);
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            rect.SetSiblingIndex(deathLabel.transform.GetSiblingIndex());
+            deathFade = go.GetComponent<Image>();
+            deathFade.raycastTarget = false;
+            deathFade.color = new Color(0f, 0f, 0f, 0f);
+            go.SetActive(false);
         }
 
         // Полоса здоровья игрока — тонкая копия шкалы ци под ней (собираем в коде, чтобы не трогать сцену).
@@ -148,17 +173,40 @@ namespace TanShadow.UI
                 playerHealthFill.anchorMax = new Vector2(Mathf.Clamp01(player.Health / player.maxHealth), 1f);
 
             if (deathLabel == null) return;
-            if (!player.IsDead) deadSince = -1f;
-            else if (deadSince < 0f) deadSince = Time.time;
-            deathLabel.gameObject.SetActive(player.IsDead);
-            if (!player.IsDead) return;
+            if (player.IsDead && deadSince < 0f) deadSince = Time.time;
+            if (!player.IsDead && deadSince >= 0f)
+            {
+                deadSince = -1f;
+                respawnedAt = Time.time;
+            }
 
-            float t = Time.time - deadSince;
+            // Затемнение: последние deathFadeTime перед рестартом экран уходит в чёрное,
+            // после рестарта столько же проявляется обратно.
+            float fade;
+            float labelAlpha;
+            if (player.IsDead)
+            {
+                float t = Time.time - deadSince;
+                float restartIn = player.settings.deathRestartDelay - t;
+                fade = 1f - Mathf.Clamp01(restartIn / deathFadeTime);
+                labelAlpha = Mathf.Clamp01(t / 0.6f); // проступает, а не вспыхивает
+                deathLabel.rectTransform.localScale = Vector3.one * Mathf.Lerp(1.25f, 1f, labelAlpha);
+            }
+            else
+            {
+                fade = 1f - Mathf.Clamp01((Time.time - respawnedAt) / deathFadeTime);
+                labelAlpha = fade; // 死 уходит вместе с чёрным
+            }
+
+            deathLabel.gameObject.SetActive(labelAlpha > 0f);
             deathLabel.rectTransform.position = new Vector3(Screen.width * 0.5f, Screen.height * 0.58f, 0f);
             var c = edgeColor;
-            c.a = Mathf.Clamp01(t / 0.6f); // проступает, а не вспыхивает
+            c.a = labelAlpha;
             deathLabel.color = c;
-            deathLabel.rectTransform.localScale = Vector3.one * Mathf.Lerp(1.25f, 1f, Mathf.Clamp01(t / 0.6f));
+
+            if (deathFade == null) return;
+            deathFade.gameObject.SetActive(fade > 0f);
+            deathFade.color = new Color(0f, 0f, 0f, fade);
         }
 
         void UpdatePlayer()
@@ -199,6 +247,22 @@ namespace TanShadow.UI
             }
         }
 
+        // Над головой врага бывает красный 危 — когда враг вплотную, отодвигаем 阴/阳 вбок, чтобы знаки не слипались.
+        Vector3 AvoidEnemyMark(Vector3 screen)
+        {
+            var enemy = PickEnemy();
+            if (enemy == null) return screen;
+            Vector3 enemyMark = view.WorldToScreenPoint(enemy.transform.position + Vector3.up * enemyMarkHeight);
+            if (enemyMark.z <= 0f) return screen;
+
+            float scale = breakLabel.canvas != null ? breakLabel.canvas.scaleFactor : 1f;
+            float minGap = (breakMarkSize + enemyMarkSize) * 0.5f * scale;
+            float dx = screen.x - enemyMark.x;
+            if (Mathf.Abs(dx) >= minGap || Mathf.Abs(screen.y - enemyMark.y) >= minGap) return screen;
+            screen.x = enemyMark.x + (dx >= 0f ? minGap : -minGap);
+            return screen;
+        }
+
         // Крупный 阴/阳 над головой героини, пока она оглушена сломом ци.
         void UpdateBreakLabel(bool broken, float left)
         {
@@ -208,7 +272,7 @@ namespace TanShadow.UI
 
             Vector3 screen = view.WorldToScreenPoint(playerQi.transform.position + Vector3.up * breakMarkHeight);
             breakLabel.enabled = screen.z > 0f;
-            breakLabel.rectTransform.position = screen;
+            breakLabel.rectTransform.position = AvoidEnemyMark(screen);
 
             // Ян уводим в красный, инь осветляем: синий на ночной сцене иначе теряется.
             Color c = breakSide > 0 ? Color.Lerp(yangColor, edgeColor, 0.35f) : Color.Lerp(yinColor, Color.white, 0.4f);

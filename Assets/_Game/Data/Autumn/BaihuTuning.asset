@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9beb71b92eca754c8bcc01565812d9d, type: 3}
+  m_Name: BaihuTuning
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuTuning
+  requiredHits: 4
+  reappearDelay: {x: 3, y: 5}
+  firstAppearDelay: 1.2
+  rustleDuration: 1.6
+  aggroFillTime: 3.2
+  gongToPounce: 0.55
+  scareSwingsRequired: 3
+  scareConeAngle: 80
+  scareRange: 26
+  arenaSwingAggroDrop: 0.35
+  aggroDecayPerSecond: 2
+  trailLeaveBehind: 3
+  trailKeepRange: 14
+  trailRelocateTime: 0.4
+  pounceMaxDistance: 10
+  withdrawDuration: 0.9
+  withdrawBack: 2.2
+  withdrawSink: 0.5
+  trailAhead: {x: 5, y: 12}
+  trailEyesSideOffset: 3.3
+  arenaEyesDepth: {x: 0.5, y: 4.5}
+  arenaSameSideSpread: 30
+  arenaSideTolerance: 70
+  arenaRelocateTime: 0.6
+  eyesHeight: 1.3
+  eyesSpacing: 0.22
+  pounceDuration: 0.6
+  pounceLeapHeight: 2.5
+  pounceCommitTime: 0.45
+  pounceTrackSpeed: 45
+  trailPounceAlwaysHoming: 1
+  pounceOvershoot: 9
+  killCutDistance: 1.5
+  cutLeadTime: 0.07
+  monumentHitTolerance: 0.9
+  knockback: 2.5
+  knockFallTime: 0.18
+  knockLieTime: 0.6
+  knockGetUpTime: 0.45
+  wanderTime: 1.3
+  wanderDistance: 2.5
+  retreatDuration: 0.55
+  retreatLeapHeight: 2.5
+  stunBeforeFall: 0.6
+  monumentFallDuration: 1.3
+  noiseByAggro:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  tremorByAggro:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.12
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  swayByAggro:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.55
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gongKick: 1.1

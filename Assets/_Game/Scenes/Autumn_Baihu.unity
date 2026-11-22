@@ -14051,6 +14051,64 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7, y: 5, z: 11.911944}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &396716481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 396716482}
+  - component: {fileID: 396716483}
+  m_Layer: 0
+  m_Name: Baihu peek (muzzle + eyes)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &396716482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396716481}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1936755635}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &396716483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396716481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331c00cdd4fbe4a41a06d97636cce824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuPeek
+  peltMaterial: {fileID: 2100000, guid: a2d012a52ec90b047abe8bf7ac7f5f1a, type: 2}
+  stripeMaterial: {fileID: 2100000, guid: 34c59e44476deea489d62a6491aae156, type: 2}
+  eyesMaterial: {fileID: 2100000, guid: 9e05366bdedffc14ca0f97c99d0d947a, type: 2}
+  grassMaterial: {fileID: 2100000, guid: 9919530d963b11b418d762029e984261, type: 2}
+  shadowMaterial: {fileID: 2100000, guid: 34c59e44476deea489d62a6491aae156, type: 2}
+  headOverride: {fileID: 0}
+  scale: 1.5
+  grassCoverTop: -0.06
+  eyesHeightAboveGround: 1.3
+  emergeDistance: 0.55
+  emergeTime: 0.45
+  crouchAtFullAggro: 0.14
+  pushAtFullAggro: 0.2
+  eyeGlow: {x: 3, y: 14}
 --- !u!1 &398380054
 GameObject:
   m_ObjectHideFlags: 0
@@ -44173,6 +44231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1243137038}
+  - component: {fileID: 1243137039}
   m_Layer: 0
   m_Name: Iron monument
   m_TagString: Untagged
@@ -44197,6 +44256,26 @@ Transform:
   - {fileID: 1959997183}
   m_Father: {fileID: 1915825009}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1243137039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243137037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f6140b70162b44e9af6146bcf7e830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuMonument
+  shaftCollider: {fileID: 837001469}
+  crackMaterial: {fileID: 2100000, guid: 34c59e44476deea489d62a6491aae156, type: 2}
+  initialCracks: 4
+  cracksPerHit: 6
+  stages: 4
+  crackZone: 0.28
+  sinkPerHit: 0.04
+  tiltPerHit: 0.8
 --- !u!1 &1245317687
 GameObject:
   m_ObjectHideFlags: 0
@@ -44936,7 +45015,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1991727482571536687, guid: 8765710de92cdd44591759f10e388bb4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1256352586}
   m_SourcePrefab: {fileID: 100100000, guid: 8765710de92cdd44591759f10e388bb4, type: 3}
 --- !u!4 &1256352583 stripped
 Transform:
@@ -44948,12 +45030,29 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2689728838754330564, guid: 8765710de92cdd44591759f10e388bb4, type: 3}
   m_PrefabInstance: {fileID: 1256352582}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1256352585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c57cb71043d8eb4193f0ab1bae002ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Player.PlayerController
+--- !u!1 &1256352585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1991727482571536687, guid: 8765710de92cdd44591759f10e388bb4, type: 3}
+  m_PrefabInstance: {fileID: 1256352582}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1256352586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1256352585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 539a34f75d71e5f499b7facedf6b20ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.LegacyHeroBridge
 --- !u!1 &1262639708
 GameObject:
   m_ObjectHideFlags: 0
@@ -67406,6 +67505,7 @@ Transform:
   - {fileID: 1323300447}
   - {fileID: 2060499973}
   - {fileID: 224681867}
+  - {fileID: 1936755635}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1904444515
@@ -68576,6 +68676,149 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935371029}
   m_Mesh: {fileID: 4300000, guid: d07942e19405a764fa28fbc6fa4b9290, type: 2}
+--- !u!1 &1936755634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1936755635}
+  - component: {fileID: 1936755640}
+  - component: {fileID: 1936755639}
+  - component: {fileID: 1936755638}
+  - component: {fileID: 1936755637}
+  - component: {fileID: 1936755636}
+  m_Layer: 0
+  m_Name: Baihu encounter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1936755635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1969077607}
+  - {fileID: 396716482}
+  m_Father: {fileID: 1902573693}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1936755636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7513a91fc02327f4f8e6c07469614bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuFeedback
+  encounter: {fileID: 1936755638}
+  view: {fileID: 1422878817}
+  cameraMotionMultiplier: 1
+  rustleUnease: 0.15
+--- !u!114 &1936755637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caccaddb0be42b44fa3c14fd45648ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuSounds
+  encounter: {fileID: 1936755638}
+  cover: {fileID: 1936755640}
+  bank: {fileID: 11400000, guid: 591df474eca07ca4f89108a077e8c76c, type: 2}
+--- !u!114 &1936755638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c455a012d8db9654999dded8e3ef5960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuEncounter
+  tuning: {fileID: 11400000, guid: ace4f65eec7719046b1a54b16b6a035e, type: 2}
+  hero: {fileID: 1256352586}
+  heroSpawn: {fileID: 857150989}
+  trailActivation: {fileID: 1969077607}
+  arenaCenter: {fileID: 1915825009}
+  arenaRadius: 36
+  arenaEntranceAngle: -90
+  tigerBody: {fileID: 582171277}
+  tigerBodyYawOffset: 0
+  peek: {fileID: 396716483}
+  monument: {fileID: 1243137039}
+  cover: {fileID: 1936755640}
+  world: {fileID: 1936755639}
+  showDebug: 1
+--- !u!114 &1936755639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36dce3197fe607489d4cf4b2fb8a0a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.AutumnWorldState
+  worldRoots:
+  - {fileID: 1902573693}
+  exclude:
+  - {fileID: 1256352583}
+  - {fileID: 1422878814}
+  - {fileID: 1936755635}
+  greySource: {fileID: 2100000, guid: 1745ad47cc306fc4384dc0fb65b31cf3, type: 2}
+  greyTones:
+  - {r: 0.62, g: 0.62, b: 0.63, a: 1}
+  - {r: 0.47, g: 0.48, b: 0.5, a: 1}
+  - {r: 0.36, g: 0.37, b: 0.39, a: 1}
+  aliveOnly: []
+--- !u!114 &1936755640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ba364788a6fae499fe1fb8d17263ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.YinYangCover
+  yinMinHold: 1.6
+  yangMinHold: 2.2
+  fadeOut: 0.3
+  showCornerDot: 1
+  dotDelay: 0.45
+  dotFadeIn: 0.25
+  heartRate: 66
+  secondBeatOffset: 0.3
+  dotRestAlpha: 0.3
+  dotBeatGrow: 0.35
+  dotSize: 0.032
+  dotMargin: 0.05
 --- !u!1 &1937434768
 GameObject:
   m_ObjectHideFlags: 0
@@ -70214,6 +70457,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968407906}
   m_Mesh: {fileID: 4300000, guid: 18cf3bc7d6a3e3240aaa2dd66d4f7ae3, type: 2}
+--- !u!1 &1969077606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969077607}
+  m_Layer: 0
+  m_Name: Trail activation (hunt starts here)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1969077607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969077606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1936755635}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1969486417
 GameObject:
   m_ObjectHideFlags: 0

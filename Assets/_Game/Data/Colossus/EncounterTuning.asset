@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa84ab4a0b616d459b9ced0ee0a25a6, type: 3}
+  m_Name: EncounterTuning
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Colossus.ColossusTuning
+  slam: {fileID: 11400000, guid: c290eb5b0ad31a245a2bcc09396d1889, type: 2}
+  pursuitSpeed: 1.65
+  attackDistance: 4.8
+  firstGripWindow: 3.8
+  secondGripWindow: 2.7
+  riseDuration: 1.1
+  lateGripGrace: 0.18
+  jumpReach: 2.2
+  jumpDuration: 0.43
+  climbSpeed: 0.41
+  shakeDelay: 4.4
+  shakeWarning: 0.95
+  impactRadius: 2.2
+  resetDelay: 1.25

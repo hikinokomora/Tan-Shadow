@@ -1,0 +1,20 @@
+{
+    "name": "ShadowTan.Editor",
+    "rootNamespace": "ShadowTan.EditorTools",
+    "references": [
+        "ShadowTan.Core",
+        "ShadowTan.Combat",
+        "ShadowTan.Player"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

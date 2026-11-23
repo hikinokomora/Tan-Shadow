@@ -24,6 +24,8 @@ namespace TanShadow.Player
         public AttackData[] combo;
         [Tooltip("Если пусто — Camera.main")]
         public Transform cameraTransform;
+        [Tooltip("Use the Dash binding to jump in platforming scenes. Zero retains Dash.")]
+        [Min(0)] public float jumpSpeed;
 
         public PlayerState State { get; private set; }
         public int ComboStep { get; private set; } = -1;
@@ -84,7 +86,13 @@ namespace TanShadow.Player
         {
             float now = combatant.LocalTime;
             if (attack.WasPressedThisFrame()) buffer.Press(BufferedAction.Attack, now);
-            if (dash.WasPressedThisFrame()) buffer.Press(BufferedAction.Dash, now);
+            if (dash.WasPressedThisFrame())
+            {
+                if (jumpSpeed <= 0f)
+                    buffer.Press(BufferedAction.Dash, now);
+                else if (State == PlayerState.Locomotion && body.isGrounded)
+                    verticalSpeed = jumpSpeed;
+            }
 
             MoveInput = CameraRelativeInput();
             float dt = combatant.DeltaTime;
@@ -423,9 +431,11 @@ namespace TanShadow.Player
 
         void ApplyKnockbackAndGravity(float dt)
         {
-            verticalSpeed = body.isGrounded ? -2f : verticalSpeed + settings.gravity * dt;
+            verticalSpeed = body.isGrounded && verticalSpeed <= 0f ? -2f : verticalSpeed + settings.gravity * dt;
             knockback = Vector3.MoveTowards(knockback, Vector3.zero, settings.knockbackDeceleration * dt);
-            body.Move((knockback + Vector3.up * verticalSpeed) * dt);
+            CollisionFlags contact = body.Move((knockback + Vector3.up * verticalSpeed) * dt);
+            if (verticalSpeed > 0f && (contact & CollisionFlags.Above) != 0)
+                verticalSpeed = 0f;
         }
     }
 }

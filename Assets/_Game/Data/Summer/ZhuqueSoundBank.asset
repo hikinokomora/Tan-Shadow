@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 596b504e8450ee64fb72d192f4738c89, type: 3}
+  m_Name: ZhuqueSoundBank
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Summer.ZhuqueSoundBank
+  ashAmbience:
+    clips: []
+    volume: 0.3
+    pitchJitter: 0.05
+    spatial: 0
+  lavaAmbience:
+    clips: []
+    volume: 0.5
+    pitchJitter: 0.05
+    spatial: 0
+  detectionLoop:
+    clips: []
+    volume: 0.6
+    pitchJitter: 0.05
+    spatial: 0
+  flightWind:
+    clips: []
+    volume: 0.6
+    pitchJitter: 0.05
+    spatial: 0
+  deadWorldAmbience:
+    clips: []
+    volume: 0.3
+    pitchJitter: 0.05
+    spatial: 0
+  alertCry:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 1
+  wingsTakeOff:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 1
+  perchLand:
+    clips: []
+    volume: 0.6
+    pitchJitter: 0.05
+    spatial: 1
+  birdFall:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 1
+  regenerate:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 1
+  lavaOpen:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 0
+  fallIntoLava:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 1
+  grab:
+    clips: []
+    volume: 0.8
+    pitchJitter: 0.05
+    spatial: 0
+  featherCut:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 0
+  cutRefused:
+    clips: []
+    volume: 0.8
+    pitchJitter: 0.05
+    spatial: 0
+  shakeOff:
+    clips: []
+    volume: 0.8
+    pitchJitter: 0.05
+    spatial: 0
+  cutYin:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 0
+  cutYang:
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 0

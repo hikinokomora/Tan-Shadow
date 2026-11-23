@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TanShadow.Autumn
+namespace TanShadow.Seasons
 {
-    // Живая и мёртвая осень. После победы мир мгновенно становится серым грейбоксом:
+    // Живой и мёртвый мир сезона. После победы мир мгновенно становится серым грейбоксом:
     // все поверхности одного серого цвета, свет обесцвечен, глаза и живые эффекты выключены.
-    // Переключение делается под белой заливкой (GDD-AU: мгновенно, без распространения).
-    public sealed class AutumnWorldState : MonoBehaviour
+    // Переключение делается под белой заливкой (GDD: мгновенно, без распространения).
+    public sealed class DeadWorld : MonoBehaviour
     {
         [Tooltip("Корни, внутри которых всё становится серым (локация, столб, тигр)")]
         public Transform[] worldRoots;

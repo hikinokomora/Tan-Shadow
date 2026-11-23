@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace TanShadow.Autumn
+namespace TanShadow.Seasons
 {
     // Заливка смерти и победы. Она же — экран загрузки: всё, что меняет мир, делается под ней.
     //   Инь — смерть героини: чёрный экран, белая точка.
@@ -13,9 +13,12 @@ namespace TanShadow.Autumn
     {
         public enum Kind { Yin, Yang }
 
-        [Tooltip("Минимум, сколько держится заливка, даже если работа под ней закончилась мгновенно, с")]
-        public float yinMinHold = 1.6f;
-        public float yangMinHold = 2.2f;
+        // Загрузка всегда одной длины, даже если работа под заливкой закончилась мгновенно:
+        // игрок привыкает к ритму «смерть — пауза — снова в бой».
+        [Tooltip("Сколько держится чёрная заливка после смерти героини, с (если работа дольше — пока не закончится)")]
+        public float yinMinHold = 3.5f;
+        [Tooltip("Сколько держится белая заливка после смерти колосса, с")]
+        public float yangMinHold = 3.5f;
         [Tooltip("Время исчезновения заливки, с (плавное, со сглаживанием)")]
         public float fadeOut = 0.3f;
 

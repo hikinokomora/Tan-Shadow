@@ -68807,8 +68807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ba364788a6fae499fe1fb8d17263ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.YinYangCover
-  yinMinHold: 1.6
-  yangMinHold: 2.2
+  yinMinHold: 3.5
+  yangMinHold: 3.5
   fadeOut: 0.3
   showCornerDot: 1
   dotDelay: 0.45

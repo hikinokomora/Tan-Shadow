@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045683849584861695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80dc325ff866bc4788ca54eb5cf4d02, type: 3}
+  m_Script: {fileID: 11500000, guid: f0f5a3747f434c879c5f91cbec9eef27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringCollider
   from: {fileID: 5759581902692313761}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687018222918763497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80dc325ff866bc4788ca54eb5cf4d02, type: 3}
+  m_Script: {fileID: 11500000, guid: f0f5a3747f434c879c5f91cbec9eef27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringCollider
   from: {fileID: 6974435602723079233}
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1878426915422353073}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80dc325ff866bc4788ca54eb5cf4d02, type: 3}
+  m_Script: {fileID: 11500000, guid: f0f5a3747f434c879c5f91cbec9eef27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringCollider
   from: {fileID: 2470443047248154991}
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7368966976464140549}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80dc325ff866bc4788ca54eb5cf4d02, type: 3}
+  m_Script: {fileID: 11500000, guid: f0f5a3747f434c879c5f91cbec9eef27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringCollider
   from: {fileID: 7479312307811882879}
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8775885021690742520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80dc325ff866bc4788ca54eb5cf4d02, type: 3}
+  m_Script: {fileID: 11500000, guid: f0f5a3747f434c879c5f91cbec9eef27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringCollider
   from: {fileID: 7241978692163338147}
@@ -929,7 +929,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4477517530854957806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25ff224d119fe143a2ece3e95ae873f, type: 3}
+  m_Script: {fileID: 11500000, guid: 384a4e82a643420f8c70a16ce1fe2d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringBone
   roots:
@@ -965,7 +965,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4477517530854957806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25ff224d119fe143a2ece3e95ae873f, type: 3}
+  m_Script: {fileID: 11500000, guid: 384a4e82a643420f8c70a16ce1fe2d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringBone
   roots:
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4477517530854957806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25ff224d119fe143a2ece3e95ae873f, type: 3}
+  m_Script: {fileID: 11500000, guid: 384a4e82a643420f8c70a16ce1fe2d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.SpringBone
   roots:
@@ -1023,7 +1023,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4477517530854957806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b40c7a11494ad041a6ef6315cbed1dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 056ba012ed77484dabda5323aac4dee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Characters.PoseInertializer
   animator: {fileID: 7172169326550327854}

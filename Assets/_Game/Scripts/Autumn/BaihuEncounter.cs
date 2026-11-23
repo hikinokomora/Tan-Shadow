@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TanShadow.Seasons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -56,7 +57,7 @@ namespace TanShadow.Autumn
         public BaihuPeek peek;
         public BaihuMonument monument;
         public YinYangCover cover;
-        public AutumnWorldState world;
+        public DeadWorld world;
 
         [Header("Отладка")]
         [Tooltip("Показывать состояние тигра в углу экрана (F3 — переключить). Только редактор и dev-сборка")]

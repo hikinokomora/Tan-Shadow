@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using TanShadow.Autumn;
+using TanShadow.Seasons;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -63,7 +64,7 @@ namespace TanShadow.EditorTools
 
             var cover = go.AddComponent<YinYangCover>();
 
-            var world = go.AddComponent<AutumnWorldState>();
+            var world = go.AddComponent<DeadWorld>();
             world.worldRoots = new[] { root };
             world.exclude = new[] { heroGo.transform, trial.view.transform, go.transform };
             world.greySource = AssetDatabase.LoadAssetAtPath<Material>(ArtDir + "Ash concrete.mat");

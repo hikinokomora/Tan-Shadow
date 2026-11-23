@@ -19,6 +19,11 @@ namespace ShadowTan.Player
             pressTime = now;
         }
 
+        public bool Has(BufferedAction wanted, float now, float window)
+        {
+            return action == wanted && now - pressTime <= window;
+        }
+
         public bool Consume(BufferedAction wanted, float now, float window)
         {
             if (action != wanted || now - pressTime > window) return false;

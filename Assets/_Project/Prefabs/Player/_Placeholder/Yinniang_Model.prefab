@@ -404,11 +404,14 @@ MonoBehaviour:
   - {fileID: 2377117903583939456}
   - {fileID: 9129701912650590888}
   - {fileID: 503317908012544064}
-  stiffness: 1.2
-  drag: 0.45
+  stiffness: 1
+  tipStiffness: 0.6
+  drag: 0.4
   gravity: 0.15
   gravityDirection: {x: 0, y: -1, z: 0}
   maxAngle: 50
+  worldInfluence: 1
+  timeSource: {fileID: 0}
   jointRadius: 0.02
   colliders:
   - {fileID: 7990455413622354335}
@@ -431,10 +434,13 @@ MonoBehaviour:
   roots:
   - {fileID: 8756233512307717768}
   stiffness: 0.35
+  tipStiffness: 1
   drag: 0.25
   gravity: 0.5
   gravityDirection: {x: 0, y: -1, z: 0}
   maxAngle: 75
+  worldInfluence: 1
+  timeSource: {fileID: 0}
   jointRadius: 0.02
   colliders:
   - {fileID: 7990455413622354335}
@@ -457,10 +463,13 @@ MonoBehaviour:
   roots:
   - {fileID: 4386099715682566476}
   stiffness: 2
+  tipStiffness: 1
   drag: 0.55
   gravity: 0.2
   gravityDirection: {x: 0, y: -1, z: 0}
   maxAngle: 20
+  worldInfluence: 1
+  timeSource: {fileID: 0}
   jointRadius: 0.02
   colliders:
   - {fileID: 7990455413622354335}

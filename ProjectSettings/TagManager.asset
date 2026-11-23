@@ -8,21 +8,21 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - Character
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Wall
+  - Cover
+  - Player
+  - PlayerHitbox
+  - Colossus
+  - WeakPoint
+  - GrabPoint
+  - KillVolume
+  - Trigger
+  - Lava
+  - CameraOnly
+  - Interactable
   - 
   - 
   - 

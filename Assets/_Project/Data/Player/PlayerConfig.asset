@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a686ca71f8ecc5f4db64667349436477, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: ShadowTan.Player::ShadowTan.Player.PlayerConfig
+  runSpeed: 6
+  acceleration: 30
+  deceleration: 40
+  turnSpeed: 720
+  maxWalkableSlope: 40
+  stepOffset: 0.3
+  gravity: 25
+  steepSlideSpeed: 4
+  coyoteTime: 0.1
+  rollCooldown: 0.6
+  rollDistance: 4
+  rollDuration: 0.45
+  rollSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rollGrantsIFrames: 0
+  rollSteerable: 0
+  attackDuration: 0.5
+  attackHitWindowStart: 0.15
+  attackHitWindowEnd: 0.3
+  attackRange: 1.6
+  attackArc: 100
+  attackStopTime: 0.05
+  attackTurnWindow: 0.1
+  scareConeAngle: 60
+  scareRange: 30
+  rollCancelsAttackRecovery: 0
+  grabSearchRadius: 1.5
+  grabSnapTime: 0.15
+  stabDuration: 0.5
+  deflectRecoilTime: 0.4
+  fallStateMinHeight: 3
+  hardFallHeight: 8
+  hardFallConsequence: 0
+  hardFallStunDuration: 1.5
+  inputBufferTime: 0.15

@@ -1,0 +1,9 @@
+Scene: Assets/_Game/Scenes/Xuanwu_Work_Assets.unity
+Samples from -9.5 m through 29 m on centre and +/-4.3 m: 465
+Missing ground: 0
+Unexpected capsule collisions: 0
+Overhead hits after portal: 0
+Maximum floor slope: 20,53937
+Max height deltas between 0.25 m samples: 0,09367371
+Test capsule world radius / height: 1,458917 / 7,294583
+At the seam: 0,002918243

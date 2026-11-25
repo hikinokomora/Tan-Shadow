@@ -1,0 +1,27 @@
+Terrain-height corridor to Paw; test lanes at centre and +/-1.7m
+Samples: 2145
+Missing ground: 0
+Centre ground faces above controller limit: 51
+Centre vertical capsule interceptions with extra colliders: 8
+Max centre face angle: 79,82098
+Max centre grade between probes: 86,65498
+Slope 45,7 (-459.9, 50.6, 30.4)
+Slope 45,7 (-459.4, 50.6, 30.3)
+Slope 45,7 (-459.0, 50.5, 30.2)
+Slope 45,7 (-458.5, 50.5, 30.1)
+Slope 47,6 (-432.5, 50.4, 20.0)
+Slope 47,6 (-432.0, 50.5, 20.0)
+Slope 47,6 (-431.5, 50.6, 20.0)
+Slope 47,6 (-431.0, 50.7, 20.0)
+Slope 57,0 (-424.5, 51.2, 17.8)
+Slope 57,0 (-424.1, 51.2, 17.6)
+Slope 57,0 (-423.6, 51.2, 17.5)
+Slope 57,0 (-423.2, 51.3, 17.3)
+Slope 56,6 (-422.7, 51.3, 17.1)
+Slope 56,6 (-422.3, 51.3, 16.9)
+Slope 56,6 (-421.8, 51.4, 16.7)
+Slope 50,8 (-421.4, 51.4, 16.5)
+Slope 53,6 (-420.9, 51.4, 16.4)
+Slope 53,6 (-420.5, 51.5, 16.2)
+Slope 48,5 (-420.0, 51.5, 16.0)
+Slope 48,5 (-419.5, 51.5, 15.9)

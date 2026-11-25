@@ -1,0 +1,7 @@
+Scene: Assets/_Game/Scenes/Xuanwu_Work_Assets.unity
+Actual CharacterController with its original scene scale, programmatic Move (no keyboard or roll).
+Start station -8.5 m; planned end 26.5 m.
+End reached: True; returned to tunnel: True
+Maximum station: 26.469; lowest feet: 53.179; highest feet: 58.039
+Motion samples: 1599; grounded: 1599; greatest horizontal difference from commanded point: 0.0000 m
+Issue: 

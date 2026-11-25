@@ -1,0 +1,2 @@
+Terrain silhouette · 1: 632 locally subdivided triangles, maximum local change 2.40 m.
+Ravine strata and snow 1: 664 locally subdivided triangles, maximum local change 2.40 m.

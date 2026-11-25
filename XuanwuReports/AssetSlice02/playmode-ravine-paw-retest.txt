@@ -1,0 +1,6 @@
+Scene: Assets/_Game/Scenes/Xuanwu_Work_Assets.unity
+Actual CharacterController via programmatic Move, starting at the end of the first slice.
+Reached Paw corridor: True; returned: True
+Steps: 2587; grounded: 2587; blocked: 0
+Final valid foot position: (-512.000, 53.301, -6.000)
+Stopped sequence index: 0 / 1294

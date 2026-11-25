@@ -1,0 +1,3 @@
+Temporary scan colliders tested across 252 samples; all props restored to visual-only afterward.
+Visual samples include the existing entrance kit and its overlap with the new route.
+Asset adjustments: 8; sample points intersecting visual assets after adjustment: 0

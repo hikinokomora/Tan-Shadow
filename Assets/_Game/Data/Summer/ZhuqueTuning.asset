@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Summer.ZhuqueTuning
   requiredCuts: 4
   lavaAfterCuts: 3
-  timeToDetect: 3.5
+  timeToDetect: 2.5
   detectionRecoverPerSecond: 0.8
   detectFullRange: 15
   viewDistance: 45

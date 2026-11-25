@@ -1,0 +1,182 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5588064706027459137
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor::UnityEditor.Rendering.HighDefinition.AssetVersion
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_NordicBeachRock_Moss
+  m_Shader: {fileID: -6465566751694194690, guid: 170cc16f8322ca040b55416c25ebbd22, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2225
+  stringTagMap:
+    MotionVector: User
+  disabledShaderPasses:
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - TransparentBackface
+  - RayTracingPrepass
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _HDRPMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 2800000, guid: 1f8715cb26885bb4f9763eb57b8ac1fa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanAlbedo:
+        m_Texture: {fileID: 2800000, guid: 516bf821096b61349a299db9dd3f890d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanNormal:
+        m_Texture: {fileID: 2800000, guid: 0a2f02a008b8f8949b4f2fde2f48e48d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlbedoMipBias: 1.28
+    - _AlphaCutoffEnable: 0
+    - _AlphaDstBlend: 0
+    - _AlphaSrcBlend: 1
+    - _BaseMetallic: 0
+    - _BaseRoughness: 0.307
+    - _BlendMode: 0
+    - _ConservativeDepthOffsetEnable: 0
+    - _CullMode: 2
+    - _CullModeForward: 2
+    - _DepthOffsetEnable: 0
+    - _DoubleSidedEnable: 0
+    - _DoubleSidedGIMode: 0
+    - _DoubleSidedNormalMode: 2
+    - _DstBlend: 0
+    - _DstBlend2: 0
+    - _DustAmount: 0.18
+    - _DustFill: 0.67
+    - _DustHeight: 0.38
+    - _DustHeightBias: -0.73
+    - _DustNormal: 0.48
+    - _DustRoughness: 0.92
+    - _DustSlope: 73
+    - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFogOnTransparent: 1
+    - _ExcludeFromTUAndAA: 0
+    - _HeightFeather: 1.1
+    - _MacroSize: 2.9
+    - _MacroStrength: 0.37
+    - _MaskInfluence: 0
+    - _MaterialID: 1
+    - _MaterialTypeMask: 2
+    - _MossAmount: 0.96
+    - _MossFill: 0.623
+    - _MossHeight: 0.9
+    - _MossHeightBias: 0.25
+    - _MossNormal: 0.48
+    - _MossRoughness: 0.89
+    - _MossSlope: 13
+    - _NormalStrength: 0.57
+    - _OcclusionStrength: 1
+    - _OpaqueCullMode: 2
+    - _PaletteBlend: 0.83
+    - _PatchSize: 0.84
+    - _PerPixelSorting: 0
+    - _RayTracing: 0
+    - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
+    - _RefractionModel: 0
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
+    - _RoughnessMapInfluence: 0.5
+    - _RoughnessOffset: 0.06
+    - _SlopeFeather: 43
+    - _SnowAmount: 0
+    - _SnowFill: 0.58
+    - _SnowHeight: 0
+    - _SnowHeightBias: 0
+    - _SnowNormal: 0.22
+    - _SnowRoughness: 0.84
+    - _SnowSlope: 46
+    - _SrcBlend: 1
+    - _StencilRef: 0
+    - _StencilRefDepth: 8
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _StencilWriteMask: 6
+    - _StencilWriteMaskDepth: 9
+    - _StencilWriteMaskDistortionVec: 4
+    - _StencilWriteMaskGBuffer: 15
+    - _StencilWriteMaskMV: 41
+    - _SupportDecals: 1
+    - _SurfaceType: 0
+    - _TransmissionEnable: 1
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentDepthPostpassEnable: 0
+    - _TransparentDepthPrepassEnable: 0
+    - _TransparentSortPriority: 0
+    - _TransparentWritingMotionVec: 0
+    - _TransparentZWrite: 0
+    - _UseShadowThreshold: 0
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestGBuffer: 4
+    - _ZTestTransparent: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _DarkTone: {r: 0.24705882, g: 0.30588236, b: 0.3764706, a: 1}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DustAccentTint: {r: 0.7058824, g: 0.6313726, b: 0.45490196, a: 1}
+    - _DustTint: {r: 0.61960787, g: 0.5372549, b: 0.3764706, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightTone: {r: 0.7490196, g: 0.75686276, b: 0.6784314, a: 1}
+    - _MacroTintA: {r: 0.69803923, g: 0.74509805, b: 0.8117647, a: 1}
+    - _MacroTintB: {r: 1, g: 0.9647059, b: 0.8509804, a: 1}
+    - _MidTone: {r: 0.45490196, g: 0.5176471, b: 0.56078434, a: 1}
+    - _MossAccentTint: {r: 0.63529414, g: 0.7019608, b: 0.32156864, a: 1}
+    - _MossTint: {r: 0.37254903, g: 0.4745098, b: 0.25490198, a: 1}
+    - _SnowAccentTint: {r: 0.9294118, g: 0.9529411, b: 0.972549, a: 1}
+    - _SnowTint: {r: 0.8235294, g: 0.8941177, b: 0.9176471, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

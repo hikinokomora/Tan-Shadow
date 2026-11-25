@@ -3,144 +3,218 @@ using UnityEngine;
 
 namespace TanShadow.Summer
 {
-    // Оснастка грейбокс-птицы из SummerCalderaBuilder: хвост, крылья и голова получают шарниры,
-    // а испытание управляет позой через простые параметры. Сам по себе компонент ничего не решает.
-    // Начало координат птицы — у лап.
+    // Тело Чжуцюэ: модель феникса со скелетом и Animator (AC_Zhuque). Испытание двигает корень птицы,
+    // выбирает клип и задаёт простые параметры; компонент сам ничего не решает.
+    // Начало координат птицы — у лап, клюв смотрит по +Z.
+    //
+    // Хвост — игровой объект: за кончик хватается героиня, на нём она висит в полёте. Поэтому кончик
+    // считается не по анимации, а по правилу (TailTip), а кости хвоста после Animator дотягиваются
+    // до этой точки (CCD IK). На валуне хвост свисает до земли, в полёте струится назад и вниз.
     public sealed class ZhuqueBird : MonoBehaviour
     {
-        [Tooltip("Цвет огненного сияния (восстановление, тревога)")]
+        // Состояния AC_Zhuque (по именам клипов из phoenix.zip).
+        public const string Perch = "01_Sleepy_Perch";
+        public const string Alert = "02_Alert";
+        public const string TakeOff = "03_Takeoff";
+        public const string Landing = "04_Landing";
+        public const string Fall = "05_Fall";
+        public const string Rise = "06_Rise";
+        public const string Recovery = "07_Recovery";
+        public const string Flight = "08_Flight";
+
+        [Tooltip("Animator модели феникса; пусто — первый найденный в детях")]
+        public Animator animator;
+        [Tooltip("Время смешивания клипов, с")]
+        public float crossFade = 0.25f;
+        [Tooltip("Цвет огненного сияния (восстановление, лава под птицей)")]
         public Color glowColor = new Color(1f, 0.45f, 0.12f);
         [Tooltip("Яркость сияния при 1. Экспозиция дневная, поэтому число большое")]
         public float glowIntensity = 600f;
         [Tooltip("Необязательный точечный свет сияния")]
         public Light glowLight;
         public float glowLightIntensity = 20000f;
-        [Tooltip("На сколько градусов хвост поднимается в полёте (0 — висит как на валуне)")]
-        [Range(0, 45)] public float flightTailLift = 25f;
+        [Tooltip("На валуне тревога выше этого — поза тревоги (клип Alert)")]
+        [Range(0, 1)] public float alarmPose = 0.6f;
+        [Tooltip("Насколько хвост вытянут к цели: 1 — в струну. Меньше — провисает дугой")]
+        [Range(0.8f, 1f)] public float tailReach = 0.96f;
+        [Tooltip("Направление хвоста в полёте (в координатах птицы, вниз и назад). Было у прокси: 2 м вниз на 6 м назад")]
+        public Vector3 flightTailDirection = new Vector3(0f, -0.33f, -0.94f);
+        [Tooltip("Итераций CCD IK хвоста за кадр")]
+        [Range(1, 20)] public int tailIterations = 8;
 
-        // Геометрия хвоста из билдера: корень и кончик в координатах птицы.
-        static readonly Vector3 TailRoot = new Vector3(0f, 1.27f, -0.92f);
-        static readonly Vector3 TailTipLocal = new Vector3(0f, -3.06f, -5.37f);
-        static readonly Vector3 NeckBase = new Vector3(0f, 1.5f, 0.59f);
-        static readonly Vector3 EyeLocal = new Vector3(0f, 2.72f, 1.0f);
-
-        Transform tail, tip, head, eye;
-        readonly Transform[] wings = new Transform[2];
-        readonly List<Renderer> body = new List<Renderer>();
-        readonly List<Renderer> tailRenderers = new List<Renderer>();
+        Transform head, body;
+        readonly List<Transform> tailBones = new List<Transform>();
+        Vector3 tailRootLocal;          // корень хвоста в координатах птицы
+        float tailChain = 1f;           // длина цепочки хвоста в координатах птицы, м
+        readonly List<Renderer> renderers = new List<Renderer>();
         MaterialPropertyBlock block;
         static readonly int EmissiveColor = Shader.PropertyToID("_EmissiveColor");
 
-        float tailLength = 1f, tailDrop = 1f, tailHang = 1f;
-        float wingSpread, flap, glow, tailGlow, alarm;
-        float headYaw;
+        float tailLength = 1f, tailHang = 1f, hangDown = -1f;
+        float glow, tailGlow, alarm, headYaw;
+        string clip, held;
 
-        public Vector3 TailTip => tip.position;
-        public Vector3 EyePoint => eye.position;
-        public Vector3 BodyCenter => transform.TransformPoint(new Vector3(0f, 1.3f, 0f));
         public float TailLength => tailLength;
+        public Vector3 EyePoint => head != null ? head.position : transform.TransformPoint(0f, 2.4f, 0.4f);
+        public Vector3 BodyCenter => body != null ? body.position : transform.TransformPoint(0f, 1.3f, 0f);
+        // Куда дотягивается кончик хвоста. Считается сразу из позы корня — можно читать в том же кадре, что и PlaceBird.
+        public Vector3 TailTip => transform.TransformPoint(TailTipLocal());
 
         void Awake()
         {
             block = new MaterialPropertyBlock();
-            tail = MakePivot("Tail pivot", TailRoot);
-            head = MakePivot("Head pivot", NeckBase);
-            for (int s = 0; s < 2; s++)
+            if (animator == null) animator = GetComponentInChildren<Animator>(true);
+            foreach (var t in GetComponentsInChildren<Transform>(true))
             {
-                int side = s == 0 ? -1 : 1;
-                wings[s] = MakePivot(side < 0 ? "Wing pivot L" : "Wing pivot R", new Vector3(side * 0.31f, 1.67f, 0.45f));
+                if (t.name == "Head") head = t;
+                else if (t.name == "Body") body = t;
             }
-
-            var children = new List<Transform>();
-            foreach (Transform c in transform) children.Add(c);
-            foreach (var c in children)
+            // Цепочка хвоста: Tail, Tail.001 … до последней кости.
+            var bone = FindChild(transform, "Tail");
+            while (bone != null)
             {
-                string n = c.name;
-                if (n.StartsWith("Trailing tail plume")) c.SetParent(tail, true);
-                else if (n.StartsWith("Folded primary -1")) c.SetParent(wings[0], true);
-                else if (n.StartsWith("Folded primary 1")) c.SetParent(wings[1], true);
-                else if (n.StartsWith("Raised neck") || n.StartsWith("Curved beak") || n.StartsWith("Swept crest") || n == "Eye")
-                    c.SetParent(head, true);
+                tailBones.Add(bone);
+                bone = NextTailBone(bone);
             }
-
-            tip = new GameObject("Tail tip").transform;
-            tip.SetParent(tail, false);
-            tip.localPosition = TailTipLocal - TailRoot;
-            eye = new GameObject("Eye point").transform;
-            eye.SetParent(head, false);
-            eye.localPosition = EyeLocal - NeckBase;
-
-            foreach (var r in GetComponentsInChildren<Renderer>(true))
+            if (tailBones.Count >= 2)
             {
-                if (r.transform.IsChildOf(tail)) tailRenderers.Add(r);
-                else body.Add(r);
+                tailRootLocal = transform.InverseTransformPoint(tailBones[0].position);
+                tailChain = 0f;
+                for (int i = 1; i < tailBones.Count; i++)
+                    tailChain += (transform.InverseTransformPoint(tailBones[i].position) - transform.InverseTransformPoint(tailBones[i - 1].position)).magnitude;
             }
-            Apply();
+            else Debug.LogError("ZhuqueBird: в модели нет костей хвоста Tail…", this);
+            renderers.AddRange(GetComponentsInChildren<Renderer>(true));
+            Play(Perch, 0f);
         }
 
-        Transform MakePivot(string name, Vector3 local)
+        static readonly int BaseColorMap = Shader.PropertyToID("_BaseColorMap");
+
+        // Материал хвостовых перьев — тот, у которого текстура хвоста (Phoenix_Tail_*).
+        static bool IsTailMaterial(Material m)
         {
-            var t = new GameObject(name).transform;
-            t.SetParent(transform, false);
-            t.localPosition = local;
-            return t;
+            if (m == null || !m.HasProperty(BaseColorMap)) return false;
+            var tex = m.GetTexture(BaseColorMap);
+            return tex != null && tex.name.Contains("Tail");
+        }
+
+        static Transform FindChild(Transform root, string name)
+        {
+            foreach (var t in root.GetComponentsInChildren<Transform>(true)) if (t.name == name) return t;
+            return null;
+        }
+
+        static Transform NextTailBone(Transform bone)
+        {
+            foreach (Transform c in bone) if (c.name.StartsWith("Tail")) return c;
+            return null;
+        }
+
+        // ---------------- Управление из испытания ----------------
+
+        // Сменить клип (без перезапуска, если он уже играет).
+        public void Play(string state, float fade = -1f)
+        {
+            held = state;
+            Show(state, fade);
+        }
+
+        void Show(string state, float fade = -1f)
+        {
+            if (animator == null || state == clip) return;
+            clip = state;
+            animator.CrossFadeInFixedTime(state, fade < 0f ? crossFade : fade);
         }
 
         // 1 — хвост целый, cutStub — отсечён.
         public void SetTailLength(float length) { tailLength = length; }
-        // Насколько вытянуть хвост вниз, чтобы с этого валуна он доставал до земли (1 — как в модели).
-        public void SetTailDrop(float drop) { tailDrop = drop; }
-        // 1 — свисает (сидит на валуне), 0 — струится назад в полёте.
-        public void SetTailHang(float hang) { tailHang = hang; }
-        public void SetWings(float spread, float flapDegrees) { wingSpread = spread; flap = flapDegrees; }
+        // 1 — свисает (сидит на валуне, лежит на земле), 0 — струится назад в полёте.
+        public void SetTailHang(float hang) { tailHang = Mathf.Clamp01(hang); }
+        // Свисающий хвост ложится кончиком на землю на этой высоте (мировая Y).
+        public void HangTo(float groundY)
+        {
+            float rootY = transform.TransformPoint(tailRootLocal).y;
+            hangDown = Mathf.Max(0.2f, rootY - groundY - 0.15f);
+        }
         public void SetGlow(float value) { glow = value; }
-        // 0 — спокойна, 1 — сейчас сорвётся (заглушка позы тревоги).
+        // 0 — спокойна, 1 — сейчас сорвётся. На валуне выше alarmPose — поза тревоги.
         public void SetAlarm(float value) { alarm = Mathf.Clamp01(value); }
-        // Подсветка кончика хвоста: героиня достаёт до него.
+        // Подсветка хвоста: героиня достаёт до кончика.
         public void SetTailGlow(float value) { tailGlow = value; }
         // Голова поворачивается к цели, не дальше ±limit градусов от клюва.
         public void LookAt(Vector3 target, float limit, float dt)
         {
-            Vector3 local = transform.InverseTransformDirection(target - head.position);
+            Vector3 local = transform.InverseTransformDirection(target - EyePoint);
             float want = local.sqrMagnitude > 0.01f ? Mathf.Atan2(local.x, local.z) * Mathf.Rad2Deg : 0f;
             headYaw = Mathf.MoveTowardsAngle(headYaw, Mathf.Clamp(want, -limit, limit), 240f * dt);
         }
         public void LookForward(float dt) => headYaw = Mathf.MoveTowardsAngle(headYaw, 0f, 120f * dt);
 
-        // Хвост, нарисованный за кадр до этого, должен совпадать с тем, где висит героиня: вызывать до чтения TailTip.
-        public void Apply()
-        {
-            if (tail == null) return;
-            // Отсечение укорачивает хвост от корня; восстановление вытягивает обратно.
-            float down = Mathf.Lerp(1f, tailDrop, tailHang) * tailLength;
-            tail.localScale = new Vector3(1f, down, tailLength);
-            // В полёте хвост поднимается и струится назад (кончик ≈ 2 м ниже корня, 6 м позади).
-            // Заглушка тревоги (до анимации роли D): шея вытянута, голова дёргается рывками по сторонам,
-            // крылья приподняты и подрагивают, хвост нервно подёргивается.
-            float time = Time.time;
-            float jerk = (Mathf.PerlinNoise(Mathf.Floor(time * 4f) * 0.37f, 0.5f) - 0.5f) * 70f * alarm;
-            float shiver = Mathf.Sin(time * 31f) * alarm;
-            tail.localRotation = Quaternion.Euler(Mathf.Lerp(flightTailLift, 0f, tailHang) - 6f * alarm, 0f, Mathf.Sin(time * 9f) * 7f * alarm);
-            head.localPosition = NeckBase + Vector3.up * (0.18f * alarm);
-            head.localRotation = Quaternion.Euler(-18f * alarm, headYaw + jerk, 0f);
-            for (int s = 0; s < 2; s++)
-            {
-                int side = s == 0 ? -1 : 1;
-                float spread = Mathf.Max(wingSpread, 0.22f * alarm);
-                wings[s].localRotation = Quaternion.Euler(0f, -side * 80f * spread, -side * (flap + 14f * alarm + 9f * shiver));
-            }
+        // Для совместимости с вызовами испытания: кончик хвоста считается в TailTip, кости — в LateUpdate.
+        public void Apply() { }
 
-            block.SetColor(EmissiveColor, glowColor * (glowIntensity * glow));
-            foreach (var r in body) r.SetPropertyBlock(block);
-            block.SetColor(EmissiveColor, glowColor * (glowIntensity * Mathf.Max(glow, tailGlow)));
-            foreach (var r in tailRenderers) r.SetPropertyBlock(block);
+        // ---------------- Хвост ----------------
+
+        Vector3 TailTipLocal()
+        {
+            float length = tailChain * tailLength * tailReach;
+            // Свисает: кончик на земле позади птицы, хвост почти в струну.
+            float down = Mathf.Min(hangDown >= 0f ? hangDown : tailRootLocal.y, length * 0.95f);
+            Vector3 hang = new Vector3(0f, -down, -Mathf.Sqrt(length * length - down * down));
+            Vector3 fly = flightTailDirection.normalized * length;
+            return tailRootLocal + Vector3.Slerp(fly, hang, tailHang);
+        }
+
+        void SolveTail()
+        {
+            int n = tailBones.Count;
+            if (n < 2) return;
+            // Отсечение укорачивает хвост от корня (масштаб корневой кости), отрастание — вытягивает обратно.
+            tailBones[0].localScale = Vector3.one * Mathf.Max(0.05f, tailLength);
+            Vector3 goal = TailTip;
+            Transform end = tailBones[n - 1];
+            for (int it = 0; it < tailIterations; it++)
+            {
+                for (int i = n - 2; i >= 0; i--)
+                {
+                    Vector3 toEnd = end.position - tailBones[i].position;
+                    Vector3 toGoal = goal - tailBones[i].position;
+                    if (toEnd.sqrMagnitude < 1e-6f || toGoal.sqrMagnitude < 1e-6f) continue;
+                    tailBones[i].rotation = Quaternion.FromToRotation(toEnd, toGoal) * tailBones[i].rotation;
+                }
+                if ((end.position - goal).sqrMagnitude < 0.0025f) break;
+            }
+        }
+
+        // ---------------- Кадр ----------------
+
+        void LateUpdate()
+        {
+            // На валуне поза тревоги растёт из шкалы обнаружения.
+            if (held == Perch || held == Alert)
+                Show(alarm >= alarmPose || held == Alert ? Alert : Perch);
+
+            if (head != null && Mathf.Abs(headYaw) > 0.01f)
+                head.rotation = Quaternion.AngleAxis(headYaw, transform.up) * head.rotation;
+            SolveTail();
+
+            // Тело светится вспышкой, хвостовые перья — ещё и когда героиня достаёт до кончика.
+            foreach (var r in renderers)
+            {
+                if (r == null) continue;
+                var mats = r.sharedMaterials;
+                for (int m = 0; m < mats.Length; m++)
+                {
+                    float value = IsTailMaterial(mats[m]) ? Mathf.Max(glow, tailGlow) : glow;
+                    block.SetColor(EmissiveColor, glowColor * (glowIntensity * value));
+                    r.SetPropertyBlock(block, m);
+                }
+            }
             if (glowLight != null)
             {
                 glowLight.enabled = glow > 0.01f;
                 glowLight.intensity = glowLightIntensity * glow;
             }
         }
-
-        void LateUpdate() => Apply();
     }
 }

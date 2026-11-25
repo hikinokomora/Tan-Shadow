@@ -2241,6 +2241,8 @@ GDD-SU называет эти звуки «художественными пр�
 
 `A_Zhuque_PerchIdle`, `A_Zhuque_PerchLook`, `A_Zhuque_Alert`, `A_Zhuque_TakeOff`, `A_Zhuque_Fly`, `A_Zhuque_Glide`, `A_Zhuque_Land`, `A_Zhuque_ShakeOff`, `A_Zhuque_FallToGround`, `A_Zhuque_GetUp`, `A_Zhuque_Regenerate` (крылья расправлены, вспышка), `A_Zhuque_OpenLava`, `A_Zhuque_FallIntoLava` (только начало падения). Хвост — динамическая цепочка костей (физика или процедурная анимация), чтобы свисать до земли и развеваться в полёте.
 
+**Сейчас (прототип в `_Game`).** Модель и клипы феникса — `Art/Colossi/Zhuque/` (`Models/Phoenix_Open_Wings.fbx`, `Animations/Phoenix_01…08_*.fbx`, `Textures/`, `AC_Zhuque.controller`; имена файлов — как в исходном архиве). В сценах `Summer_Zhuque_01_Dry` и `02_Lava` модель («Phoenix», масштаб 6.4) лежит под корнем птицы `05 - Perched Zhuque - scale proxy` с `ZhuqueBird`. Состояния испытания → клипы: на валуне `01_Sleepy_Perch` (при тревоге ≥ `alarmPose` — `02_Alert`), перелёт `03_Takeoff → 08_Flight → 04_Landing`, взлёт с героиней `03_Takeoff → 08_Flight`, полёт и стряхивание `08_Flight`, падение (удары 1–4) `05_Fall`, восстановление `06_Rise → 07_Recovery`. Хвост (`Tail…Tail.009`) после Animator дотягивается CCD IK до игровой точки `ZhuqueBird.TailTip`: на валуне кончик лежит на земле позади птицы, в полёте — вниз и назад по `flightTailDirection`; отсечение масштабирует корневую кость хвоста (`cutStub`). Насесты — прямые дети `03 - Basalt cover and perches/For Bird` с именами `Cover and perch N`.
+
 #### 13.2.15 Граничные случаи
 
 | Случай | Поведение |

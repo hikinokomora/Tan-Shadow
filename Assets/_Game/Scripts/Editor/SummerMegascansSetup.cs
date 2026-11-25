@@ -27,6 +27,64 @@ namespace TanShadow.EditorTools
             }
             AssetDatabase.SaveAssets();
             Debug.Log("[SummerMegascansSetup] Собрано префабов: " + built);
+            MatchTerrain();
+        }
+
+        public const string TerrainPrefab = "Assets/ZhunqueWideArena/Compact425/Zhunque_Dry_425.prefab";
+        static readonly int BaseColorMap = Shader.PropertyToID("_BaseColorMap");
+
+        // Камни Megascans светлее и теплее пепла арены. Каждому материалу подбирается множитель _BaseColor,
+        // при котором средний цвет его текстуры равен среднему цвету слоя террейна; блеск — как у слоя.
+        // Узор и объём текстуры остаются. Числа не задаются руками — всё берётся из слоя террейна.
+        [MenuItem("Tools/Tan Shadow/Summer/Match Megascans To Terrain Colour")]
+        public static void MatchTerrain()
+        {
+            var terrain = AssetDatabase.LoadAssetAtPath<GameObject>(TerrainPrefab)?.GetComponentInChildren<Terrain>(true);
+            var layer = terrain != null && terrain.terrainData != null && terrain.terrainData.terrainLayers.Length > 0
+                ? terrain.terrainData.terrainLayers[0] : null;
+            if (layer == null || layer.diffuseTexture == null)
+            {
+                Debug.LogError("[SummerMegascansSetup] Нет слоя террейна в " + TerrainPrefab);
+                return;
+            }
+            Color target = AverageLinear(layer.diffuseTexture);
+            int count = 0;
+            foreach (string guid in AssetDatabase.FindAssets("t:Material", new[] { Root }))
+            {
+                var mat = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
+                var tex = mat.GetTexture(BaseColorMap);
+                if (tex == null) continue;
+                Color own = AverageLinear(tex);
+                var tint = new Color(Ratio(target.r, own.r), Ratio(target.g, own.g), Ratio(target.b, own.b), 1f);
+                // SetColor ждёт цвет в гамме и сам переводит в линейное пространство.
+                mat.SetColor("_BaseColor", tint.gamma);
+                mat.SetFloat("_Smoothness", layer.smoothness);
+                EditorUtility.SetDirty(mat);
+                count++;
+            }
+            AssetDatabase.SaveAssets();
+            Debug.Log($"[SummerMegascansSetup] Перекрашено материалов: {count}, цвет пепла (лин.) {target}");
+        }
+
+        static float Ratio(float target, float own) => Mathf.Clamp(target / Mathf.Max(own, 1e-4f), 0f, 2f);
+
+        // Средний цвет текстуры в линейном пространстве: уменьшаем на GPU до 64×64 и усредняем.
+        static Color AverageLinear(Texture tex)
+        {
+            const int size = 64;
+            var rt = RenderTexture.GetTemporary(size, size, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
+            Graphics.Blit(tex, rt);
+            var previous = RenderTexture.active;
+            RenderTexture.active = rt;
+            var read = new Texture2D(size, size, TextureFormat.RGBAFloat, false, true);
+            read.ReadPixels(new Rect(0, 0, size, size), 0, 0);
+            read.Apply();
+            RenderTexture.active = previous;
+            RenderTexture.ReleaseTemporary(rt);
+            Color sum = Color.clear;
+            foreach (var c in read.GetPixels()) sum += c;
+            Object.DestroyImmediate(read);
+            return sum / (size * size);
         }
 
         static bool BuildOne(string dir)

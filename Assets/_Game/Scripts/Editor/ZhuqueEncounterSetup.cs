@@ -71,10 +71,11 @@ namespace TanShadow.EditorTools
             }
             var view = root.GetComponentInChildren<SpringFollowCamera>(true).GetComponent<Camera>();
 
-            // Птица: оснастка поверх прокси из билдера.
+            // Птица: корень испытания, внутри — модель феникса (Phoenix) с Animator.
             var birdRoot = root.Find("05 - Perched Zhuque - scale proxy");
             var bird = birdRoot.GetComponent<ZhuqueBird>();
             if (bird == null) bird = birdRoot.gameObject.AddComponent<ZhuqueBird>();
+            bird.animator = birdRoot.GetComponentInChildren<Animator>(true);
 
             var lava = go.AddComponent<ZhuqueLava>();
             lava.tuning = tuning;
@@ -91,7 +92,8 @@ namespace TanShadow.EditorTools
             world.greySource = AssetDatabase.LoadAssetAtPath<Material>(ArtDir + "Ash sand.mat");
             world.aliveOnly = lavaGroup.GetComponentsInChildren<ParticleSystem>(true).Select(p => p.gameObject).ToArray();
 
-            var perchRoot = root.Find("03 - Basalt cover and perches");
+            // Насесты — прямые дети группы «For Bird» (если её нет — сама группа 03).
+            var perchRoot = root.Find("03 - Basalt cover and perches/For Bird") ?? root.Find("03 - Basalt cover and perches");
             var encounter = go.AddComponent<ZhuqueEncounter>();
             encounter.tuning = tuning;
             encounter.hero = bridge;

@@ -181,6 +181,7 @@ namespace TanShadow.Summer
             if (Detection >= 1f)
             {
                 timer = tuning.alertTime;
+                bird.Play(ZhuqueBird.Alert);
                 Enter(ZhuqueState.Alert);
                 Alerted?.Invoke(bird.EyePoint);
             }
@@ -189,7 +190,6 @@ namespace TanShadow.Summer
         void TickAlert(float dt)
         {
             bird.LookAt(hero.AimPoint, 150f, dt);
-            bird.SetWings(0.45f, 0f);
             bird.SetGlow(0f);
             bird.SetAlarm(1f);
             bird.SetTailGlow(0f);
@@ -269,7 +269,7 @@ namespace TanShadow.Summer
             Vector3 facing = travel.sqrMagnitude > 0.01f ? travel.normalized : faceTo;
             facing = Vector3.Slerp(Vector3.Slerp(faceFrom, facing, Mathf.Clamp01(t * 5f)), faceTo, Mathf.SmoothStep(0f, 1f, (t - 0.75f) / 0.25f));
             PlaceBird(position, facing, Mathf.Lerp(-12f, 10f, t));
-            bird.SetWings(Mathf.Lerp(1f, 0f, Mathf.SmoothStep(0f, 1f, (t - 0.8f) / 0.2f)), Flap(timer, 4f, 35f) * (1f - t * t));
+            bird.Play(t < 0.3f ? ZhuqueBird.TakeOff : t < 0.75f ? ZhuqueBird.Flight : ZhuqueBird.Landing);
             bird.SetTailHang(Mathf.SmoothStep(0f, 1f, (t - 0.7f) / 0.3f));
             bird.SetTailLength(Mathf.MoveTowards(bird.TailLength, 1f, dt));
             bird.SetGlow(0f);
@@ -282,6 +282,7 @@ namespace TanShadow.Summer
         {
             perch = index;
             PoseOnPerch(index);
+            bird.Play(ZhuqueBird.Perch);
             Detection = 0f;
             Enter(ZhuqueState.Perched);
             Landed?.Invoke(perches[index].top);
@@ -292,16 +293,15 @@ namespace TanShadow.Summer
         void PoseAt(Vector3 top, Vector3 facing)
         {
             PlaceBird(top, facing, 0f);
-            bird.SetWings(0f, 0f);
             bird.SetTailHang(1f);
-            bird.SetTailDrop(1f);
-            bird.Apply();
-            // Хвост свисает до земли с любого валуна: вытягиваем его под высоту этого камня.
-            Vector3 tip = bird.TailTip;
-            float ground = GroundHeight(new Vector3(tip.x, top.y + 0.5f, tip.z), top.y - 3.06f);
-            float pivotY = top.y + 1.27f;
-            bird.SetTailDrop(Mathf.Clamp((pivotY - ground - 0.15f) / 4.33f, 0.6f, 2.6f));
-            bird.Apply();
+            // Хвост свисает до земли с любого валуна: сначала прикидываем, куда ляжет кончик, потом
+            // кладём его на землю под этой точкой (второй проход уточняет, где теперь кончик).
+            bird.HangTo(top.y - 3f);
+            for (int pass = 0; pass < 2; pass++)
+            {
+                Vector3 tip = bird.TailTip;
+                bird.HangTo(GroundHeight(new Vector3(tip.x, top.y + 0.5f, tip.z), top.y - 3f));
+            }
         }
 
         // Кончик хвоста лежит на ровном дне, а не на соседнем камне и не в будущем русле лавы: героиня до него дойдёт.
@@ -347,7 +347,7 @@ namespace TanShadow.Summer
             Vector3 position = Vector3.Lerp(moveFrom, target, Mathf.SmoothStep(0f, 1f, t));
             Vector3 facing = Vector3.Slerp(faceFrom, RingFacing(ringPos), Mathf.SmoothStep(0f, 1f, t));
             PlaceBird(position, facing, Mathf.Lerp(-25f, 0f, t));
-            bird.SetWings(1f, Flap(timer, 5f, 40f));
+            bird.Play(t < 0.6f ? ZhuqueBird.TakeOff : ZhuqueBird.Flight);
             bird.SetTailHang(1f - Mathf.SmoothStep(0f, 1f, t));
             bird.LookForward(dt);
             CarryHero();
@@ -408,7 +408,7 @@ namespace TanShadow.Summer
             ringPos += tuning.flightDirection * tuning.flightSpeed * dt;
             Vector3 position = RingPoint(ringPos) + Vector3.up * (Mathf.Sin(Time.time * 2.1f) * 0.35f);
             PlaceBird(position, RingFacing(ringPos), 0f, roll);
-            bird.SetWings(1f, Flap(Time.time, 2.6f, 28f));
+            bird.Play(ZhuqueBird.Flight);
             bird.SetTailHang(0f);
             bird.LookForward(dt);
         }
@@ -516,8 +516,9 @@ namespace TanShadow.Summer
             Vector3 position = Vector3.Lerp(moveFrom, moveTo, t);
             position.y = Mathf.Lerp(moveFrom.y, moveTo.y, t * t);
             PlaceBird(position, faceFrom, Mathf.Lerp(0f, 35f, t), fallRoll * Mathf.SmoothStep(0f, 1f, t));
-            bird.SetWings(Mathf.Lerp(1f, 0.4f, t), Mathf.Sin(timer * 30f) * 25f * (1f - t));
+            bird.Play(ZhuqueBird.Fall);
             bird.SetTailHang(t);
+            bird.HangTo(moveTo.y);
             if (timer >= tuning.fallTime && State == ZhuqueState.Falling && timer - dt < tuning.fallTime)
                 BirdFell?.Invoke(moveTo);
             if (timer >= tuning.fallTime + tuning.lieTime)
@@ -540,10 +541,10 @@ namespace TanShadow.Summer
             float up = Mathf.SmoothStep(0f, 1f, t / 0.3f);
             PlaceBird(moveTo, faceFrom, Mathf.Lerp(35f, 0f, up), fallRoll * (1f - up));
             float open = Mathf.SmoothStep(0f, 1f, (t - 0.2f) / 0.25f) * (1f - Mathf.SmoothStep(0f, 1f, (t - 0.85f) / 0.15f));
-            bird.SetWings(open, Mathf.Sin(timer * 9f) * 8f * open);
+            bird.Play(t < 0.3f ? ZhuqueBird.Rise : ZhuqueBird.Recovery);
             bird.SetGlow(Mathf.Sin(Mathf.PI * Mathf.Clamp01((t - 0.2f) / 0.75f)) * 1.6f);
             bird.SetTailHang(1f);
-            bird.SetTailDrop(1f);
+            bird.HangTo(moveTo.y);
             bird.SetTailLength(Mathf.Lerp(tuning.cutStub, 1f, Mathf.SmoothStep(0f, 1f, (t - 0.35f) / 0.55f)));
             bird.LookForward(dt);
 
@@ -590,7 +591,7 @@ namespace TanShadow.Summer
             float t = Mathf.Clamp01(timer / tuning.finalFallTime);
             Vector3 position = Vector3.Lerp(moveFrom, moveTo, t * t);
             PlaceBird(position, faceFrom, Mathf.Lerp(0f, 60f, t), fallRoll * t);
-            bird.SetWings(Mathf.Lerp(1f, 0.2f, t), Mathf.Sin(timer * 34f) * 30f * (1f - t));
+            bird.Play(ZhuqueBird.Fall);
             bird.SetGlow(t * 0.8f);
             // Белая янь — за несколько кадров до того, как птица коснётся магмы.
             if (timer >= tuning.finalFallTime - tuning.cutLeadTime) Win();
@@ -766,8 +767,6 @@ namespace TanShadow.Summer
             var heading = facing.sqrMagnitude > 0.0001f ? Quaternion.LookRotation(facing) : bird.transform.rotation;
             bird.transform.SetPositionAndRotation(position, heading * Quaternion.Euler(pitch, 0f, roll));
         }
-
-        static float Flap(float time, float rate, float degrees) => Mathf.Sin(time * rate * Mathf.PI * 2f) * degrees;
 
         static float GroundHeight(Vector3 from, float fallback)
         {

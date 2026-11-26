@@ -10,7 +10,7 @@ namespace TanShadow.MotionMatchingLab.Editor
 {
     static class MotionLibraryBaker
     {
-        internal const string Folder = "Assets/_Game/TestMotionmatching";
+        internal const string Folder = "Assets/_Game/TestMotionmatching 1";
         const string Imports = Folder + "/animations";
         internal const string RigPath = Imports + "/_Rig/SKM_UEFN_Mannequin.fbx";
         internal const string DatabasePath = Folder + "/Data/MotionDatabase.asset";

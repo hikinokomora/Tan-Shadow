@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "note": "Templates, not submitted. Zone labels are project context, not prompt input.",
+  "items": [
+    {
+      "id": "wall",
+      "zone": "2, 3, 5",
+      "role_ru": "Вертикальная стена ущелья",
+      "prompt_en": "Single alpine bedrock cliff wall module, tall broad angular fractured planes, thick solid mass, irregular layered ledges and asymmetric outline, natural realistic geology, game-ready mesh, no ground plane or detached rocks. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Высота больше глубины; широкие грани; не колонна и не тонкая пластина.",
+      "optimization_role": "wall",
+      "target_triangle_low": 2000,
+      "target_triangle_default": 4000,
+      "review_cap": 7000
+    },
+    {
+      "id": "wall_long",
+      "zone": "2, 4",
+      "role_ru": "Протяжённая стена",
+      "prompt_en": "Single elongated alpine cliff wall module, much wider than deep, continuous fractured face with broad staggered rock planes, irregular top ridge, thick rock volume, realistic game-ready mesh, no ground plane. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Протяжённая грань без одинаковых повторов; плотный объём.",
+      "optimization_role": "wall_long",
+      "target_triangle_low": 3000,
+      "target_triangle_default": 5000,
+      "review_cap": 9000
+    },
+    {
+      "id": "corner_in",
+      "zone": "2, 3, 5",
+      "role_ru": "Внутренний угол",
+      "prompt_en": "Single concave alpine bedrock corner, two thick fractured rock faces meeting at an inward angle, irregular stepped natural strata, open inside corner, realistic game-ready mesh, no ground or detached pieces. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Вогнутый угол оставляет свободный внутренний проход.",
+      "optimization_role": "corner_in",
+      "target_triangle_low": 1500,
+      "target_triangle_default": 3000,
+      "review_cap": 5000
+    },
+    {
+      "id": "corner_out",
+      "zone": "2, 3, 4",
+      "role_ru": "Внешний угол",
+      "prompt_en": "Single convex alpine cliff buttress, two broad angular rock faces meeting at a protruding irregular ridge, thick asymmetrical mass, layered fractures, realistic game-ready mesh, no ground plane. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Выпуклое ребро; не симметричная призма.",
+      "optimization_role": "corner_out",
+      "target_triangle_low": 1500,
+      "target_triangle_default": 3000,
+      "review_cap": 5000
+    },
+    {
+      "id": "overhang",
+      "zone": "3, 5",
+      "role_ru": "Навес над лапой/головой",
+      "prompt_en": "Single natural cantilevered alpine rock overhang, thick attached root, broad projecting slab with fractured underside, open space beneath the projection, realistic angular bedrock, game-ready mesh, no support columns or ground. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Толстый корень, широкая нижняя поверхность, открытый просвет; не мост.",
+      "optimization_role": "overhang",
+      "target_triangle_low": 2500,
+      "target_triangle_default": 4500,
+      "review_cap": 8000
+    },
+    {
+      "id": "overhang_side",
+      "zone": "3, 5",
+      "role_ru": "Боковой навес",
+      "prompt_en": "Single asymmetric projecting alpine cliff block, thick root on one side and short broad overhanging lip, irregular fractured underside, layered angular bedrock, game-ready mesh, no detached pieces or ground. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Короткий боковой выступ, не перекрывает весь проход.",
+      "optimization_role": "overhang_side",
+      "target_triangle_low": 1500,
+      "target_triangle_default": 3000,
+      "review_cap": 5000
+    },
+    {
+      "id": "edge",
+      "zone": "4",
+      "role_ru": "Кромка обрыва",
+      "prompt_en": "Single alpine cliff lip module, irregular near-horizontal upper ledge and steep fractured outer drop face, thick bedrock below the lip, continuous asymmetric edge, realistic game-ready mesh, no stairs or ground plane. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Резкая внешняя грань; верх можно состыковать со снегом, без ступеней.",
+      "optimization_role": "edge",
+      "target_triangle_low": 1500,
+      "target_triangle_default": 3000,
+      "review_cap": 5000
+    },
+    {
+      "id": "edge_turn",
+      "zone": "4",
+      "role_ru": "Поворот кромки обрыва",
+      "prompt_en": "Single curved alpine cliff corner lip, continuous irregular convex upper edge, thick steep fractured outer rock face, broad angular strata, realistic game-ready mesh, no ground plane or detached rocks. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Поворот кромки без ложного ответвления и провалов в полу.",
+      "optimization_role": "edge_turn",
+      "target_triangle_low": 1500,
+      "target_triangle_default": 3000,
+      "review_cap": 5000
+    },
+    {
+      "id": "seam",
+      "zone": "2, 3, 4, 5",
+      "role_ru": "Соединительный клин",
+      "prompt_en": "Single compact wedge-shaped alpine bedrock outcrop, broad irregular angular faces, thick tapered silhouette, layered fractures matching a cliff wall, realistic game-ready mesh, no gravel or detached pieces. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Клин закрывает стык двух новых ассетов; не камень на тропе.",
+      "optimization_role": "seam",
+      "target_triangle_low": 500,
+      "target_triangle_default": 1000,
+      "review_cap": 2000
+    },
+    {
+      "id": "buttress",
+      "zone": "2, 3, 5",
+      "role_ru": "Массивный контрфорс",
+      "prompt_en": "Single broad alpine rock buttress, thick lower mass tapering into a fractured upper ridge, oblique angular rock planes, asymmetric natural strata, realistic game-ready mesh, no ground plane. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Наклонные природные грани; не искусственная опора.",
+      "optimization_role": "buttress",
+      "target_triangle_low": 1500,
+      "target_triangle_default": 3000,
+      "review_cap": 5000
+    },
+    {
+      "id": "ledge",
+      "zone": "2, 4",
+      "role_ru": "Скальный уступ под снегом",
+      "prompt_en": "Single thick alpine bedrock shelf, broad gently sloping upper face and angular fractured side faces, irregular natural layered silhouette, realistic game-ready mesh, no stairs or ground plane. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Уступ формирует боковую границу или основание; не обязательная ступень на маршруте.",
+      "optimization_role": "ledge",
+      "target_triangle_low": 1000,
+      "target_triangle_default": 2000,
+      "review_cap": 3500
+    },
+    {
+      "id": "ridge",
+      "zone": "4",
+      "role_ru": "Дальний горный гребень",
+      "prompt_en": "Single alpine mountain ridge massif, several connected uneven pointed peaks above broad steep fractured slopes, asymmetric coherent bedrock silhouette, realistic game-ready mesh, no terrain tile or surrounding scenery. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Читаемый дальний силуэт, единый массив; не целый ландшафт.",
+      "optimization_role": "ridge",
+      "target_triangle_low": 500,
+      "target_triangle_default": 1500,
+      "review_cap": 3000
+    },
+    {
+      "id": "peak",
+      "zone": "4",
+      "role_ru": "Отдельный дальний пик",
+      "prompt_en": "Single angular alpine mountain peak, broad tapered solid base and irregular fractured summit, steep layered rock planes, realistic game-ready mesh, no terrain tile or surrounding scene. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Один пик, без тонких игл и островов.",
+      "optimization_role": "peak",
+      "target_triangle_low": 300,
+      "target_triangle_default": 800,
+      "review_cap": 1500
+    },
+    {
+      "id": "snow_drift",
+      "zone": "2, 3, 4, 5",
+      "role_ru": "Снежная насыпь (резерв)",
+      "prompt_en": "Single low elongated wind-sculpted snowbank mesh, smooth convex crest and gently tapering sides, broad continuous base, subtle asymmetry, realistic game-ready geometry, no rocks or ground plane. Low-poly game environment mesh, broad readable planes, simplified fractures, no microgeometry, no detached fragments.",
+      "shape_acceptance_ru": "Плавный объём для стыка; не заменяет основной Terrain.",
+      "optimization_role": "snow_drift",
+      "target_triangle_low": 300,
+      "target_triangle_default": 800,
+      "review_cap": 1500
+    }
+  ]
+}

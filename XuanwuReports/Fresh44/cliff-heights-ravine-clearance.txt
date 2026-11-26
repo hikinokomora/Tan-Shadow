@@ -1,0 +1,6 @@
+checks=1758
+missing=0
+blocked=0
+paw=0
+maxSlope=28.47
+seam=0

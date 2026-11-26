@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "assets": [],
+  "record_fields": [
+    "asset_id",
+    "shape_key",
+    "provider",
+    "task_id",
+    "model",
+    "prompt",
+    "license_plan",
+    "license_checked_at",
+    "family",
+    "roles",
+    "bounds_m",
+    "triangles_by_lod",
+    "source_sha256",
+    "prefab_path",
+    "prefab_guid",
+    "materials",
+    "collision",
+    "status",
+    "qa_evidence",
+    "optimization_role",
+    "material_slots",
+    "estimated_instances",
+    "optimization_report_path",
+    "budget_exception_approval"
+  ]
+}

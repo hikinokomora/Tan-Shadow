@@ -1,0 +1,6 @@
+renderers=158
+unique materials=18
+texture objects=15
+texture runtime estimate bytes=157147256
+mesh instance triangles incl all LODs=1160389
+NOT visible triangles, draw calls, GPU frame time, or build memory. Capture Profiler in player with fixed camera/resolution.

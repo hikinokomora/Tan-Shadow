@@ -1,0 +1,2 @@
+rays=170
+blocked=0

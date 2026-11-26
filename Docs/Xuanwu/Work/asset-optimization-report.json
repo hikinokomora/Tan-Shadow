@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "records": [],
+  "record_fields": [
+    "asset_id",
+    "source_hash",
+    "prefab_guid",
+    "role_budget_id",
+    "requested_triangles",
+    "review_cap",
+    "actual_triangles_by_lod",
+    "renderer_count_by_lod",
+    "material_slots",
+    "estimated_instances",
+    "texture_dimensions",
+    "collision_type",
+    "collision_triangles_if_mesh",
+    "source_outside_runtime",
+    "local_optimization",
+    "silhouette_and_route_evidence",
+    "profiler_evidence",
+    "exception_approval",
+    "status"
+  ],
+  "default_status": "NOT RUN"
+}

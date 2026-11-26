@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "shape_key": null,
+  "zone": null,
+  "role": null,
+  "family": null,
+  "bounds_m": {
+    "width": null,
+    "height": null,
+    "depth": null
+  },
+  "visible_face_direction": null,
+  "attachment_side": null,
+  "protected_route_camera_volume": null,
+  "critical_shape_features": [],
+  "candidate_ids_and_shape_rejections": [],
+  "input_mode": null,
+  "prompt_en": null,
+  "reference_files_and_rights": [],
+  "parameters": {},
+  "estimated_credits": null,
+  "acceptance_checks": [],
+  "status": "DRAFT_NOT_AUTHORIZED",
+  "optimization": {
+    "role_budget_id": null,
+    "requested_triangles": null,
+    "review_cap": null,
+    "estimated_instances": null,
+    "lod_plan": null,
+    "collision_plan": null,
+    "higher_cost_exception_approval": null
+  }
+}

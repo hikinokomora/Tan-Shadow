@@ -1,0 +1,4 @@
+probes=285
+missing=0
+blocked=0
+maxDeg=19,32778

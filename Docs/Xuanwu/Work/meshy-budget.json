@@ -1,0 +1,10 @@
+{
+  "authorized_by_user": false,
+  "max_credits": 0,
+  "max_concurrent": 1,
+  "max_attempts_per_shape": 2,
+  "scope": "environment shape-only",
+  "allow_paid_postprocess": false,
+  "allow_purchase": false,
+  "approval_reference": null
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "policy": "optimization_first_after_gameplay_and_legal_gates",
+  "unit": "actual_rendered_mesh_triangles_per_prefab_LOD0_sum_of_renderers",
+  "note": "Project starter targets, not provider limits or measured platform requirements. request_target uses triangle topology if supported. Above cap: optimize locally or reject; exception requires measured evidence and explicit user approval.",
+  "roles": {
+    "seam": {
+      "low_target": 500,
+      "default_target": 1000,
+      "review_cap": 2000
+    },
+    "ledge": {
+      "low_target": 1000,
+      "default_target": 2000,
+      "review_cap": 3500
+    },
+    "corner_in": {
+      "low_target": 1500,
+      "default_target": 3000,
+      "review_cap": 5000
+    },
+    "corner_out": {
+      "low_target": 1500,
+      "default_target": 3000,
+      "review_cap": 5000
+    },
+    "buttress": {
+      "low_target": 1500,
+      "default_target": 3000,
+      "review_cap": 5000
+    },
+    "wall": {
+      "low_target": 2000,
+      "default_target": 4000,
+      "review_cap": 7000
+    },
+    "wall_long": {
+      "low_target": 3000,
+      "default_target": 5000,
+      "review_cap": 9000
+    },
+    "overhang": {
+      "low_target": 2500,
+      "default_target": 4500,
+      "review_cap": 8000
+    },
+    "overhang_side": {
+      "low_target": 1500,
+      "default_target": 3000,
+      "review_cap": 5000
+    },
+    "edge": {
+      "low_target": 1500,
+      "default_target": 3000,
+      "review_cap": 5000
+    },
+    "edge_turn": {
+      "low_target": 1500,
+      "default_target": 3000,
+      "review_cap": 5000
+    },
+    "ridge": {
+      "low_target": 500,
+      "default_target": 1500,
+      "review_cap": 3000
+    },
+    "peak": {
+      "low_target": 300,
+      "default_target": 800,
+      "review_cap": 1500
+    },
+    "snow_drift": {
+      "low_target": 300,
+      "default_target": 800,
+      "review_cap": 1500
+    }
+  },
+  "lod": {
+    "lod1_fraction_max": 0.5,
+    "lod2_fraction_max": 0.2,
+    "screen_relative_start": [
+      0.5,
+      0.2,
+      0.05
+    ]
+  },
+  "material_slots_preferred": 1,
+  "material_slots_review_cap": 2,
+  "texture_max_near": 2048,
+  "texture_max_mid": 1024,
+  "texture_max_far": 512,
+  "generated_texture_default": false,
+  "premium_model_default": false,
+  "performance_targets_provisional": {
+    "resolution": "1920x1080",
+    "fps": 60,
+    "frame_ms": 16.67,
+    "environment_visible_triangles_target": 250000,
+    "environment_visible_triangles_review_cap": 400000,
+    "environment_batches_target": 150,
+    "environment_batches_review_cap": 250
+  },
+  "exceptions_require_user_approval": true
+}

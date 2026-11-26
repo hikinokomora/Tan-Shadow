@@ -1,0 +1,59 @@
+﻿id,family,name,source_url,size,availability_ai,priority,color_profile,usage
+M01,Macro rock,Huge Icelandic Lava Cliff,https://www.fab.com/listings/e16b2143-5512-4460-bd0c-9270c4c6df51,5.15 × 15.42 × 4.37 м,Free / AI Yes,A,"K2: песчаные/тёплые участки нейтрализовать, затем охладить; без красной лавы","Длинная скальная стена, край обрыва; open mesh"
+M02,Macro rock,Huge Nordic Coastal Cliff,https://www.fab.com/listings/8d6de755-d119-45d8-8062-8cbedaca1239,14.66 × 19.61 × 14.93 м,Free / AI Yes,A,"K1/K3: нейтрально-холодный тон, проверить и убрать мох",Масса горы и дальний внешний край
+M03,Macro rock,Huge Nordic Coastal Cliff,https://www.fab.com/listings/970dc292-d411-47b8-abf8-504173387415,8.07 × 15.24 × 8.47 м,Free / AI Yes,A,"K1/K3: убрать зелень, привести к тёмному сине-серому",Большой поворот или высокое ущелье
+M04,Wall rock,Large Nordic Coastal Cliff,https://www.fab.com/listings/12b1fa1e-51d9-43cd-b77f-5b310ccbbcd2,1.70 × 6.75 × 3.00 м,Free / AI Yes,A,"K3: мох/лишайник указан в тегах; маска удаления, K1 после","Стеновой модуль, сопряжение; open mesh"
+M05,Wall rock,Large Nordic Coastal Cliff,https://www.fab.com/listings/6b9183c7-693b-430b-82a5-dd85b8fcf149,5.94 × 6.35 × 4.00 м,Free / AI Yes,A,"K1/K3: проверить цвет и мох, охладить",Массивный выступ у лапы/головы
+M06,Wall rock,Nordic Coastal Cliff,https://www.fab.com/listings/35d695d8-ac00-4ac5-8bba-1d46e973af68,1.04 × 2.57 × 4.10 м,Free / AI ?,B,"K1/K3: убрать возможную зелень, охладить",Узкий высокий стык; open mesh
+M07,Macro rock,Quarry Cliff,https://www.fab.com/listings/c47f6376-20c4-4631-a6d6-82f626652691,9.22 × 13.44 × 14.25 м,Free / AI Yes,B,"K2: если бежевый/коричневый, затемнить и перекрасить; проверить следы выработки",Высокая стенка только при природном силуэте
+M08,Macro rock,Quarry Cliff,https://www.fab.com/listings/c88f7f3b-bb08-4e38-8ee5-67e120e99ae1,3.50 × 12.90 × 13.22 м,Free / AI Yes,B,"K2: холодная перекраска, исключить искусственные борозды",Вертикальный обрыв; не имитировать карьер
+M09,Macro rock,Quarry Cliff,https://www.fab.com/listings/97662b16-c6f6-48c9-9cbc-25b1ccf7b7f6,5.53 × 13.82 × 6.61 м,Free / AI ?,B,"K2: проверить исходный тон, убрать тёплый налёт","Длинная стена, если нет следов техники"
+M10,Wall rock,Quarry Cliff,https://www.fab.com/listings/1184ba2c-4fde-49a2-b770-ba5de21fe91a,2.92 × 8.76 × 4.34 м,Free / AI ?,B,K2: нейтрализовать бежевые/бурые участки,Уступ/стена только при естественном характере
+M11,Wall rock,Quarry Cliff,https://www.fab.com/listings/b1becdbe-4c8e-4a18-91fc-000313c3ae2e,1.67 × 4.45 × 3.20 м,Free / AI ?,B,"K2: перекрасить в сине-серый, проверить борозды",Малый поворот стены
+M12,Wall rock,Quarry Cliff,https://www.fab.com/listings/daf32fe5-c0b9-494c-ab44-d2eb661b6793,1.02 × 2.09 × 1.15 м,Free / AI ?,B,K2: убрать тепло; исключить искусственную форму,Заделка стыков не на проходе
+M13,Rock formation,Icelandic Rock Formation,https://www.fab.com/listings/54167f2f-e607-4326-915e-7e7f18fd1328,6.34 × 11.75 × 1.74 м,Free / AI Yes,A,K1: проверить нейтральный тёмный камень; K2 при песке,"Широкий каменный пояс под снегом, вне тропы"
+M14,Rock formation,Icelandic Rock Formation,https://www.fab.com/listings/9eee408a-3efe-4494-9f5c-988b0a16c9e9,1.26 × 1.73 × 0.77 м,Free / AI ?,B,K1: лёгкое охлаждение; проверить оттенок,"Встроенный выступ стены, не валун на пути"
+M15,Rock formation,Nordic Beach Rock Formation,https://www.fab.com/listings/9ba0e1c6-836c-479b-a2c7-3f2a37d902cc,3.18 × 4.29 × 2.42 м,Free / AI ?,B,K1/K3: убрать прибрежную зелень и грязь,Сопряжение стен и навес
+M16,Rock formation,Nordic Beach Rock Formation,https://www.fab.com/listings/d39da231-9e5e-4bca-9e30-3f47c166249f,4.59 × 5.68 × 0.89 м,Free / AI ?,B,K1/K3: не оставлять прибрежный налёт,"Полка сбоку, под снегом"
+M17,Rock formation,Nordic Beach Rock Formation,https://www.fab.com/listings/3e207240-a1ac-4c50-8c16-89d8c8f1aa49,3.16 × 3.16 × 0.58 м,Free / AI ?,B,"K1/K3: убрать мох, охладить",Низкий выступ в теле склона
+M18,Rock formation,Icelandic Sandy Volcanic Rock,https://www.fab.com/listings/567fc8f7-aa53-4945-ae78-342c6c7b7ea6,4.56 × 4.18 × 1.72 м,Free / AI ?,B,K2: песок нейтрализовать или закрыть снегом; не оставлять бежевую почву,"Боковой уступ, не на проходе"
+M19,Rock formation,Icelandic Sandy Volcanic Rock,https://www.fab.com/listings/ad781989-300b-48fe-a490-c5a4911addc2,2.83 × 3.39 × 0.81 м,Free / AI ?,B,K2: тёплый песок убрать; общий холодный материал,Подножие стены
+M20,Rock formation,Icelandic Sandy Volcanic Rock,https://www.fab.com/listings/93540a7f-51b8-4fc6-8b9e-836b2586492b,2.43 × 2.34 × 0.49 м,Free / AI ?,B,K2: перекраска песчаных зон обязательна,Стык основания со снегом
+M21,Rock formation,Icelandic Rock Plates,https://www.fab.com/listings/9c2ef7e4-81d6-4b0e-9587-1f89fcf56a97,2.94 × 3.91 × 0.28 м,Free / AI ?,B,K1: проверить тон; матовый камень,"Слоистый край обрыва, не ступень на пути"
+M22,Rock formation,Icelandic Boulder,https://www.fab.com/listings/d210baea-2860-4dc1-bc83-dd16fc2284cc,1.75 × 1.58 × 0.88 м,Free / AI ?,B,K1: привести к общей породе,"Встроить в стену, без россыпи на тропе"
+M23,Rock formation,Icelandic Boulder,https://www.fab.com/listings/39ecfe8e-a0b6-4320-8942-e672ad57a0b5,0.85 × 0.89 × 0.86 м,Free / AI ?,B,"K1: проверить цвет, слегка охладить",Заполнитель скального стыка вне коллизии пути
+M24,Background rock,Icelandic Terrain,https://www.fab.com/listings/63a1543b-24f7-4bb8-af0e-d7c8c676c9b9,18.75 × 16.57 × 3.09 м,Free / AI ?,B,"K1/K2: убрать песок/тепло при наличии, добавить снег","Фоновая гряда; упрощённый LOD, без коллайдера"
+C01,Wall rock,Boulder 01,https://polyhaven.com/a/boulder_01,уточнить,CC0,A,"K3+K2: лишайник и ржавые прожилки; убрать, холодный тон","Выступ, слияние с массивом; не отдельное препятствие"
+C02,Macro rock,Coastal Cliff 01,https://polyhaven.com/a/coastal_cliff_01,уточнить,CC0,B,"K3: травяная верхушка и мох; срезать/закрыть снегом, охладить","Стена с навесом, только если не видно травы"
+C03,Macro rock,Coastal Cliff 02,https://polyhaven.com/a/coastal_cliff_02,уточнить,CC0,B,"K3: травяная верхушка; скрыть/удалить, K1",Слоистый обрыв; не оставлять береговой контекст
+C04,Macro rock,Coastal Cliff 04,https://polyhaven.com/a/coastal_cliff_04,уточнить,CC0,B,K3: трава и береговая фактура; скрыть снегом и охладить,Фоновый скальный уступ
+C05,Macro rock,Namaqualand Cliff 01,https://polyhaven.com/a/namaqualand_cliff_01,уточнить,CC0,B,K2: пустынный тёплый тон обязательно заменить на холодный тёмный,Форма эродированной стены; только при согласовании с основной породой
+C06,Macro rock,Namaqualand Cliff 02,https://polyhaven.com/a/namaqualand_cliff_02,уточнить,CC0,B,"K2+K3: коричневый камень и лишайники; цветовая маска, охладить",Трещиноватая стена; запасной CC0 модуль
+C07,Rock formation,Rock 07,https://polyhaven.com/a/rock_07,уточнить,CC0,B,"K2: землистая тёплая гамма, перекраска обязательна",Встроенный камень у основания
+C08,Rock formation,Rock 09,https://polyhaven.com/a/rock_09,уточнить,CC0,B,"K2: ржаво-коричневый, убрать ржавчину и холодно тонировать",Запасной выступ; при сильной пятнистости отказаться
+S01,Snow mesh,Snow Embankment,https://www.fab.com/listings/00e21ed4-f67f-4872-baa1-e4cfeb8b950b,1.76 × 4.61 × 0.43 м,Free / AI Yes,A,"K4: белый снег, выровнять оттенок с Terrain",Малый длинный сугроб для скрытия шва
+S02,Snow mesh,Snow Pile,https://www.fab.com/listings/8e55612b-1f02-4262-aad4-f1a00dfa7c62,6.46 × 7.15 × 2.08 м,Free / AI No,X,"K4: только запись сравнения, не получать агентом",Исключён из агентской сборки; Terrain/07/11 вместо
+S03,Snow mesh,Rocky Snow Pile,https://www.fab.com/listings/59841190-6e9e-449b-bb9e-61c9bcd85269,4.24 × 7.32 × 1.01 м,Free / AI No,X,"K4/K1: только запись сравнения, не получать агентом",Исключён; сугроб + каменная стенка вместо
+T01,PBR rock,Dark Rock,https://polyhaven.com/a/dark_rock,уточнить,CC0,A,"K1: угольный тёмный тон, немного синего; не пережечь тени",Основной материал скальной стены; трещиноватый
+T02,PBR rock,Rock Face,https://polyhaven.com/a/rock_face,уточнить,CC0,B,"K2: красно-коричневый исходник, обязательное обесцвечивание и затемнение",Трещины и грубая фактура; тайловый материал
+T03,PBR rock,Rock 3,https://polyhaven.com/a/rock_3,уточнить,CC0,B,"K3: серый камень с мхом; убрать зелёный, охладить","Грубый второй материал стен, если нужна вариация"
+T04,PBR rock,Rock Boulder Cracked,https://polyhaven.com/a/rock_boulder_cracked,уточнить,CC0,B,"K2: оранжево-бурый, полная цветовая адаптация",Трещины для локального выступа
+T05,PBR rock,Rock 058,https://ambientcg.com/view?id=Rock058,тайловая,CC0,A,"K1: серый cliff, охладить до синеватого",Основная тайловая скальная порода
+T06,PBR rock,Rock 060,https://ambientcg.com/view?id=Rock060,тайловая,CC0,A,"K1/K2: исходный тон проверить, сделать холодным",Грубая альтернатива Rock 058
+T07,PBR rock,Rock 061,https://ambientcg.com/view?id=Rock061,тайловая,CC0,B,"K2: коричневый/серый и песок, нейтрализовать",Слоистые стены; песок не должен читаться
+T08,PBR rock,Rock 056,https://ambientcg.com/view?id=Rock056,тайловая,CC0,B,"K2: коричневый горный камень, холодная перекраска обязательна",Альтернативная геология при правильной форме
+T09,PBR rock,Rock 055,https://ambientcg.com/view?id=Rock055,тайловая,CC0,B,"K2: бежево-коричневый, обязательно заменить тепло",Крупная скальная фактура
+T10,PBR rock,Rock 063,https://ambientcg.com/view?id=Rock063,тайловая,CC0,B,"K3: серый/зелёный мох, убрать зелень",Слоистый вторичный материал
+T11,PBR rock,Rock 011,https://ambientcg.com/view?id=Rock011,тайловая,CC0,B,"K3: серый мшистый, маска зелени и холодный тон",Вариант для стены только без видимого мха
+T12,PBR rock,Rock 024,https://ambientcg.com/view?id=Rock024,тайловая,CC0,B,"K1: гладкий камень, проверить исходный тон",Небольшие гладкие поверхности и дальние стены
+T13,PBR rock,Icelandic Rock Cliff,https://www.fab.com/listings/7caa5113-fc45-4a91-9683-a942c7c21e78,1 × 1 м scan,Free / AI Yes,A,"K1: базальтовый кандидат, проверить оттенок","Тайловая PBR, НЕ готовая скала"
+T14,PBR rock,Icelandic Rock Cliff,https://www.fab.com/listings/ba45f02c-aa7d-49ea-9c1c-b2261f813365,2 × 2 м scan,Free / AI ?,B,K1/K2: проверить цвет; привести к эталону,Тайловый материал альтернативной фактуры
+T15,PBR rock,Icelandic Rock Cliff,https://www.fab.com/listings/b181f9a0-7276-4118-b5dd-51c336e786af,2 × 2 м scan,Free / AI ?,B,K1/K2: вулканическая фактура без лавового/красного оттенка,Тайловый материал
+T16,PBR rock,Icelandic Layered Rock,https://www.fab.com/listings/ab5142de-9f34-4b33-a08e-5ef596187b9c,1 × 1 м scan,Free / AI ?,B,K3/K1: лишайник в тегах; удалить и охладить,Слоистый материал стен
+T17,PBR rock,Icelandic Layered Rock,https://www.fab.com/listings/1084df40-f82f-4417-8664-b78eba1939db,1 × 1 м scan,Free / AI ?,B,"K3/K1: убрать лишайник, холодный тон",Вариант слоистой фактуры
+T18,PBR rock,Icelandic Jagged Slate Rock,https://www.fab.com/listings/e43184eb-f0c7-4021-8b61-f674014d4c36,2 × 2 м scan,Free / AI ?,A,"K1: проверить оттенок, холодный графит",Острые пластины для материала cliff
+T19,PBR rock,Layered Rock Cliff,https://www.fab.com/listings/79b84e82-541b-49db-869b-ce3e83d292f5,2 × 2 м scan,Free / AI ?,B,"K1/K2: проверить цвет, убрать тепло",Горная грубая слоистость
+T20,PBR rock,Layered Rock Cliff,https://www.fab.com/listings/31cdea72-2995-4d10-85cc-06e52122017e,2 × 2 м scan,Free / AI ?,B,"K2: пустынный известняк в тегах, полная перекраска","Только если фактура естественная, не карьер"
+T21,PBR rock,Gouged Rock Cliff,https://www.fab.com/listings/8b1aa744-bc51-4a47-92a5-ad52b11681ce,2 × 2 м scan,Free / AI ?,B,K1: тёмная порода; проверить и убрать искусственный рисунок,"Резервный материал, если нет заметных следов добычи"
+N01,PBR snow,Snow 02,https://polyhaven.com/a/snow_02,уточнить,CC0,A,"K4: мягкий порошкообразный снег, убрать заметные тёмные точки при необходимости",Terrain и снежные холмы; чистый кандидат
+N02,PBR snow,Snow 007A,https://ambientcg.com/view?id=Snow007A,тайловая,CC0,A,K4: чистый гладкий снег; лёгкое охлаждение,"Панцирь, гладкий верх снежного склона"

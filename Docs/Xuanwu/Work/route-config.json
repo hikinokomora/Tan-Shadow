@@ -1,0 +1,8 @@
+{
+  "scenePath": "Assets/Scenes/Xuanwu_Work.unity",
+  "points": [],
+  "halfWidth": 0, "shoulder": 0, "step": 0.25,
+  "maxSlope": 0, "maxStep": 0, "radius": 0, "height": 0,
+  "castUp": 0, "castDown": 0, "groundMask": 0, "obstacleMask": 0,
+  "protectedAreas": []
+}

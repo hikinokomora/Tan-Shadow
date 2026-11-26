@@ -1,0 +1,6 @@
+steps=1450
+grounded=1450
+sideHits=0
+maxDeviation=0.0000
+distance=727.68
+interruptedAt=-1

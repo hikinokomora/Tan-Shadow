@@ -1,0 +1,3 @@
+using System;using System.IO;using UnityEditor;using UnityEngine;
+namespace XuanwuTools { public static class ScreenshotCapture {
+ [MenuItem(Common.Menu+"11 Capture current Game View (Play Mode)")] public static void Capture()=>Common.Run(()=>{if(!EditorApplication.isPlaying)throw new Exception("Enter Play Mode on work copy and choose Game View/control camera first");string dir=Path.Combine(Directory.GetParent(Application.dataPath).FullName,"XuanwuReports","screens");Directory.CreateDirectory(dir);string p=Path.Combine(dir,DateTime.UtcNow.ToString("yyyyMMdd_HHmmss_fff")+".png");ScreenCapture.CaptureScreenshot(p);Debug.Log("Capture requested: "+p+"; verify PNG exists after frame. Record camera transform/FOV separately.");});}}

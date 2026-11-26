@@ -1,0 +1,7 @@
+# Merge into user-level Codex config; no secrets here. Review and pin npm version after verification.
+[mcp_servers.meshy]
+command = "npx"
+args = ["-y", "@meshy-ai/meshy-mcp-server"]
+env_vars = ["MESHY_API_KEY"]
+startup_timeout_sec = 60
+tool_timeout_sec = 600

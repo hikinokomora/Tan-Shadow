@@ -103,7 +103,7 @@ namespace TanShadow.Summer
         readonly Vector3[] drapeLocal = new Vector3[96];
         readonly float[] drapeAlong = new float[96];
         int drapeCount;
-        float glow, tailGlow, alarm, headYaw;
+        float glow, alarm, headYaw;
         string clip, held;
 
         public float TailLength => tailLength;
@@ -164,16 +164,6 @@ namespace TanShadow.Summer
             Play(Perch, 0f);
         }
 
-        static readonly int BaseColorMap = Shader.PropertyToID("_BaseColorMap");
-
-        // Материал хвостовых перьев — тот, у которого текстура хвоста (Phoenix_Tail_*).
-        static bool IsTailMaterial(Material m)
-        {
-            if (m == null || !m.HasProperty(BaseColorMap)) return false;
-            var tex = m.GetTexture(BaseColorMap);
-            return tex != null && tex.name.Contains("Tail");
-        }
-
         static Transform FindChild(Transform root, string name)
         {
             foreach (var t in root.GetComponentsInChildren<Transform>(true)) if (t.name == name) return t;
@@ -231,8 +221,6 @@ namespace TanShadow.Summer
         public void SetGlow(float value) { glow = value; }
         // 0 — спокойна, 1 — сейчас сорвётся. На валуне выше alarmPose — поза тревоги.
         public void SetAlarm(float value) { alarm = Mathf.Clamp01(value); }
-        // Подсветка хвоста: героиня достаёт до кончика.
-        public void SetTailGlow(float value) { tailGlow = value; }
         // Голова поворачивается к цели, не дальше ±limit градусов от клюва.
         public void LookAt(Vector3 target, float limit, float dt)
         {
@@ -607,15 +595,14 @@ namespace TanShadow.Summer
             SolveTail();
             SimulateTail(Time.deltaTime);
 
-            // Тело светится вспышкой, хвостовые перья — ещё и когда героиня достаёт до кончика.
+            // Птица светится только вспышкой восстановления и падением в лаву (хвост отдельно не подсвечивается).
             foreach (var r in renderers)
             {
                 if (r == null) continue;
                 var mats = r.sharedMaterials;
                 for (int m = 0; m < mats.Length; m++)
                 {
-                    float value = IsTailMaterial(mats[m]) ? Mathf.Max(glow, tailGlow) : glow;
-                    block.SetColor(EmissiveColor, glowColor * (glowIntensity * value));
+                    block.SetColor(EmissiveColor, glowColor * (glowIntensity * glow));
                     r.SetPropertyBlock(block, m);
                 }
             }

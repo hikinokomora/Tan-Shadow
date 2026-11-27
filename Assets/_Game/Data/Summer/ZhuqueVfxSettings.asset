@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80bc57f3d3f23745bc97ed7c41b859e, type: 3}
+  m_Name: ZhuqueVfxSettings
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Summer.ZhuqueVfxSettings
+  windFadeIn: 0.2
+  windFadeOut: 0.25
+  windAlpha: 0.5
+  windStreaks: 18
+  windSpeed: {x: 1.6, y: 2.8}
+  windInner: 0.55
+  windStreakSize: {x: 170, y: 3}
+  featherCount: {x: 12, y: 18}
+  featherSpeed: {x: 2.5, y: 6}
+  featherInherit: 0.35
+  featherLifetime: {x: 0.5, y: 0.9}
+  featherSize: {x: 0.35, y: 0.65}
+  igniteCount: {x: 16, y: 24}
+  igniteRadius: 2.2
+  igniteSpeed: {x: 3, y: 8}
+  igniteLifetime: {x: 0.3, y: 0.6}
+  igniteSize: {x: 0.9, y: 1.8}
+  fallDustCount: {x: 16, y: 24}
+  fallDustSpeed: {x: 2.5, y: 6.5}
+  fallDustLifetime: {x: 0.8, y: 1.4}
+  fallDustSize: {x: 1.6, y: 3.2}
+  fallDustRadius: 2
+  bubbleRate: 6
+  bubbleMax: 12
+  bubbleLifetime: {x: 0.9, y: 1.6}
+  bubbleSize: {x: 0.5, y: 1.4}
+  sparkRate: 8
+  sparkMax: 12
+  sparkLifetime: {x: 0.8, y: 1.6}
+  sparkSpeed: {x: 0.8, y: 2.2}
+  sparkSize: {x: 0.06, y: 0.12}
+  shadowSpan: 11
+  shadowDarkness: 0.93
+  shadowFade: 16
+  shadowLift: 0.3

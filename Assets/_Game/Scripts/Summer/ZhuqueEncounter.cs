@@ -60,6 +60,7 @@ namespace TanShadow.Summer
         public event Action<Vector3> ShakenOff;            // героиня сброшена с хвоста
         public event Action<Vector3> BirdFell;             // птица рухнула на землю
         public event Action<Vector3, bool> Regenerating;   // вспышка восстановления; true — эта откроет лаву
+        public event Action<Vector3> Ignited;              // пик вспышки: крылья расправлены, хвост начинает отрастать
         public event Action<Vector3> LavaOpened;
         public event Action<Vector3> FellIntoLava;
         public event Action HeroKilled;
@@ -72,7 +73,10 @@ namespace TanShadow.Summer
         public bool HeroInSight { get; private set; }
         public bool TailInReach { get; private set; }
         public Vector3 ShadowPoint { get; private set; }
+        public Vector3 ShadowNormal { get; private set; } = Vector3.up;
         public bool ShadowOverLava { get; private set; }
+        // Сколько осталось до посадки на валун (звук когтей выравнивается по касанию).
+        public float RelocateTimeLeft => State == ZhuqueState.Relocating ? Mathf.Max(0f, moveDuration - timer) : 0f;
         public float HoldTime => State == ZhuqueState.Flight || State == ZhuqueState.ShakeOff ? holdTime : 0f;
 
         // Валун: где стоят лапы (на самой поверхности камня) и два разворота — птица садится тем,
@@ -93,6 +97,7 @@ namespace TanShadow.Summer
         readonly List<int> candidates = new List<int>();
         readonly List<float> weights = new List<float>();
         int perch, startPerch;
+        int ringDirection;            // в какую сторону кольца был последний перелёт: +1, −1, 0 — ещё не летала
         float[] ringAt;               // накопленная длина кольца у каждой точки
         float ringLength, ringPos;    // ringPos — где птица на кольце, м
         Vector3 heroStartPosition;
@@ -107,7 +112,6 @@ namespace TanShadow.Summer
         Vector3 grabGround;           // где стояла героиня, когда схватила хвост: безопасная земля
         bool carrying, lavaRequested, shakeAfterRefuse;
         float lavaArmedAt = -1f;
-        float lavaGlow;
         bool throwing;                // героиню отбросило отсечёнными перьями: летит по дуге назад
         float throwTimer;
         Vector3 throwFrom, throwTo, throwFacing;
@@ -185,7 +189,6 @@ namespace TanShadow.Summer
             bird.Apply();
 
             TailInReach = InReach();
-            bird.SetTailGlow(TailInReach ? 0.6f : 0f);
             if (TailInReach && hero.AttackPressed)
             {
                 Grab();
@@ -205,7 +208,6 @@ namespace TanShadow.Summer
             bird.LookAt(hero.AimPoint, 150f, dt);
             bird.SetGlow(0f);
             bird.SetAlarm(1f);
-            bird.SetTailGlow(0f);
             TailInReach = false;
             timer -= dt;
             if (timer <= 0f) FlyToPerch(ChoosePerch(hero.Body.position));
@@ -237,7 +239,7 @@ namespace TanShadow.Summer
         // ---------------- Перелёт ----------------
 
         // Не на другой конец кольца, а на «некотором расстоянии» (GDD-SU) — но не всегда на один и тот же валун:
-        // выбор случайный, чаще те, что ближе к preferredRelocateDistance; последние relocateMemory валунов
+        // выбор случайный, чаще те, что ближе к птице (по кольцу) и дальше в ту же сторону, куда она летела; последние relocateMemory валунов
         // пропускаются, пока есть другие подходящие.
         int ChoosePerch(Vector3 heroPosition)
         {
@@ -245,6 +247,9 @@ namespace TanShadow.Summer
             float farDistance = -1f;
             candidates.Clear();
             weights.Clear();
+            Vector3 c = RingCenter();
+            Vector3 from = bird.transform.position;
+            float angleNow = Mathf.Atan2(from.z - c.z, from.x - c.x) * Mathf.Rad2Deg;
             for (int pass = 0; pass < 2 && candidates.Count == 0; pass++)
             {
                 for (int i = 0; i < perches.Count; i++)
@@ -254,9 +259,18 @@ namespace TanShadow.Summer
                     float d = Flat(perches[i].top - heroPosition).magnitude;
                     if (d > farDistance) { farDistance = d; farthest = i; }
                     if (d < tuning.minRelocateDistance) continue;
-                    float off = Mathf.Abs(d - tuning.preferredRelocateDistance) / tuning.relocateSpread;
+                    // Ближе к птице — чаще: длина перелёта по кольцу (как летит FlyToPerch).
+                    Vector3 to = perches[i].top;
+                    float turn = Mathf.DeltaAngle(angleNow, Mathf.Atan2(to.z - c.z, to.x - c.x) * Mathf.Rad2Deg);
+                    float flight = Mathf.Abs(turn) * Mathf.Deg2Rad * (Flat(from - c).magnitude + Flat(to - c).magnitude) * 0.5f;
+                    // Спад крутой (4-я степень): вдвое дальше — в 9 раз реже; дальние валуны — только если ближних нет.
+                    float far = flight / tuning.relocateNearDistance;
+                    float w = 1f / (1f + far * far * far * far);
+                    // Не мечется: улетев вперёд по кольцу, назад возвращается редко.
+                    if (ringDirection != 0 && Mathf.Abs(turn) > ReverseTolerance && (int)Mathf.Sign(turn) != ringDirection)
+                        w *= tuning.relocateReverseWeight;
                     candidates.Add(i);
-                    weights.Add(1f / (1f + off * off));
+                    weights.Add(w);
                 }
             }
             if (candidates.Count == 0) return Mathf.Max(0, farthest);
@@ -271,6 +285,8 @@ namespace TanShadow.Summer
             }
             return candidates[candidates.Count - 1];
         }
+
+        const float ReverseTolerance = 8f;   // перелёт короче этого угла по кольцу — не разворот, °
 
         void RememberPerch(int index)
         {
@@ -295,6 +311,7 @@ namespace TanShadow.Summer
             angleTo = angleFrom + Mathf.DeltaAngle(angleFrom, Mathf.Atan2(moveTo.z - c.z, moveTo.x - c.x) * Mathf.Rad2Deg);
             radiusFrom = Flat(moveFrom - c).magnitude;
             radiusTo = Flat(moveTo - c).magnitude;
+            if (Mathf.Abs(angleTo - angleFrom) > ReverseTolerance) ringDirection = angleTo > angleFrom ? 1 : -1;
             float distance = Mathf.Abs(angleTo - angleFrom) * Mathf.Deg2Rad * (radiusFrom + radiusTo) * 0.5f
                              + Mathf.Abs(radiusTo - radiusFrom);
             moveDuration = Mathf.Max(0.8f, distance / tuning.relocateSpeed);
@@ -365,7 +382,6 @@ namespace TanShadow.Summer
             if (t > 0.65f) DrapeTail(facing);   // к посадке хвост уже свисает под птицей
             bird.SetTailLength(Mathf.MoveTowards(bird.TailLength, 1f, dt));
             bird.SetGlow(0f);
-            bird.SetTailGlow(0f);
             bird.LookForward(dt);
             if (t >= 1f) Sit(perch, perchSide);
         }
@@ -576,7 +592,7 @@ namespace TanShadow.Summer
             bird.PinTip(true);
             hero.SetCarried(true);
             TailInReach = false;
-            bird.SetTailGlow(0f);
+            bird.SetGlow(0f);   // с героиней на хвосте птица не светится
             moveFrom = bird.transform.position;
             faceFrom = bird.transform.forward;
             ringPos = NearestOnRing(moveFrom);
@@ -711,7 +727,6 @@ namespace TanShadow.Summer
             holdTime += dt;
             FlyRing(dt, 0f);
             UpdateShadow();
-            GlowOverLava(dt);
             CarryHero();
 
             if (hero.AttackPressed)
@@ -758,13 +773,6 @@ namespace TanShadow.Summer
             bird.Play(ZhuqueBird.Flight);
             bird.SetTailHang(0f);
             bird.LookForward(dt);
-        }
-
-        // Над рекой птицу снизу подсвечивает лава — видно, даже когда тень теряется.
-        void GlowOverLava(float dt)
-        {
-            lavaGlow = Mathf.MoveTowards(lavaGlow, ShadowOverLava ? tuning.overLavaGlow : 0f, dt * 3f);
-            bird.SetGlow(lavaGlow);
         }
 
         void CarryHero()
@@ -832,9 +840,9 @@ namespace TanShadow.Summer
             Vector3 dir = sun != null ? sun.transform.forward : Vector3.down;
             if (dir.y > -0.05f) dir = Vector3.down;
             Vector3 from = bird.BodyCenter;
-            ShadowPoint = Physics.Raycast(from, dir, out var hit, 300f, ~0, QueryTriggerInteraction.Ignore)
-                ? hit.point
-                : from + dir * ((from.y - transform.position.y) / -dir.y);
+            bool hitGround = Physics.Raycast(from, dir, out var hit, 300f, ~0, QueryTriggerInteraction.Ignore);
+            ShadowPoint = hitGround ? hit.point : from + dir * ((from.y - transform.position.y) / -dir.y);
+            ShadowNormal = hitGround ? hit.normal : Vector3.up;
             // Засчитываем и тень, и саму птицу над рекой: солнце низкое, тень ложится метров на 9 в сторону,
             // а игрок естественно бьёт, когда над лавой птица.
             ShadowOverLava = lava != null && (lava.IsOverLava(ShadowPoint, tuning.lavaShadowMargin) ||
@@ -899,10 +907,14 @@ namespace TanShadow.Summer
             if (t < 0.3f) bird.Play(ZhuqueBird.Rise, -1f, tuning.regenerateTime * 0.3f);
             else bird.Play(ZhuqueBird.Recovery, -1f, tuning.regenerateTime * 0.7f);
             bird.SetLying(1f - Mathf.SmoothStep(0f, 1f, t / 0.15f));
-            bird.SetGlow(Mathf.Sin(Mathf.PI * Mathf.Clamp01((t - 0.2f) / 0.75f)) * 1.6f);
+            // Вспышка (VFX SU-05): резкий подъём, когда крылья расправляются, короткий пик и спад. На пике
+            // начинает отрастать хвост — его появление прячет огненный выброс (SU-06, событие Ignited).
+            float flare = Mathf.SmoothStep(0f, 1f, (t - IgniteAt + 0.12f) / 0.12f) * (1f - Mathf.SmoothStep(0f, 1f, (t - IgniteAt - 0.05f) / 0.55f));
+            bird.SetGlow(flare * tuning.regenerateGlow);
+            if (t >= IgniteAt && timer - dt < IgniteAt * tuning.regenerateTime) Ignited?.Invoke(bird.BodyCenter);
             bird.SetTailHang(1f);
             DrapeTail(bird.transform.forward);
-            bird.SetTailLength(Mathf.Lerp(tuning.cutStub, 1f, Mathf.SmoothStep(0f, 1f, (t - 0.35f) / 0.55f)));
+            bird.SetTailLength(Mathf.Lerp(tuning.cutStub, 1f, Mathf.SmoothStep(0f, 1f, (t - IgniteAt) / 0.55f)));
             bird.LookForward(dt);
 
             // Третье восстановление открывает лавовые реки из центра долины.
@@ -919,6 +931,8 @@ namespace TanShadow.Summer
                 FlyToPerch(ChoosePerch(hero.Body.position));
             }
         }
+
+        public const float IgniteAt = 0.35f;   // доля восстановления: пик вспышки и начало роста хвоста
 
         // ---------------- Удар 4: над лавой ----------------
 
@@ -1013,9 +1027,9 @@ namespace TanShadow.Summer
             bird.SetTailLength(1f);
             bird.SetGlow(0f);
             bird.SetAlarm(0f);
-            bird.SetTailGlow(0f);
             if (lava != null) lava.SetDry();
             recentPerches.Clear();
+            ringDirection = 0;
             Sit(startPerch, ChooseSide(startPerch, heroStartPosition));
             EncounterReset?.Invoke();
         }

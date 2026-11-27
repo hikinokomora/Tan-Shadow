@@ -13,7 +13,7 @@ namespace TanShadow.EditorTools
     // Вид лавы в Summer_Zhuque_02_Lava поверх потоков SummerLavaCrossings (их коллайдеры не трогаем):
     //  • текстуры корки, магмы и каймы рисуются здесь же (бесшовные, процедурные) — Art/SummerLava;
     //  • поверхность — вдвое мельче сетки потока и не ниже бугров дна (бугры не протыкают лаву);
-    //  • корка (HDRP Lit, вырезы по альфе) над магмой (HDRP Unlit, эмиссия): в трещинах видна текущая магма;
+    //  • сама лава — красная текущая магма без плит и камней в текстуре (HDRP Unlit, эмиссия), струи вдоль потока;
     //  • кайма остывшей корки по краю потока и вокруг камней в лаве прячет стык с террейном и камнями;
     //  • пар и отсвет вдоль рек (ARCHITECTURE: лава подсвечивает низ камней, над реками пар).
     public static class SummerLavaLook
@@ -23,16 +23,16 @@ namespace TanShadow.EditorTools
         static string MeshDir = "Assets/_Game/Data/Summer/Lava/Look";
         const string Prefix = "Look ";
 
-        // Цвета из ARCHITECTURE (палитра лета): лава #E34C25, жар #FFA04A.
-        static readonly Color Deep = Hex(0x4A0B03), Ember = Hex(0x8A1A06), Lava = Hex(0xE34C25), Heat = Hex(0xFFA04A), White = Hex(0xFFE2A8);
-        static readonly Color CrustDark = new Color(0.045f, 0.038f, 0.035f), CrustWarm = new Color(0.20f, 0.07f, 0.035f);
+        // Цвет лавы как в Minecraft: основной оранжевый, тёмные пятна — красно-оранжевые (не чёрные),
+        // горячие струи — жёлто-оранжевые и жёлтые.
+        static readonly Color Deep = Hex(0x8A2A08), Ember = Hex(0xC8461A), Lava = Hex(0xE8731C), Heat = Hex(0xFFA22A), White = Hex(0xFFD84E);
+        static readonly Color CrustDark = new Color(0.045f, 0.036f, 0.034f);
 
         const float SurfaceAboveFloor = 0.15f;   // как у потоков SummerLavaCrossings (LavaAboveFloor)
-        const float MoltenBelowCrust = 0.06f;
         const float RimInside = 0.9f, RimOutside = 1.5f;     // кайма края: внутрь лавы и наружу на берег, м
 
         // Свечение (нит; экспозиция дневная — значения большие). Подобраны по снимкам.
-        const float CrustNits = 6f, MoltenNits = 22f, RimNits = 8f;
+        const float MoltenNits = 34f, RimNits = 9f;
 
         [MenuItem("Tools/Tan Shadow/Summer/Build Lava Look (02_Lava)")]
         public static void Build() => Build(SummerLavaCrossings.Scene02);
@@ -51,7 +51,6 @@ namespace TanShadow.EditorTools
             var mats = BuildMaterials();
             Directory.CreateDirectory(MeshDir);
 
-            var crust = new List<Renderer>();
             var molten = new List<Renderer>();
             var rims = new List<Renderer>();
             var steam = new List<GameObject>();
@@ -60,7 +59,7 @@ namespace TanShadow.EditorTools
             if (lava.dryBeds != null) lava.dryBeds.SetActive(false);
             Physics.SyncTransforms();
 
-            var steamTemplate = lava.lavaRoot.GetComponentsInChildren<ParticleSystem>(true).FirstOrDefault(p => !p.name.StartsWith(Prefix));
+            var steamTemplate = lava.lavaRoot.GetComponentsInChildren<ParticleSystem>(true).FirstOrDefault(p => !p.name.StartsWith(Prefix) && !p.name.StartsWith("Vfx "));
             var lightTemplate = lava.lavaRoot.GetComponentsInChildren<Light>(true).FirstOrDefault(l => !l.name.StartsWith(Prefix));
 
             for (int r = 0; r < lava.rivers.Length; r++)
@@ -78,8 +77,7 @@ namespace TanShadow.EditorTools
 
                 var surface = SurfaceMesh(source, river.transform, out var outline);
                 var surfaceAsset = Save(surface, "Lava surface " + (r + 1));
-                crust.Add(Child(river.transform, Prefix + "crust", surfaceAsset, mats.crust, Vector3.zero));
-                molten.Add(Child(river.transform, Prefix + "molten", surfaceAsset, mats.molten, Vector3.down * MoltenBelowCrust));
+                molten.Add(Child(river.transform, Prefix + "molten", surfaceAsset, mats.molten, Vector3.zero));
 
                 var rim = RimMesh(outline, river.transform);
                 rims.Add(Child(river.transform, Prefix + "rim", Save(rim, "Lava rim " + (r + 1)), mats.rim, Vector3.zero));
@@ -94,10 +92,8 @@ namespace TanShadow.EditorTools
             foreach (var old in lava.lavaRoot.GetComponents<MonoBehaviour>())
                 if (old != null && old.GetType().Name == "LavaTextureFlow") Object.DestroyImmediate(old);
             var look = lava.lavaRoot.GetComponent<ZhuqueLavaSurface>() ?? lava.lavaRoot.AddComponent<ZhuqueLavaSurface>();
-            look.crust = crust.ToArray();
             look.molten = molten.ToArray();
             look.rims = rims.ToArray();
-            look.crustEmission = mats.crust.GetColor("_EmissiveColor");
             look.moltenEmission = mats.molten.GetColor("_EmissiveColor");
             look.rimEmission = mats.rim.GetColor("_EmissiveColor");
             EditorUtility.SetDirty(look);
@@ -116,7 +112,7 @@ namespace TanShadow.EditorTools
             EditorSceneManager.MarkSceneDirty(scene);
             AssetDatabase.SaveAssets();
             if (!EditorSceneManager.SaveScene(scene)) throw new System.Exception("Не удалось сохранить " + ScenePath);
-            Debug.Log($"[SummerLavaLook] Лава: {crust.Count} потоков, кайм {rims.Count}, пар {steam.Count}");
+            Debug.Log($"[SummerLavaLook] Лава: {molten.Count} потоков, кайм {rims.Count}, пар {steam.Count}");
         }
 
         // ---------------- Поверхность ----------------
@@ -433,7 +429,7 @@ namespace TanShadow.EditorTools
 
         static readonly RaycastHit[] hits = new RaycastHit[16];
 
-        // Есть ли под точкой поверхность лавы (наш меш «Look crust» ещё не имеет коллайдера — берём реку).
+        // Есть ли под точкой поверхность лавы (у меша «Look molten» нет коллайдера — берём реку).
         static bool SurfaceAt(Vector3 p, out float y)
         {
             y = 0f;
@@ -520,33 +516,19 @@ namespace TanShadow.EditorTools
 
         // ---------------- Текстуры и материалы ----------------
 
-        struct Mats { public Material crust, molten, rim; }
+        struct Mats { public Material molten, rim; }
 
         static Mats BuildMaterials()
         {
             Directory.CreateDirectory(ArtDir);
             LavaTextures.Write(ArtDir);
             AssetDatabase.Refresh();
-            Import(ArtDir + "/T_LavaCrust_Albedo.png", false, true);
-            Import(ArtDir + "/T_LavaCrust_Normal.png", true, false);
-            Import(ArtDir + "/T_LavaCrust_Emission.png", false, true);
             Import(ArtDir + "/T_LavaMolten.png", false, true);
             Import(ArtDir + "/T_LavaRim_Albedo.png", false, true);
             Import(ArtDir + "/T_LavaRim_Emission.png", false, true);
 
             var lit = Shader.Find("HDRP/Lit");
             var unlit = Shader.Find("HDRP/Unlit");
-            var crust = Mat("M_LavaCrust", lit);
-            crust.SetTexture("_BaseColorMap", Tex("T_LavaCrust_Albedo"));
-            crust.SetColor("_BaseColor", Color.white);
-            crust.SetTexture("_NormalMap", Tex("T_LavaCrust_Normal"));
-            crust.SetFloat("_NormalScale", 1.4f);
-            crust.SetFloat("_Metallic", 0f);
-            crust.SetFloat("_Smoothness", 0.28f);
-            crust.SetFloat("_AlphaCutoffEnable", 1f);
-            crust.SetFloat("_AlphaCutoff", 0.5f);
-            Emission(crust, "T_LavaCrust_Emission", CrustNits);
-
             var molten = Mat("M_LavaMolten", unlit);
             molten.SetTexture("_UnlitColorMap", Tex("T_LavaMolten"));
             molten.SetColor("_UnlitColor", new Color(0.02f, 0.01f, 0.005f));
@@ -555,21 +537,20 @@ namespace TanShadow.EditorTools
             var rim = Mat("M_LavaRim", lit);
             rim.SetTexture("_BaseColorMap", Tex("T_LavaRim_Albedo"));
             rim.SetColor("_BaseColor", Color.white);
-            rim.SetTexture("_NormalMap", Tex("T_LavaCrust_Normal"));
-            rim.SetFloat("_NormalScale", 0.8f);
+            rim.SetTexture("_NormalMap", null);
             rim.SetFloat("_Metallic", 0f);
             rim.SetFloat("_Smoothness", 0.18f);
             rim.SetFloat("_AlphaCutoffEnable", 1f);
             rim.SetFloat("_AlphaCutoff", 0.5f);
             Emission(rim, "T_LavaRim_Emission", RimNits);
 
-            foreach (var m in new[] { crust, molten, rim })
+            foreach (var m in new[] { molten, rim })
             {
                 HDShaderUtils.ResetMaterialKeywords(m);
                 EditorUtility.SetDirty(m);
             }
             AssetDatabase.SaveAssets();
-            return new Mats { crust = crust, molten = molten, rim = rim };
+            return new Mats { molten = molten, rim = rim };
         }
 
         static void Emission(Material m, string texture, float nits)
@@ -618,51 +599,12 @@ namespace TanShadow.EditorTools
         {
             public static void Write(string dir)
             {
-                Crust(dir, 1024);
-                Molten(dir, 512);
+                Molten(dir, 1024);
                 Rim(dir, 1024, 256);
             }
 
-            // Корка: плиты (ячейки Вороного) с трещинами; в трещинах альфа 0 — сквозь них видна магма.
-            static void Crust(string dir, int size)
-            {
-                var albedo = new Color[size * size];
-                var emission = new Color[size * size];
-                var height = new float[size * size];
-                const int cells = 5;
-                for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                {
-                    float u = x / (float)size, v = y / (float)size;
-                    // Плиты разного размера и формы: сильный изгиб координат, крупные и мелкие ячейки.
-                    float wu = u + 0.1f * (Fbm(u * 3f, v * 3f, 3, 4, 11) - 0.5f);
-                    float wv = v + 0.1f * (Fbm(u * 3f, v * 3f, 3, 4, 23) - 0.5f);
-                    Voronoi(wu, wv, cells, out float f1, out float f2, out int id);
-                    Voronoi(wu + 0.013f, wv - 0.021f, 17, out float g1, out float g2, out _);
-                    float edge = f2 - f1;
-                    float fine = 1f - Smooth(0.015f, 0.04f, g2 - g1);          // мелкие трещинки по плитам
-                    float grain = Fbm(u * 16f, v * 16f, 16, 4, 5);
-                    // Трещины разной ширины: местами — широкие протоки магмы.
-                    float crackWidth = 0.04f + 0.2f * Mathf.Pow(Fbm(u * 3f, v * 3f, 3, 3, 31), 2.2f);
-                    bool hotCell = Hash(id, 77) < 0.25f;
-                    float pool = hotCell ? Smooth(0.38f, 0.58f, Fbm(u * 9f, v * 9f, 9, 3, id)) : 0f;
-                    float solid = Smooth(crackWidth * 0.3f, crackWidth * 0.75f, edge) * (1f - pool);
-                    float rise = Smooth(0f, 0.3f, edge);
-                    height[y * size + x] = (rise * (0.7f + 0.3f * grain) - fine * 0.15f) * solid;
-                    float warm = 1f - Smooth(crackWidth, crackWidth * 2.5f, edge);
-                    Color c = Color.Lerp(CrustDark * (0.65f + 0.7f * grain) * (1f - 0.35f * fine), CrustWarm, warm * 0.55f);
-                    albedo[y * size + x] = new Color(c.r, c.g, c.b, solid);
-                    float glow = Mathf.Pow(1f - Smooth(crackWidth * 0.4f, crackWidth * 2.4f, edge), 1.6f);
-                    glow = Mathf.Max(glow, fine * 0.32f * grain);
-                    glow = Mathf.Max(glow, hotCell ? 0.3f * grain : 0f);
-                    emission[y * size + x] = Ramp(glow);
-                }
-                Png(dir + "/T_LavaCrust_Albedo.png", size, size, albedo);
-                Png(dir + "/T_LavaCrust_Emission.png", size, size, emission);
-                Png(dir + "/T_LavaCrust_Normal.png", size, size, NormalFrom(height, size, size, 6f));
-            }
-
-            // Магма: медленные завихрения, от тёмно-красного до жёлто-белого в самых горячих жилах.
+            // Магма: красная, течёт струями вдоль потока (v); тёмная остывающая плёнка — тоже красная, без плит
+            // и камней. Горячие жилы тонкие и вытянуты по течению.
             static void Molten(string dir, int size)
             {
                 var pixels = new Color[size * size];
@@ -670,11 +612,14 @@ namespace TanShadow.EditorTools
                 for (int x = 0; x < size; x++)
                 {
                     float u = x / (float)size, v = y / (float)size;
-                    float wu = u + 0.12f * (Fbm(u * 3f, v * 3f, 3, 4, 41) - 0.5f);
-                    float wv = v + 0.12f * (Fbm(u * 3f, v * 3f, 3, 4, 43) - 0.5f);
-                    float m = Fbm(wu * 5f, wv * 5f, 5, 5, 47);
-                    float veins = 1f - Mathf.Abs(Fbm(wu * 7f, wv * 7f, 7, 4, 53) - 0.5f) * 2f;
-                    pixels[y * size + x] = Ramp(Mathf.Clamp01(0.25f + 0.55f * m + 0.35f * Mathf.Pow(veins, 6f)));
+                    float wu = u + 0.07f * (Fbm(u * 4f, v * 2f, 4, 2, 4, 41) - 0.5f);
+                    float wv = v + 0.16f * (Fbm(u * 3f, v * 3f, 3, 3, 4, 43) - 0.5f);
+                    float body = Fbm(wu * 5f, wv * 3f, 5, 3, 5, 47);
+                    float streak = Fbm(wu * 14f, wv * 3f, 14, 3, 4, 51);
+                    float veins = Mathf.Pow(1f - Mathf.Abs(Fbm(wu * 9f, wv * 2f, 9, 2, 4, 53) - 0.5f) * 2f, 9f);
+                    float film = Smooth(0.42f, 0.62f, Fbm(wu * 6f, wv * 2f, 6, 2, 4, 59));
+                    float heat = 0.55f + 0.45f * (body - 0.5f) + 0.2f * (streak - 0.5f) + 0.3f * veins - 0.14f * film;
+                    pixels[y * size + x] = Ramp(Mathf.Clamp01(heat));
                 }
                 Png(dir + "/T_LavaMolten.png", size, size, pixels);
             }
@@ -689,13 +634,12 @@ namespace TanShadow.EditorTools
                 for (int x = 0; x < w; x++)
                 {
                     float u = x / (float)w, v = y / (float)h;
-                    float n = Fbm(u * 24f, v * 3f, 24, 4, 61);
-                    float grain = Fbm(u * 64f, v * 8f, 64, 3, 67);
-                    Voronoi(u * 4f, v, 4, out float f1, out float f2, out _, 1);
-                    float crack = 1f - Smooth(0.02f, 0.06f, f2 - f1);
+                    float n = Fbm(u * 24f, v * 3f, 24, 3, 4, 61);
+                    float grain = Fbm(u * 64f, v * 8f, 64, 8, 3, 67);
+                    float crack = 1f - Smooth(0.02f, 0.06f, Mathf.Abs(Fbm(u * 12f, v * 2f, 12, 2, 3, 63) - 0.5f));
                     float outer = 0.72f + 0.22f * (n - 0.5f) * 2f;
                     float alpha = v < outer ? 1f : 0f;
-                    float inner = 0.08f + 0.12f * Fbm(u * 18f, 0.5f, 18, 3, 71);
+                    float inner = 0.08f + 0.12f * Fbm(u * 18f, 0.5f, 18, 1, 3, 71);
                     if (v < inner) alpha = 0f;   // со стороны лавы край тоже рваный — лава подходит под корку
                     // Светится только полоса касания с лавой и трещины рядом с ней; сама корка тёмная.
                     float glow = Mathf.Pow(1f - Smooth(inner, inner + 0.18f + 0.1f * n, v), 2f);
@@ -755,27 +699,27 @@ namespace TanShadow.EditorTools
 
             static float Hash(int id, int seed) => Hash(id, id * 7 + 3, seed);
 
-            // Бесшовный шум значений: period — сколько клеток на повтор текстуры.
-            static float Value(float x, float y, int period, int seed)
+            // Бесшовный шум значений: periodX, periodY — сколько клеток на повтор текстуры по u и по v.
+            static float Value(float x, float y, int periodX, int periodY, int seed)
             {
                 int xi = Mathf.FloorToInt(x), yi = Mathf.FloorToInt(y);
                 float fx = x - xi, fy = y - yi;
                 fx = fx * fx * (3f - 2f * fx);
                 fy = fy * fy * (3f - 2f * fy);
-                int x0 = Mod(xi, period), x1 = Mod(xi + 1, period), y0 = Mod(yi, period), y1 = Mod(yi + 1, period);
+                int x0 = Mod(xi, periodX), x1 = Mod(xi + 1, periodX), y0 = Mod(yi, periodY), y1 = Mod(yi + 1, periodY);
                 return Mathf.Lerp(Mathf.Lerp(Hash(x0, y0, seed), Hash(x1, y0, seed), fx),
                                   Mathf.Lerp(Hash(x0, y1, seed), Hash(x1, y1, seed), fx), fy);
             }
 
-            static float Fbm(float x, float y, int period, int octaves, int seed)
+            static float Fbm(float x, float y, int periodX, int periodY, int octaves, int seed)
             {
                 float sum = 0f, amp = 0.5f, norm = 0f;
                 for (int o = 0; o < octaves; o++)
                 {
-                    sum += Value(x, y, period, seed + o * 17) * amp;
+                    sum += Value(x, y, periodX, periodY, seed + o * 17) * amp;
                     norm += amp;
                     amp *= 0.5f;
-                    x *= 2f; y *= 2f; period *= 2;
+                    x *= 2f; y *= 2f; periodX *= 2; periodY *= 2;
                 }
                 return sum / norm;
             }

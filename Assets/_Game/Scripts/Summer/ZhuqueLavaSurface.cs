@@ -3,17 +3,12 @@ using UnityEngine;
 namespace TanShadow.Summer
 {
     // Вид текущей лавы (ARCHITECTURE, лава Чжуцюэ: «SG_LavaFlow» — в прототипе материалы HDRP Lit/Unlit):
-    // корка из остывших плит еле ползёт по потоку, под ней ещё медленнее течёт раскалённая магма (видна
-    // в трещинах), свечение медленно «дышит». UV поверхностей — в метрах (v — вдоль потока от валуна-
+    // красная магма еле течёт по потоку, свечение медленно «дышит». UV поверхностей — в метрах (v — вдоль потока от валуна-
     // источника), поэтому скорости здесь — в метрах в секунду. Меши и материалы строит SummerLavaLook.
     public sealed class ZhuqueLavaSurface : MonoBehaviour
     {
-        [Tooltip("[Tbd] Скорость корки вдоль потока, м/с. Лава вязкая — еле движется")]
-        [Min(0)] public float crustSpeed = 0.12f;
-        [Tooltip("[Tbd] Скорость магмы под коркой, м/с")]
-        [Min(0)] public float moltenSpeed = 0.05f;
-        [Tooltip("[Tbd] Размер плит корки: метров на повтор текстуры")]
-        [Min(0.5f)] public float crustTile = 14f;
+        [Tooltip("[Tbd] Скорость магмы вдоль потока, м/с. Лава вязкая — еле движется")]
+        [Min(0)] public float moltenSpeed = 0.08f;
         [Tooltip("[Tbd] Метров на повтор текстуры магмы")]
         [Min(0.5f)] public float moltenTile = 13f;
         [Tooltip("[Tbd] Метров вдоль края на повтор текстуры каймы")]
@@ -24,10 +19,8 @@ namespace TanShadow.Summer
         [Min(0.1f)] public float pulsePeriod = 6f;
 
         [Header("Заполняет SummerLavaLook")]
-        public Renderer[] crust;
         public Renderer[] molten;
         public Renderer[] rims;
-        [ColorUsage(false, true)] public Color crustEmission;
         [ColorUsage(false, true)] public Color moltenEmission;
         [ColorUsage(false, true)] public Color rimEmission;
 
@@ -42,7 +35,6 @@ namespace TanShadow.Summer
             block ??= new MaterialPropertyBlock();
             float t = Time.time;
             float breath = 1f + pulse * Mathf.Sin(t * 2f * Mathf.PI / pulsePeriod);
-            Apply(crust, crustTile, crustSpeed, t, breath, crustEmission);
             Apply(molten, moltenTile, moltenSpeed, t, breath * (1f + pulse * 0.5f * Mathf.Sin(t * 1.7f)), moltenEmission);
             Apply(rims, rimTile, 0f, t, breath, rimEmission, true);
         }

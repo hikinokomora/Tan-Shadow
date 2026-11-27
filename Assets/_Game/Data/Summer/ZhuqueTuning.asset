@@ -22,8 +22,8 @@ MonoBehaviour:
   alertTime: 0.35
   startPerchDistance: 60
   minRelocateDistance: 30
-  preferredRelocateDistance: 45
-  relocateSpread: 40
+  relocateNearDistance: 35
+  relocateReverseWeight: 0.08
   relocateMemory: 3
   relocateSpeed: 20
   relocateArcHeight: 9
@@ -43,9 +43,9 @@ MonoBehaviour:
   fallTime: 1.1
   lieTime: 1.6
   regenerateTime: 2.4
+  regenerateGlow: 0.6
   lavaOpenTime: 2.2
   lavaShadowMargin: 1.5
-  overLavaGlow: 0.15
   finalFallTime: 1.2
   cutLeadTime: 0.07
   heatRadius: 1.35

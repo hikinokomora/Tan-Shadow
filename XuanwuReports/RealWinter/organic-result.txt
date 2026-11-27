@@ -1,0 +1,1 @@
+New TerrainData: 3; firs: 150; shrubs: 175; individual boulders: 140

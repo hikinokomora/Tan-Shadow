@@ -1,5 +1,3 @@
-**Latest verification:** see `VALIDATION_V4_2.md`; older report below is historical.
-
 # Проверка комплекта v4 · 24.11.2026
 
 ## Выполнено
@@ -19,17 +17,3 @@
 - https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/terraindata/setheightsdelaylod
 - https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/terraindata
 - https://polyhaven.com/license ; https://docs.ambientcg.com/license/ ; https://www.fab.com/eula ; https://dev.epicgames.com/documentation/fab/licenses-and-pricing-in-fab
-
-
-# Проверка v4.3
-
-- 12 офлайн-тестов успешно выполнены (`python -m unittest discover -s scripts/validation -p 'test*.py' -v`).
-- 14 уникальных англоязычных шаблонов, согласованных между JSON и MD, длина каждого ≤800 символов.
-- Проверены ссылки на новое руководство, JSON-шаблон без авторизации и нулевой исходный бюджет, прежние тесты каталога, recolor, FBX staging.
-- НЕ ПРОВЕРЕНО: реальный вызов Meshy MCP, генерация и качество конкретных сеток, тариф пользователя, компиляция C# и импорт в Unity. Все промпты являются стартовыми шаблонами, не результатами экспериментов.
-- Никаких платных вызовов, передачи изображений или изменения проекта.
-- Сохранены все 97 исходных файлов (часть инструкций обновлена), внешние ассеты и исходные картинки не изменялись.
-
-
-## v4.4
-15/15 offline tests passed. See VALIDATION_V4_4.md for current scope. Unity/MCP/actual generation and runtime metrics NOT RUN. Prior reports are historical.

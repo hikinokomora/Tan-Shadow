@@ -1,0 +1,1 @@
+Sculpted cells 54120; highest skyline 652.1 -> 424.4; added low shrubs 219, edge rocks 32; visibility viewpoints 747; hidden decorations removed 264; remaining firs 242, shrubs 535, rocks 130.

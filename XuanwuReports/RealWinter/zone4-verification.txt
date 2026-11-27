@@ -1,0 +1,1 @@
+Terrain and collider in real_winter use the saved Zone 4 eroded bank asset: True. Total changed height samples: 18082. Heights changed outside Zone 4 bank bounds: 0. Trail heights checked at center and 10 units to both sides: 1338 samples, maximum difference 0.000.

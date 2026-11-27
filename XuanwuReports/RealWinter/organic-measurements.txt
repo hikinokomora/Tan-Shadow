@@ -1,0 +1,19 @@
+Terrain (1000.00, 600.00, 1000.00) 1025 Assets/XuanwuGenerated/RealWinter/Organic/New alpine terrain 0.asset
+Terrain_(47.68, -0.50, -15.10) (1000.00, 600.00, 1000.00) 1025 Assets/XuanwuGenerated/RealWinter/Organic/New alpine terrain 1.asset
+Terrain_(-952.32, -0.50, -1015.10) (1000.00, 600.00, 1000.00) 1025 Assets/XuanwuGenerated/RealWinter/Organic/New alpine terrain 2.asset
+ravine 239 samples, missing 0, max center slope 19,1; heights 57,3 – 42,2
+PawExit 104 samples, missing 0, max center slope 10,2; heights 42,2 – 59,4
+Slope 228 samples, missing 0, max center slope 35,4; heights 59,4 – 200,5
+HeadAndNeck 243 samples, missing 0, max center slope 31,2; heights 200,5 – 333,4
+Shell collider=152950 vertices, heart floor=327,4 pivot=333,9
+(-124.00, 230.00) terrain=58,9
+(-137.00, 418.00) terrain=107,9
+(-77.00, 418.00) terrain=52,3
+(-219.00, 636.00) terrain=200,0
+Terrain Tools noise range 0,3350854 / 0,6315555
+Горные гребни за обрывом objects=3
+Open source dirty=False source mask=0 work mask=16140901064495857664
+Сюаньу · Каменная черепаха objects=7
+Ели · Альпийские группы objects=150
+Кустарник · По краям снежных троп objects=175
+Валуны · Отдельные камни в снегу objects=140

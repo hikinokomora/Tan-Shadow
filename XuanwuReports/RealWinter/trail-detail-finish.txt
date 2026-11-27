@@ -1,0 +1,1 @@
+Additional terrain ribs applied; newly occluded props removed 3; remaining firs 240, shrubs 534, rocks 130.

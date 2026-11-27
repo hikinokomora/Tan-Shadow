@@ -1,0 +1,3 @@
+Zone 4 cliff and shoulder — changed heights 11123; heights outside 0; paint outside 0; terrain holes differing 0; collider aligned True
+Alpine rock and snow massif — changed heights 77201; heights outside 0; paint outside 0; terrain holes differing 0; collider aligned True
+Main trail profile — 1338 height samples on the trail center and 10 units either side; maximum difference 0,000. Scene saved True.

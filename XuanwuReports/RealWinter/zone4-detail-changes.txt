@@ -1,0 +1,1 @@
+Height samples 11262, shoulder samples 3356, range -11.0 to +12.7. Placed 30 rocks including 14 collidable boulders, minimum clearance from trail axis 15.6, reseated 1 existing props. Mountain heights edited 78001, local summit 435.4.

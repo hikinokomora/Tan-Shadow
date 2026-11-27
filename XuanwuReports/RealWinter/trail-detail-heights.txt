@@ -1,0 +1,1 @@
+Raised centerline samples: 305; max altitude change: 0,000 Unity units.

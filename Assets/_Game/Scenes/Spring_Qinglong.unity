@@ -218972,6 +218972,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 879737882}
+  - component: {fileID: 2145000005}
+  - component: {fileID: 2145000006}
   m_Layer: 0
   m_Name: "Spring \xB7 Qinglong"
   m_TagString: Untagged
@@ -558713,6 +558715,65 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18294acf3ecb49a40825fc0dcb95e3c5, type: 3}
+--- !u!114 &2145000005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879737881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a758b0d4984ab9b6128c694357e8f1, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  patrolStart: 0
+  patrolEnd: 0
+  dragonLengthOfLocation: 0.416625
+  dragonWidthOfCanyon: 0.25
+  patrolSpeed: 9.6
+  minTimeBeforeRetreat: 20
+  maxTimeBeforeRetreat: 26
+  minRetreatDuration: 10
+  maxRetreatDuration: 18
+  noticeTimeNear: 0.35
+  noticeTimeFar: 30
+  noticeNearDistance: 3
+  noticeFarDistance: 0
+  awarenessRecovery: 0.28
+  approachCeiling: {fileID: 99171582}
+  requiredStrikes: 4
+  fallbackStrikeReach: 2.4
+  pearlDiameter: 1.4
+  pearlTossHeightInEggs: 1.5
+  pearlPushSpeedMultiplier: 2.75
+  dragonClearanceInEggs: 2.5
+  dragonFallTilt: 78
+  dragonFallDuration: 2.3
+--- !u!114 &2145000006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879737881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ba364788a6fae499fe1fb8d17263ce, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.YinYangCover
+  yinMinHold: 1.6
+  yangMinHold: 2.2
+  fadeOut: 0.3
+  showCornerDot: 1
+  dotDelay: 0.45
+  dotFadeIn: 0.25
+  heartRate: 66
+  secondBeatOffset: 0.3
+  dotRestAlpha: 0.3
+  dotBeatGrow: 0.35
+  dotSize: 0.032
+  dotMargin: 0.05
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

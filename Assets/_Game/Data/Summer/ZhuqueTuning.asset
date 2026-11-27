@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Summer.ZhuqueTuning
   requiredCuts: 4
   lavaAfterCuts: 3
-  timeToDetect: 2.5
+  timeToDetect: 2.8
   detectionRecoverPerSecond: 0.8
   detectFullRange: 15
   viewDistance: 45
@@ -23,6 +23,8 @@ MonoBehaviour:
   startPerchDistance: 60
   minRelocateDistance: 30
   preferredRelocateDistance: 45
+  relocateSpread: 40
+  relocateMemory: 3
   relocateSpeed: 20
   relocateArcHeight: 9
   grabRadius: 1.8
@@ -39,7 +41,7 @@ MonoBehaviour:
   cutThrowHeight: 2
   cutThrowTime: 0.8
   fallTime: 1.1
-  lieTime: 0.6
+  lieTime: 1.6
   regenerateTime: 2.4
   lavaOpenTime: 2.2
   lavaShadowMargin: 1.5

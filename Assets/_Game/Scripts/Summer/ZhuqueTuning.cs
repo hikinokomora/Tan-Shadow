@@ -37,6 +37,10 @@ namespace TanShadow.Summer
         [Min(0)] public float minRelocateDistance = 30f;
         [Tooltip("TBD Предпочитает валун примерно на таком расстоянии от героини (не на другом конце кольца), м")]
         [Min(0)] public float preferredRelocateDistance = 45f;
+        [Tooltip("TBD Разброс выбора: валун дальше от предпочтительного расстояния на столько метров выбирается вдвое реже, м")]
+        [Min(1)] public float relocateSpread = 40f;
+        [Tooltip("TBD На сколько последних валунов птица не возвращается (если есть из чего выбрать)")]
+        [Min(0)] public int relocateMemory = 3;
         [Tooltip("TBD Скорость перелёта, м/с")]
         [Min(1)] public float relocateSpeed = 20f;
         [Tooltip("TBD Высота дуги перелёта, м")]

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -21,33 +20,38 @@ namespace TanShadow.MotionMatchingLab.Editor
             Scene scene = SceneManager.GetActiveScene();
             if (scene.path != MotionLabBuilder.ScenePath || EditorApplication.isPlaying)
                 throw new InvalidOperationException("Open MotionMatchingLab in Edit Mode.");
-            var view = UnityEngine.Object.FindFirstObjectByType<MotionLabView>();
-            if (!view || !view.player)
-                throw new InvalidOperationException("MotionMatchingLab player or view is missing.");
 
-            var motions = ReadClips();
-            var body = CreateArmorMaterial("Guardian Armor", "Guardian_texture_0.png", "Guardian_normal.png",
+            MotionMatchingPlayer legacy = UnityEngine.Object.FindFirstObjectByType<MotionMatchingPlayer>();
+            MotionLabGuardian controller = UnityEngine.Object.FindFirstObjectByType<MotionLabGuardian>();
+            Transform player = legacy ? legacy.transform : controller ? controller.transform : null;
+            Camera camera = Camera.main;
+            if (!player || !camera)
+                throw new InvalidOperationException("Missing Guardian player or scene camera.");
+
+            AnimationClip[] motions = ReadClips();
+            Material body = CreateArmorMaterial("Guardian Armor", "Guardian_texture_0.png", "Guardian_normal.png",
                 "Guardian_texture_0_metallic_roughness.png");
-            var sword = CreateArmorMaterial("Guardian Sword", "Sword_texture_0_002.png", "Sword_normal_002.png",
+            Material sword = CreateArmorMaterial("Guardian Sword", "Sword_texture_0_002.png", "Sword_normal_002.png",
                 "Sword_texture_0_metallic_roughness_001.png");
-            var slate = MaterialFor("Station Slate", new Color(.075f, .12f, .165f), .35f);
-            var marker = MaterialFor("Station Ochre", new Color(.95f, .69f, .27f), .16f);
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(ClipPath(MotionLabGuardian.Clip.Idle));
+            Material slate = MaterialFor("Station Slate", new Color(.075f, .12f, .165f), .35f);
+            Material marker = MaterialFor("Station Ochre", new Color(.95f, .69f, .27f), .16f);
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(ClipPath(MotionLabGuardian.Clip.Idle));
             if (!prefab)
                 throw new InvalidOperationException("Guardian/Clips/Idle.fbx is missing.");
 
-            Transform player = view.player.transform;
-            Transform old = player.Find(VisualName);
-            if (old)
-                Undo.DestroyObjectImmediate(old.gameObject);
+            // Remove the mannequin and the old visual instance from this scene.
+            foreach (Transform child in player.Cast<Transform>().ToArray())
+                if (child.name == VisualName || child.GetComponentInChildren<Animator>(true))
+                    Undo.DestroyObjectImmediate(child.gameObject);
+
             var previousStation = scene.GetRootGameObjects().FirstOrDefault(g => g.name == StationName);
             if (previousStation)
                 Undo.DestroyObjectImmediate(previousStation);
-            var sourceAnimator = player.GetComponentsInChildren<Animator>(true).FirstOrDefault();
-            var visualHolder = new GameObject(VisualName);
-            Undo.RegisterCreatedObjectUndo(visualHolder, "Create Guardian visual");
-            visualHolder.transform.SetParent(player, false);
-            var model = (GameObject)PrefabUtility.InstantiatePrefab(prefab, visualHolder.transform);
+
+            var holder = new GameObject(VisualName);
+            Undo.RegisterCreatedObjectUndo(holder, "Create Guardian visual");
+            holder.transform.SetParent(player, false);
+            var model = (GameObject)PrefabUtility.InstantiatePrefab(prefab, holder.transform);
             model.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             var animator = model.GetComponent<Animator>();
             if (!animator)
@@ -55,34 +59,26 @@ namespace TanShadow.MotionMatchingLab.Editor
             animator.runtimeAnimatorController = null;
             animator.applyRootMotion = false;
             animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-            Transform rigRoot = FindBone(model, "root");
-            Transform leftHand = FindBone(model, "DEF-hand.L");
-            var rest = model.GetComponentsInChildren<Transform>(true)
-                .Select(bone => (bone, bone.localPosition, bone.localRotation, bone.localScale)).ToArray();
-            MotionLabGuardian.Travel raw = SampleTravel(model, rigRoot, visualHolder.transform, motions[(int)MotionLabGuardian.Clip.JumpToBar]);
+            Transform root = FindBone(model, "root");
+            Transform hand = FindBone(model, "DEF-hand.L");
+            AnimationClip grab = motions[(int)MotionLabGuardian.Clip.JumpToBar];
+
+            var raw = SampleTravel(model, root, holder.transform, grab);
             Vector3 advance = raw.samples[^1];
             float planar = new Vector2(advance.x, advance.z).magnitude;
             if (planar < .35f || planar > .70f || Mathf.Abs(advance.y - .205f) > .065f)
                 throw new InvalidOperationException("Guardian jump root scale or axis is unexpected: " + advance);
-            float yaw = Mathf.Atan2(advance.x, advance.z) * Mathf.Rad2Deg;
-            visualHolder.transform.localRotation = Quaternion.Euler(0f, -yaw, 0f);
-            foreach (var (bone, position, rotation, scale) in rest)
-            {
-                bone.SetLocalPositionAndRotation(position, rotation);
-                bone.localScale = scale;
-            }
-            var donorBones = BuildDonorBindings(sourceAnimator, model, player);
-
-            MotionLabGuardian.Travel jump = SampleTravel(model, rigRoot, player, motions[(int)MotionLabGuardian.Clip.JumpToBar]);
-            MotionLabGuardian.Travel dive = SampleTravel(model, rigRoot, player, motions[(int)MotionLabGuardian.Clip.Dive]);
-            MotionLabGuardian.Travel rise = SampleTravel(model, rigRoot, player, motions[(int)MotionLabGuardian.Clip.Rise]);
-            AnimationClip grab = motions[(int)MotionLabGuardian.Clip.JumpToBar];
+            holder.transform.localRotation = Quaternion.Euler(0f, -Mathf.Atan2(advance.x, advance.z) * Mathf.Rad2Deg, 0f);
+            var jump = SampleTravel(model, root, player, grab);
+            var dive = SampleTravel(model, root, player, motions[(int)MotionLabGuardian.Clip.Dive]);
+            var rise = SampleTravel(model, root, player, motions[(int)MotionLabGuardian.Clip.Rise]);
             grab.SampleAnimation(model, grab.length);
-            Vector3 wrist = player.InverseTransformPoint(leftHand.position);
-            float leftSign = Mathf.Sign(wrist.x);
-            Vector3 center = wrist + new Vector3(.06192f * leftSign, .06931f, .02795f);
-            Transform station = BuildStation(center, leftSign, slate, marker, out Transform sign);
+            Vector3 wrist = player.InverseTransformPoint(hand.position);
+            float left = Mathf.Sign(wrist.x);
+            Vector3 bar = wrist + new Vector3(.06192f * left, .06931f, .02795f);
+            Transform station = BuildStation(bar, left, slate, marker);
             motions[(int)MotionLabGuardian.Clip.Idle].SampleAnimation(model, 0f);
+
             foreach (var skin in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 Undo.RecordObject(skin, "Assign Guardian materials");
@@ -90,81 +86,91 @@ namespace TanShadow.MotionMatchingLab.Editor
                 skin.sharedMaterials = Enumerable.Repeat(material, Math.Max(1, skin.sharedMaterials.Length)).ToArray();
                 skin.updateWhenOffscreen = true;
             }
-            if (sourceAnimator)
-            {
-                foreach (var sourceSkin in sourceAnimator.GetComponentsInChildren<Renderer>(true))
-                {
-                    Undo.RecordObject(sourceSkin, "Hide source mannequin");
-                    sourceSkin.enabled = false;
-                }
-            }
-            var guardian = player.GetComponent<MotionLabGuardian>();
-            if (!guardian)
-                guardian = Undo.AddComponent<MotionLabGuardian>(player.gameObject);
-            Undo.RecordObject(guardian, "Configure Guardian animations");
-            guardian.Configure(view.player, animator, rigRoot, station, motions, jump, dive, rise, donorBones);
             if (!model.GetComponent<SwordRopePhysics>())
                 Undo.AddComponent<SwordRopePhysics>(model);
             if (!model.GetComponent<GuardianSecondaryMotion>())
                 Undo.AddComponent<GuardianSecondaryMotion>(model);
-            Undo.RecordObject(view, "Connect Guardian input and station");
-            view.guardian = guardian;
-            view.stations = (view.stations ?? Array.Empty<Transform>()).Take(6).Append(station).ToArray();
-            view.signs = (view.signs ?? Array.Empty<Transform>()).Take(6).Append(sign).ToArray();
-            view.signNames = (view.signNames ?? Array.Empty<string>()).Take(6).Append("7  Sword hang  /  E").ToArray();
+
+            RemoveLegacyCourse(scene);
+            if (legacy)
+                Undo.DestroyObjectImmediate(legacy);
+            var oldView = camera.GetComponent<MotionLabView>();
+            if (oldView)
+                Undo.DestroyObjectImmediate(oldView);
+            if (!controller)
+                controller = Undo.AddComponent<MotionLabGuardian>(player.gameObject);
+            Undo.RecordObject(controller, "Configure Guardian animations");
+            controller.Configure(animator, holder.transform, root, station, motions, jump, dive, rise);
+            Undo.RecordObject(player.gameObject, "Rename Guardian player");
+            player.name = "Guardian Player";
+            Undo.RecordObject(player, "Put Guardian at the grab station");
+            player.SetPositionAndRotation(station.position - station.forward * .49f, station.rotation);
+
+            var follow = camera.GetComponent<GuardianLabCamera>();
+            if (!follow)
+                follow = Undo.AddComponent<GuardianLabCamera>(camera.gameObject);
+            Undo.RecordObject(follow, "Connect Guardian camera");
+            Undo.RecordObject(camera, "Frame Guardian and the grab station");
+            camera.fieldOfView = 46f;
+            follow.Configure(player);
+
             EditorSceneManager.MarkSceneDirty(scene);
             AssetDatabase.SaveAssets();
             if (!EditorSceneManager.SaveScene(scene))
                 throw new InvalidOperationException("Could not save MotionMatchingLab.");
-            Selection.activeGameObject = visualHolder;
-            Debug.Log($"Guardian ready. Jump {jump.samples[^1]}, left wrist {wrist}, bar center {center}.");
+            Selection.activeGameObject = player.gameObject;
+            Debug.Log($"Guardian scene ready with {motions.Length} clips and one grab station.");
         }
 
-        static MotionLabGuardian.DonorBone[] BuildDonorBindings(Animator source, GameObject model, Transform player)
+        public static void ConfigureCurrentClips()
         {
-            if (!source)
-                return Array.Empty<MotionLabGuardian.DonorBone>();
-            var src = source.GetComponentsInChildren<Transform>(true);
-            var dst = model.GetComponentsInChildren<Transform>(true);
-            var mappings = new List<(string, string)>
+            Scene scene = SceneManager.GetActiveScene();
+            if (scene.path != MotionLabBuilder.ScenePath || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Open MotionMatchingLab in Edit Mode.");
+            var controller = UnityEngine.Object.FindFirstObjectByType<MotionLabGuardian>();
+            if (!controller || !controller.Takeoff)
+                throw new InvalidOperationException("Guardian and the takeoff marker must already be in the scene.");
+            Transform holder = controller.transform.Find(VisualName);
+            var animator = holder ? holder.GetComponentInChildren<Animator>() : null;
+            if (!animator)
+                throw new InvalidOperationException("Guardian visual is missing.");
+            Transform root = FindBone(animator.gameObject, "root");
+            AnimationClip[] motions = ReadClips();
+            GameObject sample = UnityEngine.Object.Instantiate(animator.gameObject, holder, false);
+            sample.hideFlags = HideFlags.HideAndDontSave;
+            try
             {
-                ("pelvis", "DEF-spine"), ("spine_01", "DEF-spine.001"), ("spine_02", "DEF-spine.002"),
-                ("spine_03", "DEF-spine.003"), ("spine_05", "DEF-spine.004"), ("neck_01", "DEF-spine.005"), ("head", "DEF-spine.006")
-            };
-            foreach (string side in new[] { "l", "r" })
-            {
-                string s = side.ToUpperInvariant();
-                mappings.Add(($"clavicle_{side}", $"DEF-shoulder.{s}"));
-                mappings.Add(($"upperarm_{side}", $"DEF-upper_arm.{s}"));
-                mappings.Add(($"lowerarm_{side}", $"DEF-forearm.{s}"));
-                mappings.Add(($"hand_{side}", $"DEF-hand.{s}"));
-                mappings.Add(($"thigh_{side}", $"DEF-thigh.{s}"));
-                mappings.Add(($"calf_{side}", $"DEF-shin.{s}"));
-                mappings.Add(($"foot_{side}", $"DEF-foot.{s}"));
-                mappings.Add(($"ball_{side}", $"DEF-toe.{s}"));
+                Transform sampleRoot = FindBone(sample, "root");
+                var jump = SampleTravel(sample, sampleRoot, controller.transform, motions[(int)MotionLabGuardian.Clip.JumpToBar]);
+                var dive = SampleTravel(sample, sampleRoot, controller.transform, motions[(int)MotionLabGuardian.Clip.Dive]);
+                var rise = SampleTravel(sample, sampleRoot, controller.transform, motions[(int)MotionLabGuardian.Clip.Rise]);
+                Undo.RecordObject(controller, "Assign Guardian animation clips");
+                controller.Configure(animator, holder, root, controller.Takeoff, motions, jump, dive, rise);
             }
-            var inverse = Quaternion.Inverse(player.rotation);
-            var results = new List<MotionLabGuardian.DonorBone>();
-            foreach (var (sourceName, targetName) in mappings)
+            finally
             {
-                Transform a = Array.Find(src, bone => bone.name == sourceName);
-                Transform b = Array.Find(dst, bone => bone.name == targetName);
-                if (!a || !b)
-                    continue;
-                results.Add(new MotionLabGuardian.DonorBone
-                {
-                    source = a,
-                    target = b,
-                    sourceRestInverse = Quaternion.Inverse(inverse * a.rotation),
-                    targetRest = inverse * b.rotation,
-                    sourcePosition = player.InverseTransformPoint(a.position),
-                    targetPosition = player.InverseTransformPoint(b.position),
-                    transferPosition = sourceName == "pelvis"
-                });
+                UnityEngine.Object.DestroyImmediate(sample);
             }
-            return results.ToArray();
+            EditorSceneManager.MarkSceneDirty(scene);
+            if (!EditorSceneManager.SaveScene(scene))
+                throw new InvalidOperationException("Could not save MotionMatchingLab.");
         }
 
+        static void RemoveLegacyCourse(Scene scene)
+        {
+            GameObject course = scene.GetRootGameObjects().FirstOrDefault(g => g.name == "Test Course");
+            if (!course)
+                return;
+            Transform floor = course.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "Main floor");
+            if (!floor)
+                throw new InvalidOperationException("The scene floor could not be separated from the old course.");
+            Undo.SetTransformParent(floor, null, "Keep the floor");
+            Undo.RecordObject(floor.gameObject, "Rename the floor");
+            floor.name = "Ground";
+            Undo.RecordObject(floor, "Expand the flat floor");
+            floor.localScale = new Vector3(43f, .48f, 43f);
+            Undo.DestroyObjectImmediate(course);
+        }
         static AnimationClip[] ReadClips()
         {
             var all = (MotionLabGuardian.Clip[])Enum.GetValues(typeof(MotionLabGuardian.Clip));
@@ -241,7 +247,7 @@ namespace TanShadow.MotionMatchingLab.Editor
             return new MotionLabGuardian.Travel { samples = travel, duration = clip.length };
         }
 
-        static Transform BuildStation(Vector3 center, float leftSign, Material frame, Material accent, out Transform sign)
+        static Transform BuildStation(Vector3 center, float leftSign, Material frame, Material accent)
         {
             var root = new GameObject(StationName);
             Undo.RegisterCreatedObjectUndo(root, "Create sword hang station");
@@ -270,9 +276,6 @@ namespace TanShadow.MotionMatchingLab.Editor
             }
             Block(root.transform, "Takeoff line", PrimitiveType.Cube, new Vector3(0, .008f, .35f),
                 new Vector3(.83f, .016f, .041f), Quaternion.identity, accent);
-            sign = new GameObject("Station label").transform;
-            sign.SetParent(root.transform, false);
-            sign.localPosition = new Vector3(0, barPosition.y + .27f, barPosition.z);
             return takeoff;
         }
 
@@ -348,3 +351,4 @@ namespace TanShadow.MotionMatchingLab.Editor
         }
     }
 }
+

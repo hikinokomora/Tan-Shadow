@@ -8,7 +8,6 @@ namespace TanShadow.MotionMatchingLab
     public sealed class MotionLabView : MonoBehaviour
     {
         public MotionMatchingPlayer player;
-        public MotionLabGuardian guardian;
         public Transform[] stations;
         public Transform[] signs;
         public string[] signNames;
@@ -21,7 +20,7 @@ namespace TanShadow.MotionMatchingLab
         GUIStyle heading, body, value, sign;
         static readonly Color Ink = new Color(.025f, .05f, .085f, .94f);
         static readonly Color Accent = new Color(.38f, .91f, .85f);
-        static readonly Key[] StationKeys = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7 };
+        static readonly Key[] StationKeys = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6 };
 
         void Awake()
         {
@@ -39,8 +38,7 @@ namespace TanShadow.MotionMatchingLab
             Keyboard keyboard = Keyboard.current;
             Mouse mouse = Mouse.current;
             Gamepad pad = Gamepad.current;
-            bool hasGuardian = guardian && guardian.Ready;
-            bool orbit = mouse != null && (hasGuardian ? mouse.middleButton.isPressed : mouse.rightButton.isPressed);
+            bool orbit = mouse != null && mouse.rightButton.isPressed;
             if (orbit)
             {
                 Vector2 delta = mouse.delta.ReadValue();
@@ -65,7 +63,6 @@ namespace TanShadow.MotionMatchingLab
                 if (keyboard.rKey.wasPressedThisFrame)
                 {
                     player.ResetToStart();
-                    if (hasGuardian) guardian.ResetVisual();
                     yaw = player.transform.eulerAngles.y;
                     UpdateCamera(true);
                 }
@@ -75,14 +72,13 @@ namespace TanShadow.MotionMatchingLab
                         continue;
                     Transform station = stations[i];
                     player.ResetTo(station.position, station.rotation);
-                    if (hasGuardian) guardian.ResetVisual();
                     yaw = station.eulerAngles.y;
                     UpdateCamera(true);
                 }
             }
 
             Quaternion orbitYaw = Quaternion.Euler(0f, yaw, 0f);
-            var movement = new MotionInput
+            player.Simulate(new MotionInput
             {
                 move = orbitYaw * new Vector3(axes.x, 0f, axes.y),
                 facing = orbit || (pad != null && pad.leftTrigger.isPressed) ? orbitYaw * Vector3.forward : Vector3.zero,
@@ -92,20 +88,7 @@ namespace TanShadow.MotionMatchingLab
                           || (pad != null && pad.rightShoulder.isPressed),
                 dodge = (keyboard != null && keyboard.spaceKey.wasPressedThisFrame) || (pad != null && pad.buttonSouth.wasPressedThisFrame),
                 traverse = (keyboard != null && keyboard.eKey.wasPressedThisFrame) || (pad != null && pad.buttonWest.wasPressedThisFrame)
-            };
-            if (hasGuardian)
-            {
-                guardian.Tick(movement,
-                    mouse != null && mouse.leftButton.wasPressedThisFrame,
-                    mouse != null && mouse.rightButton.wasPressedThisFrame,
-                    movement.traverse,
-                    keyboard != null && keyboard.qKey.wasPressedThisFrame,
-                    Time.deltaTime);
-            }
-            else
-            {
-                player.Simulate(movement, Time.deltaTime);
-            }
+            }, Time.deltaTime);
         }
 
         void LateUpdate() => UpdateCamera(false);
@@ -137,27 +120,24 @@ namespace TanShadow.MotionMatchingLab
             float width = Screen.width / scale;
             float height = Screen.height / scale;
 
-            bool hasGuardian = guardian && guardian.Ready;
-            Panel(new Rect(20f, 20f, 368f, hasGuardian ? 151f : 131f));
+            Panel(new Rect(20f, 20f, 350f, 131f));
             GUI.Label(new Rect(34f, 29f, 320f, 29f), "Motion Matching Lab", heading);
-            GUI.Label(new Rect(34f, 64f, 336f, 23f), hasGuardian ? "WASD Move  /  MMB Orbit + strafe" : "WASD Move  /  RMB Orbit + strafe", body);
+            GUI.Label(new Rect(34f, 64f, 320f, 23f), "WASD Move  /  RMB Orbit + strafe", body);
             GUI.Label(new Rect(34f, 87f, 320f, 23f), "Alt Walk  /  Shift Sprint  /  Ctrl Crouch", body);
-            GUI.Label(new Rect(34f, 110f, 339f, 23f), hasGuardian ? "LMB / RMB Slashes  /  RMB Hanging stab" : "Space Dodge roll  /  E Parkour or ledge catch", body);
-            if (hasGuardian)
-                GUI.Label(new Rect(34f, 133f, 336f, 23f), "E Grab / release  /  Q Dive  /  Space Roll", body);
+            GUI.Label(new Rect(34f, 110f, 325f, 23f), "Space Dodge roll  /  E Parkour or ledge catch", body);
 
             const float statusWidth = 342f;
             float left = width - statusWidth - 20f;
             Panel(new Rect(left, height - 105f, statusWidth, 85f));
             GUI.Label(new Rect(left + 13f, height - 99f, statusWidth - 26f, 23f),
-                (hasGuardian ? guardian.Status : player.CurrentState) + "   /   " + player.PlanarSpeed.ToString("0.0") + " m/s", value);
-            string current = hasGuardian ? guardian.ClipName : player.CurrentClip;
+                player.CurrentState + "   /   " + player.PlanarSpeed.ToString("0.0") + " m/s", value);
+            string current = player.CurrentClip;
             if (current.StartsWith("M_Neutral_"))
                 current = current.Substring("M_Neutral_".Length);
             GUI.Label(new Rect(left + 13f, height - 73f, statusWidth - 26f, 45f), current, body);
 
             Panel(new Rect(20f, height - 52f, 378f, 32f));
-            GUI.Label(new Rect(32f, height - 49f, 352f, 25f), hasGuardian ? "1–6 Parkour  /  7 Sword hang  /  R Reset" : "1–6 Test stations  /  R Reset to start", body);
+            GUI.Label(new Rect(32f, height - 49f, 352f, 25f), "1–6 Test stations  /  R Reset to start", body);
             DrawSigns(scale);
             GUI.matrix = previous;
         }

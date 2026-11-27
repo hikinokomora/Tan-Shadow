@@ -1,15 +1,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 
 namespace TanShadow.MotionMatchingLab
 {
+    [RequireComponent(typeof(CharacterController))]
     [DisallowMultipleComponent]
     public sealed class MotionLabGuardian : MonoBehaviour
     {
         public enum Clip { Idle, Walk, Run, LeftSlash, RightSlash, JumpToBar, Hang, Stab, Dive, Rise }
-        enum Mode { Locomotion, Attack, Align, Jump, Hang, Stab, Dive, Rise }
+        enum State { Ground, Attack, Align, Jump, Hang, Stab, Dive, Rise }
 
         [Serializable]
         public struct Travel
@@ -21,81 +23,69 @@ namespace TanShadow.MotionMatchingLab
             {
                 if (samples == null || samples.Length == 0)
                     return Vector3.zero;
-                float frame = Mathf.Clamp01(time / Mathf.Max(.01f, duration)) * (samples.Length - 1);
+                float frame = Mathf.Clamp01(time / duration) * (samples.Length - 1);
                 int i = Mathf.FloorToInt(frame);
                 return Vector3.Lerp(samples[i], samples[Mathf.Min(i + 1, samples.Length - 1)], frame - i);
             }
         }
 
-        [Serializable]
-        public struct DonorBone
-        {
-            public Transform source, target;
-            public Quaternion sourceRestInverse, targetRest;
-            public Vector3 sourcePosition, targetPosition;
-            public bool transferPosition;
-        }
-
-        [SerializeField] MotionMatchingPlayer motor;
+        const int ClipCount = (int)Clip.Rise + 1;
         [SerializeField] Animator visual;
-        [SerializeField] Transform visualRoot;
-        [SerializeField] Transform takeoff;
+        [SerializeField] Transform visualOffset, visualRoot, takeoff;
         [SerializeField] AnimationClip[] clips;
         [SerializeField] Travel jump, dive, rise;
-        [SerializeField] DonorBone[] donorBones;
 
-        readonly float[] weights = new float[10];
-        readonly float[] startWeights = new float[10];
-        readonly double[] times = new double[10];
-        readonly AnimationClipPlayable[] playables = new AnimationClipPlayable[10];
+        readonly float[] weights = new float[ClipCount];
+        readonly float[] startWeights = new float[ClipCount];
+        readonly double[] times = new double[ClipCount];
+        readonly AnimationClipPlayable[] playables = new AnimationClipPlayable[ClipCount];
+
+        CharacterController capsule;
         PlayableGraph graph;
         AnimationMixerPlayable mixer;
-        CharacterController capsule;
-        Vector3 rootBind, actionOrigin, alignmentStart;
-        Quaternion rootRotation, alignmentRotation;
+        Vector3 visualBind, rootBind, spawn, journeyStart, alignFrom, velocity, acceleration;
+        Quaternion alignRotation;
+        State state;
         Clip active;
-        Mode mode;
-        float modeTime, blendTime, blendLength, pace, alignmentDuration, donorWeight;
-        float attackBuffer;
-        Clip bufferedAttack;
-        bool walking, sprinting;
+        bool advanceStride;
+        float time, blendTime, blendLength, pace = 1f, alignDuration, verticalSpeed, yawSpeed;
 
         public bool Ready => graph.IsValid();
+        public bool InputEnabled { get; set; } = true;
         public Transform Takeoff => takeoff;
-        public string Status => mode == Mode.Locomotion ? motor.CurrentState : mode.ToString();
-        public string ClipName => !Ready ? string.Empty
-            : mode == Mode.Locomotion && donorWeight > .5f ? motor.CurrentClip : clips[(int)active].name;
+        public string Status => state.ToString();
+        public string ClipName => Ready ? clips[(int)active].name : string.Empty;
 
-        public void Configure(MotionMatchingPlayer source, Animator target, Transform skeletonRoot,
-            Transform spot, AnimationClip[] motions, Travel jumpPath, Travel divePath, Travel risePath,
-            DonorBone[] legacyBindings)
+        public void Configure(Animator animator, Transform holder, Transform skeletonRoot, Transform launch,
+            AnimationClip[] motions, Travel jumpPath, Travel divePath, Travel risePath)
         {
-            motor = source;
-            visual = target;
+            visual = animator;
+            visualOffset = holder;
             visualRoot = skeletonRoot;
-            takeoff = spot;
+            takeoff = launch;
             clips = motions;
             jump = jumpPath;
             dive = divePath;
             rise = risePath;
-            donorBones = legacyBindings;
         }
 
         void OnEnable()
         {
-            if (!motor || !visual || !visualRoot || !takeoff || clips == null || clips.Length != playables.Length
+            if (!visual || !visualOffset || !visualRoot || !takeoff || clips == null || clips.Length != ClipCount
                 || Array.Exists(clips, clip => !clip))
                 return;
 
-            capsule = motor.GetComponent<CharacterController>();
-            rootBind = visualRoot.localPosition;
-            rootRotation = visualRoot.localRotation;
+            capsule = GetComponent<CharacterController>();
+            spawn = transform.position;
+            visualBind = visualOffset.localPosition;
+            rootBind = transform.InverseTransformPoint(visualRoot.position);
             visual.applyRootMotion = false;
             visual.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-            graph = PlayableGraph.Create("Guardian Motion Lab");
+
+            graph = PlayableGraph.Create("Guardian animations");
             graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-            mixer = AnimationMixerPlayable.Create(graph, clips.Length);
-            for (int i = 0; i < clips.Length; i++)
+            mixer = AnimationMixerPlayable.Create(graph, ClipCount);
+            for (int i = 0; i < ClipCount; i++)
             {
                 playables[i] = AnimationClipPlayable.Create(graph, clips[i]);
                 playables[i].SetApplyFootIK(false);
@@ -104,266 +94,256 @@ namespace TanShadow.MotionMatchingLab
             }
             AnimationPlayableOutput.Create(graph, "Guardian", visual).SetSourcePlayable(mixer);
             graph.Play();
-            ResetVisual();
+            ResetPose();
         }
 
         void OnDisable()
         {
             if (graph.IsValid())
                 graph.Destroy();
+            if (visualOffset)
+                visualOffset.localPosition = visualBind;
         }
 
-        public void ResetVisual()
+        void Update()
         {
-            if (!Ready)
+            if (!InputEnabled || !Ready)
                 return;
-            mode = Mode.Locomotion;
-            active = Clip.Idle;
-            modeTime = attackBuffer = donorWeight = 0f;
-            pace = 1f;
-            Array.Clear(weights, 0, weights.Length);
-            Array.Clear(times, 0, times.Length);
-            weights[0] = 1f;
-            blendLength = blendTime = 0f;
-            Evaluate(0f);
+            Keyboard key = Keyboard.current;
+            Mouse mouse = Mouse.current;
+            Vector2 move = key == null ? Vector2.zero : new Vector2(
+                (key.dKey.isPressed ? 1f : 0f) - (key.aKey.isPressed ? 1f : 0f),
+                (key.wKey.isPressed ? 1f : 0f) - (key.sKey.isPressed ? 1f : 0f));
+            Tick(move, key != null && (key.leftAltKey.isPressed || key.rightAltKey.isPressed),
+                key != null && (key.leftShiftKey.isPressed || key.rightShiftKey.isPressed),
+                mouse != null && mouse.leftButton.wasPressedThisFrame,
+                mouse != null && mouse.rightButton.wasPressedThisFrame,
+                key != null && key.eKey.wasPressedThisFrame,
+                key != null && key.spaceKey.wasPressedThisFrame, Time.deltaTime);
         }
 
-        public void Tick(MotionInput movement, bool left, bool right, bool ledge, bool diving, float deltaTime)
+        public void Tick(Vector2 move, bool walk, bool sprint, bool left, bool right, bool grab, bool divePressed, float deltaTime)
         {
-            if (!Ready || deltaTime <= 0f)
+            if (!Ready || deltaTime <= 0)
                 return;
             float dt = Mathf.Min(deltaTime, .05f);
-            attackBuffer = Mathf.Max(0f, attackBuffer - dt);
-            switch (mode)
+            switch (state)
             {
-                case Mode.Locomotion:
-                    Locomote(movement, left, right, ledge, diving, dt);
+                case State.Ground:
+                    Locomote(move, walk, sprint, left, right, grab, divePressed, dt);
                     break;
-                case Mode.Align:
+                case State.Attack:
+                    if (Ended(dt)) Begin(State.Ground, Clip.Idle, .105f);
+                    break;
+                case State.Align:
                     Align(dt);
                     break;
-                case Mode.Jump:
-                    AdvanceTravel(jump, Mode.Hang, Clip.Hang, .075f, dt);
+                case State.Jump:
+                    AdvanceTravel(jump, State.Hang, Clip.Hang, .075f, dt);
                     break;
-                case Mode.Hang:
-                    if (ledge)
-                        Release();
-                    else if (right)
-                        Begin(Mode.Stab, Clip.Stab, .065f);
+                case State.Hang:
+                    if (right) Begin(State.Stab, Clip.Stab, .07f);
                     break;
-                case Mode.Stab:
-                    if (ledge)
-                        Release();
-                    else if (Ends(dt))
-                        Begin(Mode.Hang, Clip.Hang, .075f);
+                case State.Stab:
+                    if (Ended(dt)) Begin(State.Hang, Clip.Hang, .08f);
                     break;
-                case Mode.Attack:
-                    if (left || right)
-                    {
-                        bufferedAttack = right ? Clip.RightSlash : Clip.LeftSlash;
-                        attackBuffer = .16f;
-                    }
-                    if (Ends(dt))
-                        FinishAttack();
+                case State.Dive:
+                    AdvanceTravel(dive, State.Rise, Clip.Rise, .065f, dt);
                     break;
-                case Mode.Dive:
-                    AdvanceTravel(dive, Mode.Rise, Clip.Rise, .065f, dt);
-                    break;
-                case Mode.Rise:
-                    AdvanceTravel(rise, Mode.Locomotion, Clip.Idle, .12f, dt);
+                case State.Rise:
+                    AdvanceTravel(rise, State.Ground, Clip.Idle, .105f, dt);
                     break;
             }
             Evaluate(dt);
         }
 
-        void Locomote(MotionInput movement, bool left, bool right, bool ledge, bool diving, float dt)
+        void ResetPose()
         {
-            walking = movement.walk;
-            sprinting = movement.sprint;
-            if (motor.IsGrounded && (motor.CurrentState == "Ground" || motor.CurrentState == "Crouch"))
+            state = State.Ground;
+            active = Clip.Idle;
+            time = verticalSpeed = yawSpeed = 0f;
+            advanceStride = false;
+            velocity = acceleration = Vector3.zero;
+            pace = 1f;
+            Array.Clear(weights, 0, ClipCount);
+            Array.Clear(times, 0, ClipCount);
+            weights[0] = 1f;
+            blendLength = blendTime = 0f;
+            Evaluate(0f);
+        }
+
+        void Locomote(Vector2 input, bool walk, bool sprint, bool left, bool right, bool grab, bool divePressed, float dt)
+        {
+            if (transform.position.y < -5f)
             {
-                if (ledge && NearTakeoff())
+                capsule.enabled = false;
+                transform.SetPositionAndRotation(spawn, takeoff.rotation);
+                capsule.enabled = true;
+                ResetPose();
+            }
+            if (capsule.isGrounded)
+            {
+                if (grab && NearTakeoff())
                 {
-                    alignmentStart = transform.position;
-                    alignmentRotation = transform.rotation;
-                    alignmentDuration = Mathf.Lerp(.105f, .22f, Quaternion.Angle(alignmentRotation, takeoff.rotation) / 180f);
-                    Begin(Mode.Align, Clip.JumpToBar, .10f);
+                    StopMovement();
+                    alignFrom = transform.position;
+                    alignRotation = transform.rotation;
+                    alignDuration = Mathf.Lerp(.09f, .20f, Quaternion.Angle(alignRotation, takeoff.rotation) / 180f);
+                    Begin(State.Align, Clip.JumpToBar, .085f);
                     return;
                 }
-                if (diving)
+                if (divePressed)
                 {
-                    actionOrigin = transform.position;
-                    Begin(Mode.Dive, Clip.Dive, .085f);
+                    StopMovement();
+                    journeyStart = transform.position;
+                    Begin(State.Dive, Clip.Dive, .085f);
                     return;
                 }
-                if (left || right || attackBuffer > 0f)
+                if (left || right)
                 {
-                    Begin(Mode.Attack, right ? Clip.RightSlash : left ? Clip.LeftSlash : bufferedAttack, .075f);
-                    attackBuffer = 0f;
+                    StopMovement();
+                    Begin(State.Attack, right ? Clip.RightSlash : Clip.LeftSlash, .075f);
                     return;
                 }
             }
-            motor.Simulate(movement, dt);
-            float speed = motor.PlanarSpeed;
-            Clip motion = speed < (active == Clip.Idle ? .31f : .21f) ? Clip.Idle
-                : walking && !sprinting ? Clip.Walk : Clip.Run;
-            float nominalSpeed = motion == Clip.Walk ? 1.88f : 4.70f;
-            float targetPace = motion == Clip.Idle ? 1f : Mathf.Clamp(speed / nominalSpeed, .53f, 1.52f);
-            pace = Mathf.Lerp(pace, targetPace, 1f - Mathf.Exp(-17f * dt));
-            if (motion != active)
+
+            Vector3 wish = Vector3.ClampMagnitude(new Vector3(input.x, 0f, input.y), 1f);
+            bool moving = wish.sqrMagnitude > .001f;
+            bool walking = walk && !sprint;
+            float speed = sprint ? 6.45f : walking ? 1.88f : 4.70f;
+            if (moving)
             {
-                bool gaitChange = (active is Clip.Run or Clip.Walk) && (motion is Clip.Run or Clip.Walk);
-                float strideOffset = gaitChange ? StridePhase(active, times[(int)active]) : 0f;
-                Play(motion, gaitChange ? .13f : .105f, GaitTime(motion, strideOffset));
+                float desiredYaw = Mathf.Atan2(wish.x, wish.z) * Mathf.Rad2Deg;
+                float yaw = Mathf.SmoothDampAngle(transform.eulerAngles.y, desiredYaw, ref yawSpeed, .085f, 720f, dt);
+                transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+                velocity = Vector3.SmoothDamp(velocity, wish * speed, ref acceleration, .115f, 36f, dt);
+            }
+            else
+            {
+                velocity = acceleration = Vector3.zero;
+                yawSpeed = 0f;
+            }
+            verticalSpeed = capsule.isGrounded ? -2f : verticalSpeed - 18f * dt;
+            Vector3 from = transform.position;
+            CollisionFlags contact = capsule.Move((velocity + Vector3.up * verticalSpeed) * dt);
+            Vector3 moved = (transform.position - from) / dt;
+            moved.y = 0f;
+            if ((contact & CollisionFlags.Sides) != 0)
+                velocity = moved;
+
+            advanceStride = moving && moved.magnitude >= (active == Clip.Idle ? .30f : .20f);
+            Clip next = !advanceStride ? Clip.Idle : walking ? Clip.Walk : Clip.Run;
+            float strideSpeed = next == Clip.Walk ? 1.88f : 4.70f;
+            float targetRate = next == Clip.Idle ? 1f : Mathf.Clamp(moved.magnitude / strideSpeed, .5f, 1.45f);
+            pace = Mathf.Lerp(pace, targetRate, 1f - Mathf.Exp(-18f * dt));
+            if (active != next)
+            {
+                bool gaitSwitch = active != Clip.Idle && next != Clip.Idle;
+                float stride = gaitSwitch ? Mathf.Repeat((float)times[(int)active] / clips[(int)active].length * 4f, 1f) : 0f;
+                Play(next, gaitSwitch ? .13f : next == Clip.Idle ? .08f : .10f, clips[(int)next].length * stride / 4f);
             }
         }
-
-        float StridePhase(Clip clip, double time)
-        {
-            return Mathf.Repeat((float)time / clips[(int)clip].length * 4f, 1f);
-        }
-
-        float GaitTime(Clip clip, float phase) => clip is Clip.Run or Clip.Walk ? clips[(int)clip].length * phase / 4f : 0f;
 
         bool NearTakeoff()
         {
             Vector3 delta = takeoff.position - transform.position;
-            return new Vector2(delta.x, delta.z).sqrMagnitude <= .82f * .82f && Mathf.Abs(delta.y) < .28f;
+            return new Vector2(delta.x, delta.z).sqrMagnitude <= .82f * .82f && Mathf.Abs(delta.y) < .24f;
+        }
+
+        void StopMovement()
+        {
+            velocity = acceleration = Vector3.zero;
+            verticalSpeed = yawSpeed = 0f;
+            advanceStride = false;
         }
 
         void Align(float dt)
         {
-            modeTime += dt;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(modeTime / alignmentDuration));
-            Vector3 goal = Vector3.Lerp(alignmentStart, takeoff.position, t);
-            capsule.Move(goal - transform.position);
-            transform.rotation = Quaternion.Slerp(alignmentRotation, takeoff.rotation, t);
-            if (modeTime < alignmentDuration)
+            time += dt;
+            float blend = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(time / alignDuration));
+            Vector3 position = Vector3.Lerp(alignFrom, takeoff.position, blend);
+            capsule.Move(position - transform.position);
+            transform.rotation = Quaternion.Slerp(alignRotation, takeoff.rotation, blend);
+            if (time < alignDuration)
                 return;
-            if ((transform.position - takeoff.position).sqrMagnitude > .12f * .12f)
+            if (Vector3.Distance(transform.position, takeoff.position) > .095f)
             {
-                Release();
+                Begin(State.Ground, Clip.Idle, .10f);
                 return;
             }
-            actionOrigin = transform.position;
-            mode = Mode.Jump;
-            modeTime = 0f;
+            journeyStart = transform.position;
+            time = 0f;
+            state = State.Jump;
         }
 
-        void AdvanceTravel(Travel route, Mode next, Clip nextClip, float blend, float dt)
+        void AdvanceTravel(Travel travel, State nextState, Clip nextClip, float blend, float dt)
         {
-            float startTime = modeTime;
-            modeTime = Mathf.Min(modeTime + dt, clips[(int)active].length);
-            Vector3 goal = actionOrigin + transform.rotation * route.At(modeTime);
-            CollisionFlags collision = capsule.Move(goal - transform.position);
-            if (mode == Mode.Jump && (collision & (CollisionFlags.Above | CollisionFlags.Sides)) != 0
-                && Vector3.Distance(goal, transform.position) > .08f)
+            float before = time;
+            float length = clips[(int)active].length;
+            time = Mathf.Min(time + dt, length);
+            Vector3 next = journeyStart + transform.rotation * travel.At(time);
+            CollisionFlags hit = capsule.Move(next - transform.position);
+            if (state == State.Jump && (hit & (CollisionFlags.Sides | CollisionFlags.Above)) != 0
+                && Vector3.Distance(transform.position, next) > .075f)
             {
-                Release();
+                Begin(State.Ground, Clip.Idle, .10f);
                 return;
             }
-            times[(int)active] = startTime;
-            if (modeTime < clips[(int)active].length - .001f)
-                return;
-            if (next == Mode.Locomotion)
+            times[(int)active] = before;
+            if (time >= length - .001f)
             {
-                Release();
-                return;
+                journeyStart = transform.position;
+                Begin(nextState, nextClip, blend);
             }
-            actionOrigin = transform.position;
-            Begin(next, nextClip, blend);
         }
 
-        bool Ends(float dt)
+        bool Ended(float dt)
         {
-            modeTime += dt;
-            return modeTime >= clips[(int)active].length - .005f;
+            time += dt;
+            return time >= clips[(int)active].length - .005f;
         }
 
-        void FinishAttack()
+        void Begin(State next, Clip clip, float blend)
         {
-            if (attackBuffer > 0f && bufferedAttack != active)
-            {
-                Begin(Mode.Attack, bufferedAttack, .09f);
-                attackBuffer = 0f;
-            }
-            else
-                Release();
-        }
-
-        void Release()
-        {
-            motor.ResetTo(transform.position, transform.rotation);
-            Begin(Mode.Locomotion, Clip.Idle, .105f);
-        }
-
-        void Begin(Mode next, Clip clip, float blend)
-        {
-            mode = next;
-            modeTime = 0f;
+            state = next;
+            time = 0f;
             Play(clip, blend, 0f);
         }
 
-        void Play(Clip clip, float blend, float phase)
+        void Play(Clip clip, float duration, float offset)
         {
-            Array.Copy(weights, startWeights, weights.Length);
+            Array.Copy(weights, startWeights, ClipCount);
             active = clip;
-            int slot = (int)clip;
-            if (weights[slot] < .08f)
-                times[slot] = phase;
-            blendLength = blend;
+            if (weights[(int)clip] < .08f)
+                times[(int)clip] = offset;
+            blendLength = duration;
             blendTime = 0f;
         }
 
         void Evaluate(float dt)
         {
             blendTime += dt;
-            float t = blendLength <= 0f ? 1f : Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(blendTime / blendLength));
-            for (int i = 0; i < weights.Length; i++)
+            float blend = blendLength <= 0f ? 1f : Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(blendTime / blendLength));
+            for (int i = 0; i < ClipCount; i++)
             {
                 bool target = i == (int)active;
-                weights[i] = Mathf.Lerp(startWeights[i], target ? 1f : 0f, t);
+                weights[i] = Mathf.Lerp(startWeights[i], target ? 1f : 0f, blend);
                 mixer.SetInputWeight(i, weights[i]);
-                if (weights[i] <= 0.0001f)
+                if (weights[i] <= .0001f)
                     continue;
-
                 Clip clip = (Clip)i;
-                bool loop = clip is Clip.Idle or Clip.Walk or Clip.Run or Clip.Hang;
-                float adjustment = clip is Clip.Walk or Clip.Run ? pace : 1f;
-                if (!(target && mode == Mode.Align))
-                    times[i] += dt * adjustment;
+                bool gait = clip is Clip.Walk or Clip.Run;
+                bool loop = gait || clip is Clip.Idle or Clip.Hang;
+                if (!(target && state == State.Align) && (!gait || advanceStride))
+                    times[i] += dt * (gait ? pace : 1f);
                 times[i] = loop ? times[i] % clips[i].length : Math.Min(times[i], clips[i].length);
                 playables[i].SetTime(times[i]);
             }
+            visualOffset.localPosition = visualBind;
             graph.Evaluate(0f);
-            visualRoot.SetLocalPositionAndRotation(rootBind, rootRotation);
-            ApplyExistingTraversalPose(dt);
-        }
-
-        void ApplyExistingTraversalPose(float dt)
-        {
-            if (donorBones == null || donorBones.Length == 0)
-                return;
-            bool useDonor = mode == Mode.Locomotion && motor.CurrentState != "Ground";
-            donorWeight = Mathf.MoveTowards(donorWeight, useDonor ? 1f : 0f, dt * 9f);
-            if (donorWeight <= 0f)
-                return;
-            float blend = Mathf.SmoothStep(0f, 1f, donorWeight);
-            Quaternion actor = transform.rotation;
-            Quaternion inverse = Quaternion.Inverse(actor);
-            foreach (DonorBone bone in donorBones)
-            {
-                if (!bone.source || !bone.target)
-                    continue;
-                if (bone.transferPosition)
-                {
-                    Vector3 delta = transform.InverseTransformPoint(bone.source.position) - bone.sourcePosition;
-                    Vector3 position = transform.TransformPoint(bone.targetPosition + delta * .96f);
-                    bone.target.position = Vector3.Lerp(bone.target.position, position, blend);
-                }
-                Quaternion pose = actor * (inverse * bone.source.rotation * bone.sourceRestInverse) * bone.targetRest;
-                bone.target.rotation = Quaternion.Slerp(bone.target.rotation, pose, blend);
-            }
+            // More than one top-level bone carries the translation in the FBX.
+            // Cancel it on their shared model parent so no skinned branches can separate.
+            visualOffset.localPosition = visualBind + rootBind - transform.InverseTransformPoint(visualRoot.position);
         }
     }
 }

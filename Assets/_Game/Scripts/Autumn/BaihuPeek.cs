@@ -42,31 +42,65 @@ namespace TanShadow.Autumn
 
         Transform head, grass;
         readonly List<Renderer> eyeRenderers = new List<Renderer>();
+        Renderer[] visualParts;
+        bool[] visualDefaults;
         MaterialPropertyBlock block;
         float emerge, aggro, phase;
+        float scareFadeUntil;
         bool hiding;
         float hideTime;                   // длительность текущего исчезновения
         float withdrawBack, withdrawSink; // отступление вглубь зарослей (отпугнули)
         static readonly int Emissive = Shader.PropertyToID("_EmissiveColor");
+        static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 
         void Awake()
         {
             block = new MaterialPropertyBlock();
             Build();
+            visualParts = GetComponentsInChildren<Renderer>(true);
+            visualDefaults = new bool[visualParts.Length];
+            for (int i = 0; i < visualParts.Length; i++)
+                visualDefaults[i] = visualParts[i].enabled;
             gameObject.SetActive(false);
         }
 
         public void Show(Vector3 eyesPosition, Vector3 lookAt)
         {
+            SetPinned(false);
             transform.position = eyesPosition;
             Face(lookAt);
             hiding = false;
             withdrawBack = withdrawSink = 0f;
             emerge = 0f;
             aggro = 0f;
+            scareFadeUntil = 0f;
             phase = Random.value * 10f;
             gameObject.SetActive(true);
             Pose();
+        }
+
+        public void ShowPinned(Vector3 eyesPosition, Vector3 lookAt)
+        {
+            transform.position = eyesPosition;
+            Face(lookAt);
+            hiding = false;
+            withdrawBack = withdrawSink = 0f;
+            emerge = 1f;
+            aggro = .4f;
+            SetPinned(true);
+            gameObject.SetActive(true);
+            Pose();
+        }
+
+        void SetPinned(bool value)
+        {
+            if (visualParts == null || eyeRenderers.Count == 0) return;
+            for (int i = 0; i < visualParts.Length; i++)
+            {
+                var part = visualParts[i];
+                bool foreground = !value && !part.transform.IsChildOf(head);
+                part.enabled = visualDefaults[i] && (foreground || eyeRenderers.Contains(part));
+            }
         }
 
         public void Hide(bool instant = false)
@@ -86,6 +120,7 @@ namespace TanShadow.Autumn
             hideTime = duration;
             withdrawBack = back;
             withdrawSink = sink;
+            scareFadeUntil = Time.time + 0.24f;
         }
 
         public void Face(Vector3 lookAt)
@@ -130,11 +165,15 @@ namespace TanShadow.Autumn
                 grass.localRotation = Quaternion.Euler(Mathf.Sin(phase * 2.3f * stir) * 2f * stir, 0f, Mathf.Sin(phase * 1.7f * stir) * 3f * stir);
             }
 
-            Color glow = new Color(1f, 0.08f, 0.04f) * Mathf.Lerp(eyeGlow.x, eyeGlow.y, aggro) * e;
+            float eyeOpacity = hiding && withdrawBack > 0f
+                ? Mathf.Clamp01((scareFadeUntil - Time.time) / 0.24f)
+                : e;
+            Color glow = new Color(1f, 0.035f, 0.018f) * Mathf.Lerp(eyeGlow.x, eyeGlow.y, aggro) * eyeOpacity;
             foreach (var r in eyeRenderers)
             {
                 r.GetPropertyBlock(block);
                 block.SetColor(Emissive, glow);
+                block.SetColor(BaseColor, new Color(.36f, .015f, .008f) * eyeOpacity);
                 r.SetPropertyBlock(block);
             }
         }

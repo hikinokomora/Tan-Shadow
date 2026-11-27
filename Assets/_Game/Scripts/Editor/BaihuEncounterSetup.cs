@@ -54,7 +54,6 @@ namespace TanShadow.EditorTools
             var monument = monumentRoot.GetComponent<BaihuMonument>();
             if (monument == null) monument = monumentRoot.gameObject.AddComponent<BaihuMonument>();
             monument.shaftCollider = shaft;
-            monument.crackMaterial = AssetDatabase.LoadAssetAtPath<Material>(ArtDir + "Basal fractures.mat");
             monument.stages = tuning.requiredHits;
 
             // Маркер начала охоты: героиня сбежала с насыпи и немного прошла по тропе.

@@ -13,20 +13,28 @@ namespace ShadowTan.Player
         [SerializeField] float rayLength = 1f;
 
         public event Action<SurfaceDefinition> FootstepDetected;
+        public RaycastHit LastContact { get; private set; }
 
         void Awake()
         {
             if (probe == null) probe = transform;
         }
 
+        public bool TryGetContact(out RaycastHit hit)
+        {
+            var origin = probe != null ? probe : transform;
+            return Physics.Raycast(origin.position + Vector3.up * 0.1f, Vector3.down, out hit,
+                rayLength, groundMask, QueryTriggerInteraction.Ignore);
+        }
+
         public void OnFootstep()
         {
-            if (!Physics.Raycast(probe.position + Vector3.up * 0.1f, Vector3.down, out var hit,
-                    rayLength, groundMask, QueryTriggerInteraction.Ignore))
+            if (!TryGetContact(out var hit))
             {
                 return;
             }
 
+            LastContact = hit;
             var tag = hit.collider.GetComponentInParent<SurfaceTag>();
             FootstepDetected?.Invoke(tag != null ? tag.Surface : null);
         }

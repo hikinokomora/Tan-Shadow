@@ -163,6 +163,13 @@ namespace ShadowTan.EditorTools
 
         static void PlantEdgeForest(Transform bambooRoot, GameObject[] prefabs, Scene scene, PolishReport report)
         {
+            if (bambooRoot.parent.Find(AutumnDenseForest.RootName) != null)
+            {
+                int obsolete = RemovePreviousPlants(bambooRoot);
+                report.Note($"Dense forest is installed. Removed {obsolete} BambooEdge_* instances and skipped edge planting.");
+                return;
+            }
+
             var rnd = new System.Random(Seed);
 
             int removed = RemovePreviousPlants(bambooRoot);

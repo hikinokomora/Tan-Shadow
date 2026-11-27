@@ -13,14 +13,34 @@ MonoBehaviour:
   m_Name: BaihuSoundBank
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuSoundBank
   forestAmbience:
-    clips: []
-    volume: 0.35
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: ea81eaa65ffd5d045b789ac3bf4cd5fc, type: 3}
+    volume: 0.38
+    pitchJitter: 0
     spatial: 0
+  forestOneShot:
+    clips:
+    - {fileID: 8300000, guid: 9adf8d31b23aa2a4ebcc7027e8de583d, type: 3}
+    volume: 0.34
+    pitchJitter: 0.035
+    spatial: 1
   rustle:
-    clips: []
-    volume: 0.8
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: 5bf7cb4a1661bea429488875eea73d38, type: 3}
+    volume: 0.62
+    pitchJitter: 0.035
+    spatial: 1
+  fleetingRustle:
+    clips:
+    - {fileID: 8300000, guid: 9f57882e40a3b1549b0d37152010b7d4, type: 3}
+    volume: 0.52
+    pitchJitter: 0.035
+    spatial: 1
+  tigerRoar:
+    clips:
+    - {fileID: 8300000, guid: 7e563c3319e67034ca6ca88babad565c, type: 3}
+    volume: 0.65
+    pitchJitter: 0.035
     spatial: 1
   eyesAppear:
     clips: []
@@ -28,8 +48,9 @@ MonoBehaviour:
     pitchJitter: 0.05
     spatial: 1
   aggroNoiseLoop:
-    clips: []
-    volume: 1
+    clips:
+    - {fileID: 8300000, guid: a1973828b80fbba46989c1bd85b660d9, type: 3}
+    volume: 0.42
     pitchJitter: 0
     spatial: 0
   swingCounted:
@@ -37,7 +58,7 @@ MonoBehaviour:
     volume: 0.5
     pitchJitter: 0.05
     spatial: 0
-  scaredRunAcross:
+  scaredWithdraw:
     clips: []
     volume: 0.9
     pitchJitter: 0.05
@@ -48,24 +69,50 @@ MonoBehaviour:
     pitchJitter: 0
     spatial: 0
   pounce:
-    clips: []
-    volume: 1
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: 2d40cf8920e7a2b4c8ab87d18cf81374, type: 3}
+    volume: 0.78
+    pitchJitter: 0.035
     spatial: 1
   pounceMiss:
     clips: []
     volume: 0.7
     pitchJitter: 0.05
     spatial: 1
-  monumentImpact:
+  tigerFall:
     clips: []
-    volume: 1
+    volume: 0.9
     pitchJitter: 0.05
     spatial: 1
+  tigerGetUp:
+    clips:
+    - {fileID: 8300000, guid: 568392efa28063b48a7c18ab898aa15f, type: 3}
+    volume: 0.68
+    pitchJitter: 0.035
+    spatial: 1
+  tigerLeapAway:
+    clips:
+    - {fileID: 8300000, guid: 8e1574c6d8add0242b4449a41bcbe896, type: 3}
+    volume: 0.5
+    pitchJitter: 0.035
+    spatial: 1
+  monumentImpact:
+    clips:
+    - {fileID: 8300000, guid: b6c1686960d27494cbcb1b6403521159, type: 3}
+    volume: 0.7
+    pitchJitter: 0.035
+    spatial: 1
   monumentCrack:
-    clips: []
-    volume: 0.8
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: 9f48cbac47e9fd84bb9a4ea2b822288f, type: 3}
+    volume: 0.48
+    pitchJitter: 0.035
+    spatial: 1
+  monumentDebris:
+    clips:
+    - {fileID: 8300000, guid: 0f0f850171915924a85ea40fcf509007, type: 3}
+    volume: 0.37
+    pitchJitter: 0.035
     spatial: 1
   monumentFall:
     clips: []

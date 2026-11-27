@@ -7,7 +7,7 @@ TerrainLayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TL_Autumn_Grass
-  m_DiffuseTexture: {fileID: 2800000, guid: fbb95139d2630904ca844b8eeb31b550, type: 3}
+  m_DiffuseTexture: {fileID: 2800000, guid: 7893c6555dc48b3478360dd2452c625a, type: 3}
   m_NormalMapTexture: {fileID: 2800000, guid: 205bbe3ac85b4a84ebfc642e69c0b2e1, type: 3}
   m_MaskMapTexture: {fileID: 2800000, guid: c095209dc405da14ebb06c7d0adcd69b, type: 3}
   m_TileSize: {x: 5.5, y: 5.5}
@@ -16,8 +16,8 @@ TerrainLayer:
   m_Metallic: 0
   m_Smoothness: 0.1
   m_NormalScale: 1
-  m_DiffuseRemapMin: {x: 0.95, y: 1, z: 0.9, w: 0}
-  m_DiffuseRemapMax: {x: 1.05, y: 1.08, z: 1, w: 1}
+  m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
+  m_DiffuseRemapMax: {x: 0.94, y: 0.88, z: 0.65, w: 1}
   m_MaskMapRemapMin: {x: 0, y: 0, z: 0, w: 0}
   m_MaskMapRemapMax: {x: 1, y: 1, z: 1, w: 1}
   m_SmoothnessSource: 1

@@ -4,7 +4,10 @@
     "references": [
         "ShadowTan.Core",
         "ShadowTan.Combat",
-        "ShadowTan.Player"
+        "ShadowTan.Player",
+        "ShadowTan.Gameplay.Autumn",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.HighDefinition.Runtime"
     ],
     "includePlatforms": [
         "Editor"

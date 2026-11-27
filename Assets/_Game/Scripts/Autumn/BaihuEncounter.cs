@@ -89,6 +89,12 @@ namespace TanShadow.Autumn
         public int Swings { get; private set; }
         public int Hits => monument != null ? monument.Hits : 0;
         public Vector3 ThreatPoint { get; private set; }    // где сейчас глаза / тигр
+        public Vector3 PresentationHeading => State == BaihuState.Pounce
+            ? pounceDir
+            : State == BaihuState.Retreat
+                ? (moveTo - moveFrom).normalized
+                : Vector3.forward;
+        public bool IsRelocating => relocating;
 
         float timer;
         float flightTime;

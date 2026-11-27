@@ -15,6 +15,8 @@ namespace TanShadow.Seasons
         [Range(0, 0.5f)] public float pitchJitter = 0.05f;
         [Tooltip("0 — звук без положения (2D), 1 — в мире (3D)")]
         [Range(0, 1)] public float spatial = 1f;
+        [Tooltip("Где в клипе главный момент (удар, вспышка, всплеск), с от начала. По нему звук выравнивается со временем события")]
+        [Min(0)] public float accent;
 
         public SoundSlot() { }
         public SoundSlot(float volume, float spatial) { this.volume = volume; this.spatial = spatial; }

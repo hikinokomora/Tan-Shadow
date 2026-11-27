@@ -169,3 +169,10 @@ Packages/packages-lock.json linguist-generated
 
 # Exceptions for .asset files such as lightning pre-baking
 LightingData.asset     binary
+
+# These native TerrainData assets are binary. Keep their serialized bytes intact.
+"/Assets/New Terrain.asset" binary !eol
+/Assets/TerrainData_6b2ac60c-7993-49dc-bee5-fb52f7fd1f84.asset binary !eol
+/Assets/TerrainData_e9892a5d-0f5a-4bb3-9a19-f97e7556bbc8.asset binary !eol
+"/Assets/XuanwuGenerated/AssetSlice02/Terrain/Ravine and Paw terrain copy 1.asset" binary !eol
+"/Assets/XuanwuGenerated/AssetSlice02/Terrain/Ravine and Paw terrain copy 2.asset" binary !eol

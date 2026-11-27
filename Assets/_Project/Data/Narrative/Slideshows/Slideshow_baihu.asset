@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe836e502186ef408979df209efce1f, type: 3}
+  m_Name: Slideshow_baihu
+  m_EditorClassIdentifier: ShadowTan.Narrative::ShadowTan.Narrative.SlideshowData
+  slideshowId: baihu
+  slides:
+  - image: {fileID: 21300000, guid: 2638e06ca60a349468f5371daaf02787, type: 3}
+    lines:
+    - voiceOver: {fileID: 0}
+      captionRu: "\u041E\u0441\u0435\u043D\u044C. \u0421\u043B\u0430\u0439\u0434
+        1 \u2014 \u0442\u0435\u043A\u0441\u0442-\u0437\u0430\u0433\u043B\u0443\u0448\u043A\u0430."
+      captionZh: "\u79CB\u5929\u3002\u7B2C\u4E00\u5F20\u5E7B\u706F\u7247\u2014\u2014\u5360\u4F4D\u6587\u5B57\u3002"
+    voiceOver: {fileID: 0}
+    captionRu: 
+    captionZh: 
+  - image: {fileID: 21300000, guid: 4a69c842589d6344b821c3930784060a, type: 3}
+    lines:
+    - voiceOver: {fileID: 0}
+      captionRu: "\u041E\u0441\u0435\u043D\u044C. \u0421\u043B\u0430\u0439\u0434
+        2 \u2014 \u0442\u0435\u043A\u0441\u0442-\u0437\u0430\u0433\u043B\u0443\u0448\u043A\u0430."
+      captionZh: "\u79CB\u5929\u3002\u7B2C\u4E8C\u5F20\u5E7B\u706F\u7247\u2014\u2014\u5360\u4F4D\u6587\u5B57\u3002"
+    - voiceOver: {fileID: 0}
+      captionRu: "\u041E\u0441\u0435\u043D\u044C. \u0421\u043B\u0430\u0439\u0434
+        2, \u0432\u0442\u043E\u0440\u0430\u044F \u0440\u0435\u043F\u043B\u0438\u043A\u0430
+        \u2014 \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0430 \u0442\u0430 \u0436\u0435."
+      captionZh: "\u79CB\u5929\u3002\u7B2C\u4E8C\u5F20\u5E7B\u706F\u7247\uFF0C\u7B2C\u4E8C\u53E5\u2014\u2014\u56FE\u7247\u4E0D\u53D8\u3002"
+    voiceOver: {fileID: 0}
+    captionRu: 
+    captionZh: 
+  - image: {fileID: 21300000, guid: 503c14e95223fea42b29233e99cf8846, type: 3}
+    lines:
+    - voiceOver: {fileID: 0}
+      captionRu: "\u041E\u0441\u0435\u043D\u044C. \u0421\u043B\u0430\u0439\u0434
+        3 \u2014 \u0442\u0435\u043A\u0441\u0442-\u0437\u0430\u0433\u043B\u0443\u0448\u043A\u0430."
+      captionZh: "\u79CB\u5929\u3002\u7B2C\u4E09\u5F20\u5E7B\u706F\u7247\u2014\u2014\u5360\u4F4D\u6587\u5B57\u3002"
+    voiceOver: {fileID: 0}
+    captionRu: 
+    captionZh: 
+  nextScene: Autumn_Baihu

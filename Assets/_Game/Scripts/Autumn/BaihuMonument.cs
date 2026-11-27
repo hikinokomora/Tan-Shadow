@@ -9,6 +9,7 @@ namespace TanShadow.Autumn
     {
         [Tooltip("Коллайдер ствола: по нему считается попадание тигра")]
         public BoxCollider shaftCollider;
+        [SerializeField] MeshRenderer artShaft;
         [SerializeField] Material[] crackStages;
         [SerializeField] Mesh damagedShaft;
         [Tooltip("Ударов до падения (должно совпадать с BaihuTuning.requiredHits)")]
@@ -38,8 +39,8 @@ namespace TanShadow.Autumn
             restRotation = transform.rotation;
             if (shaftCollider != null)
             {
-                shaftVisual = shaftCollider.GetComponent<MeshFilter>();
-                shaftRenderer = shaftCollider.GetComponent<MeshRenderer>();
+                shaftRenderer = artShaft ? artShaft : shaftCollider.GetComponent<MeshRenderer>();
+                if (shaftRenderer != null) shaftVisual = shaftRenderer.GetComponent<MeshFilter>();
                 if (shaftVisual != null) originalShaft = shaftVisual.sharedMesh;
                 if (shaftRenderer != null) originalMaterial = shaftRenderer.sharedMaterial;
             }

@@ -41,7 +41,7 @@ namespace ShadowTan.EditorTools
             var atmosphere = battle ? scene.GetRootGameObjects().First().transform
                 : transforms.Single(t => t.name == "Atmosphere" && t.parent != null && t.parent.name == "[Level]");
             var root = FindOrCreate(atmosphere, "[Autumn VFX]");
-            var dustMaterial = Material("Autumn_Dust", shader, DustAtlas(), new Color(.51f, .38f, .22f, .55f));
+            var dustMaterial = Material("Autumn_Dust", shader, DustAtlas(), new Color(.68f, .53f, .33f, .66f));
             var leafMaterial = Material("Autumn_Leaves", shader, LeafAtlas(), new Color(.88f, .72f, .40f, .88f));
             var debrisMaterial = Material("Autumn_StoneDebris", Shader.Find("HDRP/Lit"), null, new Color(.31f, .23f, .15f));
             var shardMaterial = Material("Autumn_MonumentChips", Shader.Find("HDRP/Lit"), null, new Color(.27f, .25f, .22f));
@@ -139,7 +139,7 @@ namespace ShadowTan.EditorTools
             });
         }
 
-        static void BindBattle(Component encounter, AutumnVfxDirector director)
+        internal static void BindBattle(Component encounter, AutumnVfxDirector director, bool bindEyeSignals = true)
         {
             var type = TypeCache.GetTypesDerivedFrom<MonoBehaviour>().Single(t => t.FullName == "TanShadow.Autumn.BaihuVfxBridge");
             var binding = encounter.GetComponent(type);
@@ -147,8 +147,11 @@ namespace ShadowTan.EditorTools
             Undo.RecordObject(binding, "Bind Baihu encounter VFX");
             Set(binding, so => Reference(so, "encounter", encounter));
             Field<UnityEvent<Vector3>>(binding, "rustled", (Action<Vector3>)director.Rustle);
-            Field<UnityEvent>(binding, "eyesShown", (Action)director.EyesShown);
-            Field<UnityEvent>(binding, "scared", (Action)director.Scared);
+            if (bindEyeSignals)
+            {
+                Field<UnityEvent>(binding, "eyesShown", (Action)director.EyesShown);
+                Field<UnityEvent>(binding, "scared", (Action)director.Scared);
+            }
             Field<UnityEvent<Vector3, Vector3>>(binding, "pounced", (Action<Vector3, Vector3>)director.Leap);
             Field<UnityEvent<Vector3, Vector3>>(binding, "leaptAway", (Action<Vector3, Vector3>)director.Takeoff);
             Field<UnityEvent<Vector3>>(binding, "landed", (Action<Vector3>)director.Landing);

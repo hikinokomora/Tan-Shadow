@@ -1,4 +1,5 @@
 using TanShadow.Seasons;
+using ShadowTan.Gameplay.Autumn;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -12,6 +13,7 @@ namespace TanShadow.Autumn
         public BaihuSoundBank bank;
         [SerializeField] AudioMixerGroup ambienceMix;
         [SerializeField] AudioMixerGroup effectsMix;
+        [SerializeField] AutumnWindAudio sceneAudio;
 
         readonly AudioSource[] voices = new AudioSource[6];
         AudioSource ambience, noise;
@@ -20,8 +22,9 @@ namespace TanShadow.Autumn
 
         void Awake()
         {
-            ambience = MakeSource("Forest ambience", ambienceMix, true);
             noise = MakeSource("Aggro growl", effectsMix, true);
+            if (sceneAudio) return;
+            ambience = MakeSource("Forest ambience", ambienceMix, true);
             for (int i = 0; i < voices.Length; i++)
                 voices[i] = MakeSource($"Baihu voice {i + 1}", effectsMix, false);
         }
@@ -81,7 +84,7 @@ namespace TanShadow.Autumn
                 float target = encounter.tuning.noiseByAggro.Evaluate(encounter.Aggro) * slot.volume;
                 noise.volume = Mathf.MoveTowards(noise.volume, target, Time.unscaledDeltaTime * 1.85f);
             }
-            if (Time.time < nextCuckoo || encounter.Zone != BaihuZone.Trail || !encounter.hero) return;
+            if (sceneAudio || Time.time < nextCuckoo || encounter.Zone != BaihuZone.Trail || !encounter.hero) return;
             var p = encounter.hero.Body.position;
             float side = Random.value < .5f ? -1f : 1f;
             if (Play(bank.forestOneShot, p + new Vector3(side * 23f, 8f, 15f), 175, 1f, 7f, 64f))
@@ -91,7 +94,7 @@ namespace TanShadow.Autumn
         }
 
         void OnRustle(Vector3 point)
-            => Play(encounter.IsRelocating ? bank?.fleetingRustle : bank?.rustle, point, 100);
+            => Play(encounter.RustleIsRelocation ? bank?.fleetingRustle : bank?.rustle, point, 100);
 
         void OnScared(Vector3 point) => Play(bank?.fleetingRustle, point, 125, .8f);
         void OnPounce(Vector3 point) => Play(bank?.pounce, point, 80);
@@ -113,15 +116,30 @@ namespace TanShadow.Autumn
             if (!cover && encounter.tigerBody) Play(bank?.tigerRoar, encounter.tigerBody.position, 65);
         }
 
-        void OnCovered(YinYangCover.Kind _) => StopAudio();
-        void OnRevealed(YinYangCover.Kind _) => Resume();
-        void OnDefeated() { defeated = true; StopAudio(); }
+        void OnCovered(YinYangCover.Kind _)
+        {
+            if (sceneAudio) sceneAudio.Suppress(true);
+            StopAudio();
+        }
+
+        void OnRevealed(YinYangCover.Kind _)
+        {
+            if (sceneAudio) sceneAudio.Suppress(defeated);
+            Resume();
+        }
+
+        void OnDefeated()
+        {
+            defeated = true;
+            if (sceneAudio) sceneAudio.Suppress(true);
+            StopAudio();
+        }
         void OnReset() { defeated = false; if (!Covered) Resume(); }
 
         void Resume()
         {
             if (!bank || defeated || Covered) return;
-            StartLoop(ambience, bank.forestAmbience, bank.forestAmbience.volume);
+            if (ambience) StartLoop(ambience, bank.forestAmbience, bank.forestAmbience.volume);
             StartLoop(noise, bank.aggroNoiseLoop, 0f);
             ScheduleCuckoo();
         }
@@ -142,6 +160,9 @@ namespace TanShadow.Autumn
             if (Covered || defeated || slot == null) return false;
             var clip = slot.Pick();
             if (!clip) return false;
+            float pitch = Random.Range(1f - slot.pitchJitter, 1f + slot.pitchJitter);
+            if (sceneAudio)
+                return sceneAudio.PlaySpatial(clip, position, slot.volume * scale, pitch, near, far, priority, effectsMix);
             AudioSource available = null;
             foreach (var voice in voices)
             {
@@ -155,7 +176,7 @@ namespace TanShadow.Autumn
             available.priority = priority;
             available.minDistance = near;
             available.maxDistance = far;
-            available.pitch = Random.Range(1f - slot.pitchJitter, 1f + slot.pitchJitter);
+            available.pitch = pitch;
             available.volume = slot.volume * scale;
             available.clip = clip;
             available.Play();

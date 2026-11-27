@@ -19,7 +19,7 @@ namespace ShadowTan.Gameplay.Autumn
 
         public void Landing(Vector3 point)
         {
-            AutumnParticles.Emit(impactDust, Ground(point), Vector3.up * 0.3f, 14, .9f, .40f, .55f, 1f);
+            AutumnParticles.Emit(impactDust, Ground(point), Vector3.up * 0.32f, 14, .96f, .53f, .57f, 1f);
         }
 
         public void Takeoff(Vector3 point, Vector3 direction)
@@ -35,7 +35,7 @@ namespace ShadowTan.Gameplay.Autumn
 
         public void MonumentLanded(Vector3 point)
         {
-            AutumnParticles.Emit(impactDust, Ground(point), Vector3.up * .62f, 28, 1.25f, .58f, .85f, 1f);
+            AutumnParticles.Emit(impactDust, Ground(point), Vector3.up * .62f, 28, 1.25f, .72f, .85f, 1f);
         }
     }
 }

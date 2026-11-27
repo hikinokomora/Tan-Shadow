@@ -52,6 +52,7 @@ namespace TanShadow.Autumn
         float withdrawBack, withdrawSink; // отступление вглубь зарослей (отпугнули)
         static readonly int Emissive = Shader.PropertyToID("_EmissiveColor");
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+        static readonly int ExposureWeight = Shader.PropertyToID("_EmissiveExposureWeight");
 
         void Awake()
         {
@@ -98,7 +99,7 @@ namespace TanShadow.Autumn
             for (int i = 0; i < visualParts.Length; i++)
             {
                 var part = visualParts[i];
-                bool foreground = !value && !part.transform.IsChildOf(head);
+                bool foreground = !value && part.transform.IsChildOf(grass);
                 part.enabled = visualDefaults[i] && (foreground || eyeRenderers.Contains(part));
             }
         }
@@ -168,12 +169,14 @@ namespace TanShadow.Autumn
             float eyeOpacity = hiding && withdrawBack > 0f
                 ? Mathf.Clamp01((scareFadeUntil - Time.time) / 0.24f)
                 : e;
-            Color glow = new Color(1f, 0.035f, 0.018f) * Mathf.Lerp(eyeGlow.x, eyeGlow.y, aggro) * eyeOpacity;
+            float emission = Mathf.Lerp(eyeGlow.x, eyeGlow.y, aggro) * .32f * eyeOpacity;
+            Color glow = new Color(1f, 0.035f, 0.018f) * emission;
             foreach (var r in eyeRenderers)
             {
                 r.GetPropertyBlock(block);
                 block.SetColor(Emissive, glow);
                 block.SetColor(BaseColor, new Color(.36f, .015f, .008f) * eyeOpacity);
+                block.SetFloat(ExposureWeight, 0f);
                 r.SetPropertyBlock(block);
             }
         }

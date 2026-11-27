@@ -63,7 +63,7 @@ namespace TanShadow.Autumn
         void OnImpact(int hits, int required, Vector3 point) => impact.Invoke(point);
         void OnMonumentFalling(Vector3 _)
         {
-            if (encounter.peek && encounter.tigerBody && encounter.hero)
+            if (!encounter.EyesOnlyInEyesPhase && encounter.peek && encounter.tigerBody && encounter.hero)
                 encounter.peek.ShowPinned(encounter.tigerBody.position + Vector3.up * .42f, encounter.hero.Body.position);
         }
         void OnMonumentLanded(Vector3 point) => monumentLanded.Invoke(point);

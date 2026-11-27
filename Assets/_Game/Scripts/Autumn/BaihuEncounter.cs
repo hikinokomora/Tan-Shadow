@@ -58,6 +58,7 @@ namespace TanShadow.Autumn
         public BaihuMonument monument;
         public YinYangCover cover;
         public DeadWorld world;
+        [SerializeField] bool eyesOnlyInEyesPhase;
 
         [Header("Отладка")]
         [Tooltip("Показывать состояние тигра в углу экрана (F3 — переключить). Только редактор и dev-сборка")]
@@ -94,7 +95,8 @@ namespace TanShadow.Autumn
             : State == BaihuState.Retreat
                 ? (moveTo - moveFrom).normalized
                 : Vector3.forward;
-        public bool IsRelocating => relocating;
+        public bool RustleIsRelocation { get; private set; }
+        public bool EyesOnlyInEyesPhase => eyesOnlyInEyesPhase;
 
         float timer;
         float flightTime;
@@ -263,6 +265,7 @@ namespace TanShadow.Autumn
             ThreatPoint = groundPoint;
             timer = tuning.trailRelocateTime;
             Enter(BaihuState.Rustle);
+            RustleIsRelocation = true;
             Rustled?.Invoke(groundPoint);
         }
 
@@ -272,6 +275,7 @@ namespace TanShadow.Autumn
             ThreatPoint = groundPoint;
             timer = tuning.rustleDuration;
             Enter(BaihuState.Rustle);
+            RustleIsRelocation = false;
             Rustled?.Invoke(groundPoint);
         }
 
@@ -330,6 +334,7 @@ namespace TanShadow.Autumn
             ThreatPoint = groundPoint;
             timer = tuning.arenaRelocateTime;
             Enter(BaihuState.Rustle);
+            RustleIsRelocation = true;
             Rustled?.Invoke(groundPoint);
         }
 
@@ -630,6 +635,7 @@ namespace TanShadow.Autumn
 
         void Enter(BaihuState next)
         {
+            if (eyesOnlyInEyesPhase && next == BaihuState.Gong) HideEyes(true);
             State = next;
             StateChanged?.Invoke(next);
         }

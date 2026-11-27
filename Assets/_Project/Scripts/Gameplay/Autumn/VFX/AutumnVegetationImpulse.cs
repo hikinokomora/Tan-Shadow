@@ -8,7 +8,7 @@ namespace ShadowTan.Gameplay.Autumn
         [SerializeField] AutumnWindController wind;
         [SerializeField] Renderer[] legacyStems;
 
-        const int Limit = 14;
+        const int Limit = 6;
         readonly Renderer[] stems = new Renderer[Limit];
         readonly float[] distances = new float[Limit];
         readonly Vector3[] initialPosition = new Vector3[Limit];
@@ -34,9 +34,14 @@ namespace ShadowTan.Gameplay.Autumn
             foreach (var candidate in legacyStems)
             {
                 if (!candidate || !candidate.enabled || !candidate.gameObject.activeInHierarchy) continue;
-                Vector3 radial = candidate.bounds.center - point;
-                radial.y = 0;
-                float distance = radial.sqrMagnitude;
+                var bounds = candidate.bounds;
+                var closest = bounds.ClosestPoint(new Vector3(point.x, bounds.center.y, point.z));
+                float edgeDistance = Vector2.Distance(new Vector2(point.x, point.z), new Vector2(closest.x, closest.z));
+                float centerDistance = Vector2.Distance(new Vector2(point.x, point.z), new Vector2(bounds.center.x, bounds.center.z));
+                // _Game merges each planting into one renderer. Compare its footprint to the cue,
+                // then favor the nearest plantings when several bounds overlap.
+                float reach = edgeDistance + Mathf.Min(centerDistance * .13f, 1.15f);
+                float distance = reach * reach;
                 if (distance >= maxDistance || (activeCount == Limit && distance >= distances[Limit - 1])) continue;
                 int insertion = Mathf.Min(activeCount, Limit - 1);
                 while (insertion > 0 && distance < distances[insertion - 1])

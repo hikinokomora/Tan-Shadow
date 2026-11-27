@@ -29,10 +29,10 @@ namespace TanShadow.MotionMatchingLab.Editor
                 throw new InvalidOperationException("Missing Guardian player or scene camera.");
 
             AnimationClip[] motions = ReadClips();
-            Material body = CreateArmorMaterial("Guardian Armor", "Guardian_texture_0.png", "Guardian_normal.png",
-                "Guardian_texture_0_metallic_roughness.png");
-            Material sword = CreateArmorMaterial("Guardian Sword", "Sword_texture_0_002.png", "Sword_normal_002.png",
-                "Sword_texture_0_metallic_roughness_001.png");
+            Material body = CreateArmorMaterial("Guardian Armor", "NewGuardian_BaseColor.png", "NewGuardian_Normal.png",
+                "NewGuardian_Mask.png");
+            Material hammer = CreateArmorMaterial("Guardian Sword", "ChippingHammer_BaseColor.png", "ChippingHammer_Normal.png",
+                "ChippingHammer_Mask.png");
             Material slate = MaterialFor("Station Slate", new Color(.075f, .12f, .165f), .35f);
             Material marker = MaterialFor("Station Ochre", new Color(.95f, .69f, .27f), .16f);
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(ClipPath(MotionLabGuardian.Clip.Idle));
@@ -82,12 +82,10 @@ namespace TanShadow.MotionMatchingLab.Editor
             foreach (var skin in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 Undo.RecordObject(skin, "Assign Guardian materials");
-                Material material = skin.name.IndexOf("Sword", StringComparison.OrdinalIgnoreCase) >= 0 ? sword : body;
+                Material material = skin.name.IndexOf("Sword", StringComparison.OrdinalIgnoreCase) >= 0 ? hammer : body;
                 skin.sharedMaterials = Enumerable.Repeat(material, Math.Max(1, skin.sharedMaterials.Length)).ToArray();
                 skin.updateWhenOffscreen = true;
             }
-            if (!model.GetComponent<SwordRopePhysics>())
-                Undo.AddComponent<SwordRopePhysics>(model);
             if (!model.GetComponent<GuardianSecondaryMotion>())
                 Undo.AddComponent<GuardianSecondaryMotion>(model);
 

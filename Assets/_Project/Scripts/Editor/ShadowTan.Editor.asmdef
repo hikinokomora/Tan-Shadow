@@ -4,7 +4,10 @@
     "references": [
         "ShadowTan.Core",
         "ShadowTan.Combat",
-        "ShadowTan.Player"
+        "ShadowTan.Player",
+        "ShadowTan.Narrative",
+        "UnityEngine.UI",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor"

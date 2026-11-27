@@ -991,6 +991,7 @@ namespace TanShadow.Summer
             bird.gameObject.SetActive(false);
             if (lava != null) lava.HazardArmed = false;
             if (world != null) world.ApplyDead();
+            SeasonProgress.MarkDefeated(Season.Summer);
             Defeated?.Invoke();
         }
 

@@ -617,6 +617,7 @@ namespace TanShadow.Autumn
         {
             HideEyes(true);
             if (world != null) world.ApplyDead();
+            SeasonProgress.MarkDefeated(Season.Autumn);
             Defeated?.Invoke();
         }
 

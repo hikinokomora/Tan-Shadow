@@ -758,6 +758,7 @@ namespace TanShadow.Spring
 
             if (strikes < requiredStrikes) return;
             defeated = true;
+            SeasonProgress.MarkDefeated(Season.Spring);
             awareness = 0f;
             PausePlayerInput();
             cover.Run(YinYangCover.Kind.Yang, VictoryUnderCover, ResumePlayerInput);

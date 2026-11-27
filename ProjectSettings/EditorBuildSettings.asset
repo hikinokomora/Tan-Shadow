@@ -32,5 +32,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Game/Scenes/Winter_Xuanwu.unity
     guid: ba84cef81fa84c540bce681c5c8343d7
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterQinglong.unity
+    guid: d6b6db556415d6a4a9dc84578d75d0db
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterZhuque.unity
+    guid: 799f22dac7a490f4aa067953baafb600
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterBaihu.unity
+    guid: 503ec8d5f9792f54b998278ad539bc8d
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterXuanwu.unity
+    guid: d2bf765a97302904885692cfd251aa8c
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

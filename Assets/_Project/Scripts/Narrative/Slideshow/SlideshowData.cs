@@ -32,7 +32,9 @@ namespace ShadowTan.Narrative
         public void OnAfterDeserialize()
         {
             if (lines == null) lines = new List<SlideLine>();
-            bool hasLegacy = voiceOver != null || !string.IsNullOrEmpty(captionRu) || !string.IsNullOrEmpty(captionZh);
+            // Сравнение ссылок, а не UnityEngine.Object.operator!=: при асинхронной загрузке сцены десериализация идёт
+            // не в главном потоке, и оператор Unity там бросает исключение.
+            bool hasLegacy = !ReferenceEquals(voiceOver, null) || !string.IsNullOrEmpty(captionRu) || !string.IsNullOrEmpty(captionZh);
             if (hasLegacy && lines.Count == 0)
                 lines.Add(new SlideLine { voiceOver = voiceOver, captionRu = captionRu, captionZh = captionZh });
             voiceOver = null;

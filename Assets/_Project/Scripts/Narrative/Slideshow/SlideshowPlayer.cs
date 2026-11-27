@@ -11,7 +11,7 @@ namespace ShadowTan.Narrative
     // Листать можно только после того, как дорожка реплики доиграла.
     // Смена слайда: погасить в чёрный → немного чёрного → проявить следующий.
     // Затемняет чёрный слой поверх слайда, поэтому градиентная рамка картинки видна и во время перехода.
-    // До показа — белая заливка-загрузка, после — чёрная, под которой грузится следующая сцена.
+    // До показа и после — белая заливка-загрузка с чёрной точкой; под второй грузится следующая сцена.
     public sealed class SlideshowPlayer : MonoBehaviour
     {
         private const string MapName = "Slideshow";
@@ -253,7 +253,7 @@ namespace ShadowTan.Narrative
         {
             // Заглушка: потом переход будет через GameFlow (§19.3).
             if (data != null && !string.IsNullOrEmpty(data.nextScene) && Application.CanStreamedLevelBeLoaded(data.nextScene))
-                LoadingCover.LoadScene(data.nextScene, LoadingCover.Kind.Yin, loadingConfig);
+                LoadingCover.LoadScene(data.nextScene, LoadingCover.Kind.Yang, loadingConfig);
             else
                 Debug.LogWarning($"[Slideshow] Следующая сцена «{data?.nextScene}» не задана или не в Build Profiles.");
         }

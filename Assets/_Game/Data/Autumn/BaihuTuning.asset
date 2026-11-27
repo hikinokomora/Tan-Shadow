@@ -31,7 +31,7 @@ MonoBehaviour:
   withdrawBack: 2.2
   withdrawSink: 0.5
   trailAhead: {x: 5, y: 12}
-  trailEyesSideOffset: 3.3
+  trailEyesSideOffset: 4.3999996
   arenaEyesDepth: {x: 0.5, y: 4.5}
   arenaSameSideSpread: 30
   arenaSideTolerance: 70

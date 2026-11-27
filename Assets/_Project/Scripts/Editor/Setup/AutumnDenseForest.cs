@@ -125,7 +125,7 @@ namespace ShadowTan.EditorTools
             }
         }
 
-        static void AddGrovePlant(Geometry geometry, Transform original, Random random)
+        internal static void AddGrovePlant(Geometry geometry, Transform original, Random random)
         {
             Vector3 basePoint = original.position;
             float scale = Mathf.Abs(original.lossyScale.y);
@@ -269,7 +269,7 @@ namespace ShadowTan.EditorTools
                 span.Length, backdrop, meshes);
         }
 
-        static MeshRenderer AddShadows(Transform chunk, Vector3 center, List<Plant> plants, int hue,
+        internal static MeshRenderer AddShadows(Transform chunk, Vector3 center, List<Plant> plants, int hue,
             Material material, HashSet<string> meshes)
         {
             string name = chunk.name + "_Shadow";
@@ -380,7 +380,7 @@ namespace ShadowTan.EditorTools
             AddLeaves(geometry, plant, 1);
         }
 
-        static void AddCulm(Geometry geometry, Plant plant, int lod, int hue)
+        internal static void AddCulm(Geometry geometry, Plant plant, int lod, int hue)
         {
             int sides = lod == 0 ? 8 : lod == 1 ? 6 : 4;
             int intervals = lod == 0 ? 9 : lod == 1 ? 5 : 2;
@@ -430,7 +430,8 @@ namespace ShadowTan.EditorTools
                 geometry.Triangle(0, cap, cap + 1 + (side + 1) % sides, cap + 1 + side);
         }
 
-        static void AddLeaves(Geometry geometry, Plant plant, int lod)
+        // minHeight > 0 оставляет пустым нижний ярус листьев (окно для глаз тигра в первых рядах).
+        internal static void AddLeaves(Geometry geometry, Plant plant, int lod, float minHeight = 0f)
         {
             var random = new Random(plant.Seed);
             int clusters = lod == 2 ? 2 : 4;
@@ -458,7 +459,7 @@ namespace ShadowTan.EditorTools
                     Vector3 tip = anchor + direction * length + Vector3.up * Range(random, 0.18f, 0.70f);
                     Vector3 across = Vector3.Cross(direction, Vector3.up) * (length * 0.56f) + Vector3.up * (length * 0.28f);
                     Rect uv = VegetationAtlas.Card(random.Next(4));
-                    if (card < cards)
+                    if (card < cards && height >= minHeight)
                         geometry.Quad(1, anchor - across * 0.30f, anchor + across * 0.30f,
                             tip + across, tip - across, uv);
                 }
@@ -583,7 +584,7 @@ namespace ShadowTan.EditorTools
             }
         }
 
-        readonly struct Plant
+        internal readonly struct Plant
         {
             readonly Vector3 position;
             readonly Vector3 lean;

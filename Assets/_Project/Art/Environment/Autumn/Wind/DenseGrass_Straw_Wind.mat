@@ -126,6 +126,6 @@ Material:
     - _BaseColor: {r: 0.26, g: 0.17, b: 0.075, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 20.33439, g: 7.7738876, b: 4.3991394, a: 190}
+    - _EmissiveColor: {r: 7, g: 5, b: 2.5, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

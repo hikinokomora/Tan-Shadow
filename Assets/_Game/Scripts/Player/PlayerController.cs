@@ -50,6 +50,7 @@ namespace TanShadow.Player
 
         float stateTime;
         float verticalSpeed;
+        bool grounded;
         Vector3 dashDirection;
         float dashReadyTime;
         Vector3 knockback;
@@ -90,7 +91,7 @@ namespace TanShadow.Player
             {
                 if (jumpSpeed <= 0f)
                     buffer.Press(BufferedAction.Dash, now);
-                else if (State == PlayerState.Locomotion && body.isGrounded)
+                else if (State == PlayerState.Locomotion && grounded)
                     verticalSpeed = jumpSpeed;
             }
 
@@ -431,9 +432,13 @@ namespace TanShadow.Player
 
         void ApplyKnockbackAndGravity(float dt)
         {
-            verticalSpeed = body.isGrounded && verticalSpeed <= 0f ? -2f : verticalSpeed + settings.gravity * dt;
+            // Опора — по своему вертикальному шагу прошлого кадра, а не по body.isGrounded: горизонтальный Move
+            // по ровной поверхности (и Move на месте) сбрасывает isGrounded, и скорость падения копилась.
+            // Потом первый же шаг с края обрывался вниз (летом — рывок между камнями над лавой).
+            verticalSpeed = grounded && verticalSpeed <= 0f ? -2f : verticalSpeed + settings.gravity * dt;
             knockback = Vector3.MoveTowards(knockback, Vector3.zero, settings.knockbackDeceleration * dt);
             CollisionFlags contact = body.Move((knockback + Vector3.up * verticalSpeed) * dt);
+            grounded = (contact & CollisionFlags.Below) != 0;
             if (verticalSpeed > 0f && (contact & CollisionFlags.Above) != 0)
                 verticalSpeed = 0f;
         }

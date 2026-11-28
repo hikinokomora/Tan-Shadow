@@ -172,6 +172,7 @@ LightingData.asset     binary
 
 # Unity TerrainData is serialized binary and must retain its bytes.
 Assets/ZhunqueWideArena/**/TerrainData/*.asset binary !eol
+Assets/_Project/Art/Environment/Autumn/Location/Terrain/*.asset binary !eol -unity-yaml !linguist-language
 
 # Preserve the bytes of the baked Unity database.
 "Assets/_Game/TestMotionmatching 1/Data/MotionDatabase.asset" binary !eol -unity-yaml !linguist-language

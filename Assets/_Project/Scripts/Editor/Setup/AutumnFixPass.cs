@@ -106,10 +106,53 @@ namespace ShadowTan.EditorTools
 
         // ------------------------------------------------------------------ 1. terrain
 
+        const string TerrainDataPath = Location + "/Terrain/AutumnTerrain_Grass.asset";
+        static readonly string[] TerrainLayerNames = { "WildGrassDetail", "WildGrassMacro", "TroddenEarth", "ArenaSand" };
+
+        // TerrainData хранится бинарно. Если файл испорчен (например, git нормализовал в нём переводы строк),
+        // Unity не может его загрузить. Террейн плоский, а раскраску задаёт Splat, поэтому данные пересоздаются
+        // без потерь в тот же файл: GUID в .meta сохраняется, ссылки сцены остаются целыми.
+        static TerrainData EnsureTerrainData(Context c)
+        {
+            var data = AssetDatabase.LoadAssetAtPath<TerrainData>(TerrainDataPath);
+            if (data == null)
+            {
+                const string temp = Folder + "/__TerrainRebuild.asset";
+                var fresh = new TerrainData { heightmapResolution = 513, name = Path.GetFileNameWithoutExtension(TerrainDataPath) };
+                fresh.alphamapResolution = 1024;
+                fresh.baseMapResolution = 1024;
+                fresh.size = TerrainSize;
+                fresh.terrainLayers = TerrainLayerNames
+                    .Select(n => AssetDatabase.LoadAssetAtPath<TerrainLayer>($"{Generated}/ScenePolish/{n}.terrainlayer")
+                                 ?? throw new InvalidOperationException($"Missing terrain layer {n}."))
+                    .ToArray();
+                AssetDatabase.CreateAsset(fresh, temp);
+                AssetDatabase.SaveAssets();
+                File.Copy(temp, TerrainDataPath, true);
+                AssetDatabase.DeleteAsset(temp);
+                AssetDatabase.ImportAsset(TerrainDataPath, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+                data = AssetDatabase.LoadAssetAtPath<TerrainData>(TerrainDataPath)
+                       ?? throw new IOException($"Could not rebuild {TerrainDataPath}.");
+                c.Report.Add("Terrain data was unreadable and has been rebuilt (flat, 513 heightmap, 1024 splat, 4 layers).");
+            }
+
+            string expected = Path.GetFileNameWithoutExtension(TerrainDataPath);
+            if (data.name != expected)
+            {
+                data.name = expected;
+                EditorUtility.SetDirty(data);
+            }
+            c.Terrain.terrainData = data;
+            var collider = c.Terrain.GetComponent<TerrainCollider>();
+            if (collider != null) collider.terrainData = data;
+            EditorUtility.SetDirty(c.Terrain);
+            return data;
+        }
+
         static void Terrain(Context c)
         {
             var terrain = c.Terrain;
-            var data = terrain.terrainData;
+            var data = EnsureTerrainData(c);
             terrain.transform.position = TerrainOrigin;
             if (data.size != TerrainSize) data.size = TerrainSize;
 

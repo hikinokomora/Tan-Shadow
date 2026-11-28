@@ -110,13 +110,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.94, y: 0.95, z: 0.86, w: 0.96}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.99, z: 0.95, w: 1}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.98, z: 0.94, w: 1}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
@@ -129,6 +129,133 @@ MonoBehaviour:
   highlightsEnd:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &-4336317375153300769
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b6606ef2548734bb6d11b9d160bc7e, type: 3}
+  m_Name: HDRISky
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.HDRISky
+  active: 1
+  rotation:
+    m_OverrideState: 1
+    m_Value: 0
+  skyIntensityMode:
+    m_OverrideState: 1
+    m_Value: 0
+  exposure:
+    m_OverrideState: 1
+    m_Value: 12.3
+  multiplier:
+    m_OverrideState: 1
+    m_Value: 1
+  upperHemisphereLuxValue:
+    m_OverrideState: 1
+    m_Value: 1
+  upperHemisphereLuxColor:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0, z: 0}
+  desiredLuxValue:
+    m_OverrideState: 1
+    m_Value: 20000
+  updateMode:
+    m_OverrideState: 1
+    m_Value: 0
+  updatePeriod:
+    m_OverrideState: 1
+    m_Value: 0
+  includeSunInBaking:
+    m_OverrideState: 1
+    m_Value: 0
+  m_SkyVersion: 1
+  enableDistortion:
+    m_OverrideState: 1
+    m_Value: 0
+  procedural:
+    m_OverrideState: 1
+    m_Value: 1
+  scrollDirection:
+    m_OverrideState: 1
+    m_Value: 0
+  m_ObsoleteScrollSpeed:
+    m_OverrideState: 1
+    m_Value: 1
+  hdriSky:
+    m_OverrideState: 1
+    m_Value: {fileID: 8900000, guid: 8253d41e6e8b11a4cbe77a4f8f82934d, type: 3}
+  distortionMode:
+    m_OverrideState: 1
+    m_Value: 0
+  flowmap:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+  upperHemisphereOnly:
+    m_OverrideState: 1
+    m_Value: 1
+  scrollOrientation:
+    m_OverrideState: 1
+    m_Value:
+      mode: 1
+      customValue: 0
+      additiveValue: 0
+      multiplyValue: 1
+  scrollSpeed:
+    m_OverrideState: 1
+    m_Value:
+      mode: 1
+      customValue: 100
+      additiveValue: 0
+      multiplyValue: 1
+  sunInitialRotation:
+    m_OverrideState: 1
+    m_Value: -Infinity
+  lockSun:
+    m_OverrideState: 1
+    m_Value: 0
+  enableBackplate:
+    m_OverrideState: 1
+    m_Value: 0
+  backplateType:
+    m_OverrideState: 1
+    m_Value: 0
+  groundLevel:
+    m_OverrideState: 1
+    m_Value: 0
+  scale:
+    m_OverrideState: 1
+    m_Value: {x: 32, y: 32}
+  projectionDistance:
+    m_OverrideState: 1
+    m_Value: 16
+  plateRotation:
+    m_OverrideState: 1
+    m_Value: 0
+  plateTexRotation:
+    m_OverrideState: 1
+    m_Value: 0
+  plateTexOffset:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0}
+  blendAmount:
+    m_OverrideState: 1
+    m_Value: 0
+  shadowTint:
+    m_OverrideState: 1
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  pointLightShadow:
+    m_OverrideState: 1
+    m_Value: 0
+  dirLightShadow:
+    m_OverrideState: 1
+    m_Value: 0
+  rectLightShadow:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &-3531800083210036573
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,7 +271,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: 6
+    m_Value: 0
   tint:
     m_OverrideState: 1
     m_Value: 0
@@ -212,6 +339,7 @@ MonoBehaviour:
   - {fileID: 739495908358969007}
   - {fileID: 5796285448979145524}
   - {fileID: 1412155200656547495}
+  - {fileID: -4336317375153300769}
 --- !u!114 &739495908358969007
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -236,7 +364,7 @@ MonoBehaviour:
     m_Value: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 1.7483523, g: 1.4682502, b: 0.99144787, a: 2.6}
+    m_Value: {r: 0.8069319, g: 0.67765397, b: 0.45759135, a: 1.2}
   tint:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -260,7 +388,7 @@ MonoBehaviour:
     m_Value: 22
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 125
+    m_Value: 190
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -411,7 +539,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 11.6
+    m_Value: 11.5
   compensation:
     m_OverrideState: 1
     m_Value: 0
@@ -559,7 +687,7 @@ MonoBehaviour:
     m_Value: 9
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.975, b: 0.91, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 1
     m_Value: 0
@@ -593,7 +721,7 @@ MonoBehaviour:
     m_Value: 0.65
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.92, b: 0.8, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   dirtTexture:
     m_OverrideState: 1
     m_Value: {fileID: 0}

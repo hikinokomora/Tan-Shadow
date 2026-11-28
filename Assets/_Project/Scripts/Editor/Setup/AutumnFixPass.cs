@@ -48,6 +48,7 @@ namespace ShadowTan.EditorTools
                 Backdrop(c);
                 StoneMound(c);
                 Decals(c);
+                BambooLitter(c);
                 GrassStreaming(c);
                 Palette(c);
             });
@@ -61,6 +62,7 @@ namespace ShadowTan.EditorTools
         [MenuItem(Menu + "6 Trail Decals")] public static void MenuDecals() => Run("Decals", Decals);
         [MenuItem(Menu + "7 Arena Grass Streaming")] public static void MenuGrass() => Run("Grass Streaming", GrassStreaming);
         [MenuItem(Menu + "8 Palette")] public static void MenuPalette() => Run("Palette", Palette);
+        [MenuItem(Menu + "9 Bamboo Base Litter")] public static void MenuLitter() => Run("Bamboo Litter", BambooLitter);
 
         // ------------------------------------------------------------------ context
 
@@ -772,12 +774,11 @@ namespace ShadowTan.EditorTools
 
             var stoneMaterial = AssetDatabase.LoadAssetAtPath<Material>(Location + "/Materials/M_Autumn_Stone.mat");
             var pebbleMaterial = AssetDatabase.LoadAssetAtPath<Material>(Location + "/Materials/M_Autumn_Pebbles.mat");
-            // Оба материала используются только насыпью: бурые камни насыпи (GDD-AU §03, «Камни» #78583D).
-            pebbleMaterial.SetColor("_BaseColor", new Color(0.56f, 0.45f, 0.33f, 1f));
+            StoneSurface(stoneMaterial, c.Report);
+            // Оба материала используются только насыпью: бурые камни насыпи (GDD-AU §03, «Камни» #78583D),
+            // подложка чуть светлее, чтобы камни на ней читались.
             pebbleMaterial.SetFloat("_NormalScale", 1.3f);
-            stoneMaterial.SetColor("_BaseColor", new Color(0.42f, 0.35f, 0.27f, 1f));
-            EditorUtility.SetDirty(pebbleMaterial);
-            EditorUtility.SetDirty(stoneMaterial);
+            AutumnFixPalette.Tint(pebbleMaterial, AutumnFixPalette.StoneBedAlbedo, c.Report);
 
             // Подложка и коллайдер ходьбы из одной высотной сетки.
             const float step = 0.35f;
@@ -819,8 +820,11 @@ namespace ShadowTan.EditorTools
             walk.gameObject.layer = LayerMask.NameToLayer("Ground");
             Component<MeshCollider>(walk.gameObject).sharedMesh = SaveOwnMesh($"{Folder}/Mound_Walk.asset", Grid(0f));
 
-            Mesh[] cobbles = AssetDatabase.LoadAllAssetsAtPath(Location + "/Models/SM_RoundedCobblePack_Fixed.fbx").OfType<Mesh>().ToArray();
-            Mesh[] pebbles = AssetDatabase.LoadAllAssetsAtPath(Location + "/Models/SM_StonesPebblesPack_Fixed.fbx").OfType<Mesh>().ToArray();
+            // Порядок подассетов FBX между сессиями редактора не гарантирован: сортируем, чтобы насыпь не менялась.
+            Mesh[] cobbles = AssetDatabase.LoadAllAssetsAtPath(Location + "/Models/SM_RoundedCobblePack_Fixed.fbx").OfType<Mesh>()
+                .OrderBy(m => m.name, StringComparer.Ordinal).ToArray();
+            Mesh[] pebbles = AssetDatabase.LoadAllAssetsAtPath(Location + "/Models/SM_StonesPebblesPack_Fixed.fbx").OfType<Mesh>()
+                .OrderBy(m => m.name, StringComparer.Ordinal).ToArray();
             if (cobbles.Length == 0 || pebbles.Length == 0) throw new InvalidOperationException("Stone packs are missing.");
 
             var random = new Random(4242);
@@ -889,8 +893,9 @@ namespace ShadowTan.EditorTools
                 new[] { stoneMaterial }, ShadowCastingMode.On, RendererFlags);
             var mediumRenderer = Render(Node(root, "Mound_Stones_Medium", Vector3.zero), SaveOwnMesh($"{Folder}/Mound_Stones_Medium.asset", Combine(medium)),
                 new[] { stoneMaterial }, ShadowCastingMode.On, RendererFlags);
+            // Мелкие камни — тем же материалом: один масштаб текстуры для всех размеров.
             var smallRenderer = Render(Node(root, "Mound_Pebbles", Vector3.zero), SaveOwnMesh($"{Folder}/Mound_Pebbles.asset", Combine(small)),
-                new[] { pebbleMaterial }, ShadowCastingMode.Off, RendererFlags);
+                new[] { stoneMaterial }, ShadowCastingMode.Off, RendererFlags);
             // Издалека (с середины тропы) остаются подложка и крупные камни.
             SetLods(root, new[]
             {
@@ -899,14 +904,18 @@ namespace ShadowTan.EditorTools
             });
             FillClearingGap(c);
 
+            // Коллайдеры переиспользуются по имени: повторный прогон не пересоздаёт объекты и не меняет сцену.
             Transform colliders = Node(root, "Mound_BoulderColliders", Vector3.zero);
-            for (int i = colliders.childCount - 1; i >= 0; i--) Object.DestroyImmediate(colliders.GetChild(i).gameObject);
+            var boulderNames = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < boulders.Count; i++)
             {
                 var node = Node(colliders, $"Boulder_{i:00}", boulders[i].center);
                 node.gameObject.layer = LayerMask.NameToLayer("Wall");
                 Component<SphereCollider>(node.gameObject).radius = boulders[i].radius;
+                boulderNames.Add(node.name);
             }
+            for (int i = colliders.childCount - 1; i >= 0; i--)
+                if (!boulderNames.Contains(colliders.GetChild(i).name)) Object.DestroyImmediate(colliders.GetChild(i).gameObject);
 
             // Дырка слева: у FootEast не было пары, со ступеней можно было уйти вдоль стены на −X.
             Transform east = c.Find(c.Clearing, "Entrance_ClearingFootEast");
@@ -928,6 +937,55 @@ namespace ShadowTan.EditorTools
             c.Report.Add($"Stone mound: {large.Count} large (+{boulders.Count} colliders), {medium.Count} head-sized, {small.Count} pebbles, " +
                          $"{verts:N0} verts; peak {HeapY(CenterX + 4f, WallZ + 0.3f):F2} m, path {DeckY} -> 0 m over {PathEndZ - DeckFrontZ:F1} m. " +
                          "Stairs disabled; Entrance_ClearingFootWest added.");
+        }
+
+        // UV паков SM_RoundedCobblePack/SM_StonesPebblesPack — плоская проекция сверху на крошечный участок атласа
+        // (0,38…0,62), а камни отмасштабированы от 0,08 до 1,1 м: плотность текселей разная в 10 раз, бока смазаны.
+        // Вдобавок T_Cobble — мощёная кладка из разноцветных плит, и тайлинг 16×3 растягивал её в полосы.
+        // Поэтому без правки геометрии: triplanar HDRP Lit в мировых координатах (одна плотность для всех камней,
+        // швы смешиваются) и скан скалы Megascans Rock Cliff (ArtSource/Environment/Autumn/RockCliff) в его
+        // реальном масштабе 2×2 м.
+        const float StoneTileMeters = 2f;
+
+        static void StoneSurface(Material stone, List<string> report)
+        {
+            const string textures = Location + "/Textures/";
+            Texture2D Map(string file, bool srgb, bool normal)
+            {
+                string path = textures + file;
+                var importer = (TextureImporter)AssetImporter.GetAtPath(path)
+                               ?? throw new InvalidOperationException($"Missing {path} — run make_rock_cliff.py.");
+                var type = normal ? TextureImporterType.NormalMap : TextureImporterType.Default;
+                if (importer.textureType != type || importer.sRGBTexture != srgb || importer.anisoLevel != 4)
+                {
+                    importer.textureType = type;
+                    importer.sRGBTexture = srgb;
+                    importer.anisoLevel = 4;
+                    importer.SaveAndReimport();
+                }
+                return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            }
+            stone.SetTexture("_BaseColorMap", Map("T_RockCliff_BaseColor.jpg", true, false));
+            stone.SetTexture("_NormalMap", Map("T_RockCliff_Normal.jpg", false, true));
+            stone.SetTexture("_MaskMap", Map("T_RockCliff_Mask.png", false, false));
+            stone.SetFloat("_MetallicRemapMax", 0f);
+            stone.SetFloat("_SmoothnessRemapMin", 0f);
+            stone.SetFloat("_SmoothnessRemapMax", 1f);
+            stone.SetFloat("_AORemapMin", 0f);
+            stone.SetFloat("_AORemapMax", 1f);
+            foreach (var map in new[] { "_BaseColorMap", "_NormalMap", "_MaskMap" })
+            {
+                stone.SetTextureScale(map, Vector2.one);
+                stone.SetTextureOffset(map, Vector2.zero);
+            }
+            stone.SetFloat("_UVBase", 5f); // UVBaseMapping.Triplanar
+            stone.SetFloat("_ObjectSpaceUVMapping", 0f);
+            stone.SetFloat("_TexWorldScale", 1f / StoneTileMeters);
+            stone.SetFloat("_InvTilingScale", StoneTileMeters);
+            stone.SetFloat("_NormalScale", 1.2f);
+            UnityEngine.Rendering.HighDefinition.HDMaterial.ValidateMaterial(stone);
+            AutumnFixPalette.Tint(stone, AutumnFixPalette.StoneAlbedo, report);
+            report.Add($"Stone surface: triplanar world mapping, Megascans Rock Cliff every {StoneTileMeters} m (was T_Cobble 16×3 on pack UVs).");
         }
 
         // Кольцо бамбука поляны было разорвано на западе (≈162°…198°, проём под склон старой схемы) — это и есть
@@ -1014,6 +1072,299 @@ namespace ShadowTan.EditorTools
                 node.GetComponent<MeshRenderer>().sharedMaterials = subsets.Select(s => s.Key).ToArray();
             }
             c.Report.Add($"Trail decals: {flipped} flipped 180° and spread to ±{HalfWidth - 0.35f:F2} m; ground offset 0.014 m.");
+        }
+
+        // ------------------------------------------------------------------ 9. bamboo base litter
+
+        // Подстилка у основания бамбука: якоря — реальные основания стеблей (вершины стеблей ниже 1,2 м над землёй),
+        // от них квады сухих листьев и цветов уходят к открытому месту (тропа, поляна, арена) на 0,4–2,5 м.
+        // Центр тропы читается: там только редкие мелкие пятна. Свой контейнер Autumn_ScenePolish/BambooLitter.
+        const string LitterRoot = "BambooLitter";
+        const float BaseHeight = 1.2f, BaseSpacing = 0.4f, TrailClear = 1.2f, LitterGroup = 18f;
+        const float SandEdge = 25.6f;
+        static readonly Vector3 ClearingCenter = new Vector3(CenterX, 0f, 0f);
+        static readonly Vector3 ArenaCenter = new Vector3(CenterX, 0f, 188f);
+
+        struct LitterQuad
+        {
+            internal Vector3 Center;
+            internal float Size, Aspect, Yaw, Lift;
+            internal int Slot;
+        }
+
+        // Доля якорей с квадом сухих листьев / цветов по зонам: на тропе гуще, за травой арены реже.
+        struct LitterZone
+        {
+            internal float Dried, Flowers, Step;
+            internal LitterZone(float dried, float flowers, float step) { Dried = dried; Flowers = flowers; Step = step; }
+        }
+
+        static readonly LitterZone TrailZone = new LitterZone(0.50f, 0.38f, 0.52f);
+        static readonly LitterZone ClearingZone = new LitterZone(0.55f, 0.42f, 1.6f);
+        static readonly LitterZone ArenaZone = new LitterZone(0.36f, 0.30f, 2.0f);
+
+        static void BambooLitter(Context c)
+        {
+            var dried = AssetDatabase.LoadAssetAtPath<Material>(Location + "/Materials/M_Autumn_Decal_DriedBamboo.mat");
+            var flowers = AssetDatabase.LoadAssetAtPath<Material>(Location + "/Materials/M_Autumn_Decal_BambooFlowers.mat");
+            if (dried == null || flowers == null) throw new InvalidOperationException("Decal materials are missing.");
+
+            var bases = BambooBases(c, out string sources);
+            var grid = new Dictionary<Vector2Int, List<Vector3>>();
+            foreach (Vector3 p in bases)
+            {
+                var cell = new Vector2Int(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.z));
+                if (!grid.TryGetValue(cell, out var list)) grid[cell] = list = new List<Vector3>();
+                list.Add(p);
+            }
+
+            var random = new Random(77213);
+            var quads = new List<LitterQuad>();
+            int anchors = 0, filled = 0;
+
+            // Кромки тропы: шаг вдоль Z, якорь — самый передний стебель в полосе 0,5 м.
+            foreach (int side in new[] { -1, 1 })
+            for (float z = 8.3f; z < 165f; z += Range(random, TrailZone.Step * 0.8f, TrailZone.Step * 1.2f))
+            {
+                Vector3 anchor;
+                if (FrontBase(grid, side, z, out anchor)) anchors++;
+                else
+                {
+                    anchor = new Vector3(CenterX + side * (HalfWidth + Range(random, 0.25f, 0.6f)), 0f, z);
+                    filled++;
+                }
+                Scatter(anchor, new Vector3(-side, 0f, 0f), TrailZone, 0);
+            }
+
+            // Редкие мелкие пятна в центре тропы.
+            for (float z = 10f; z < 163f; z += Range(random, 4.5f, 8f))
+            {
+                var center = new Vector3(CenterX + Range(random, -0.9f, 0.9f), 0f, z);
+                Add(center, Range(random, 1.2f, 1.5f), 0);
+            }
+
+            // Кольца поляны и арены: по углу, якорь — ближайший к центру стебель в секторе.
+            Ring(ClearingCenter, 8f, 26f, -25f, 205f, ClearingZone, Clearing.Radius, 1);
+            float ringRadius = c.Greybox.Find("Walls/BambooRing").Cast<Transform>()
+                .Average(t => Vector2.Distance(new Vector2(t.position.x, t.position.z), new Vector2(ArenaCenter.x, ArenaCenter.z)));
+            Ring(ArenaCenter, 24f, 34f, 0f, 360f, ArenaZone, ringRadius + 0.5f, 2);
+
+            // Батчи по 18 м вдоль Z, по слоту материала на каждый тип.
+            var materials = new[] { dried, flowers };
+            EnsureFolder($"{Folder}/{LitterRoot}");
+            Transform root = Node(c.Polish, LitterRoot, Vector3.zero);
+            var keep = new HashSet<string>(StringComparer.Ordinal);
+            var meshes = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var group in quads.GroupBy(q => Mathf.FloorToInt(q.Center.z / LitterGroup)).OrderBy(g => g.Key))
+            {
+                string name = $"{LitterRoot}_{group.Key:00}";
+                var origin = new Vector3(CenterX, 0f, group.Key * LitterGroup + LitterGroup * 0.5f);
+                int[] slots = group.Select(q => q.Slot).Distinct().OrderBy(s => s).ToArray();
+                var geometry = new Geometry(origin, slots.Length);
+                foreach (var q in group) LitterGeometry(c, geometry, Array.IndexOf(slots, q.Slot), q);
+                var mesh = geometry.MakeMesh();
+                mesh.RecalculateTangents();
+                Transform node = Node(root, name, origin);
+                Render(node, SaveMesh($"{Folder}/{LitterRoot}/{name}.asset", mesh, meshes),
+                    slots.Select(s => materials[s]).ToArray(), ShadowCastingMode.Off);
+                keep.Add(name);
+            }
+            int stale = 0;
+            for (int i = root.childCount - 1; i >= 0; i--)
+                if (!keep.Contains(root.GetChild(i).name)) { Object.DestroyImmediate(root.GetChild(i).gameObject); stale++; }
+            stale += PruneMeshes($"{Folder}/{LitterRoot}", LitterRoot + "_", meshes);
+
+            int driedCount = quads.Count(q => q.Slot == 0), flowerCount = quads.Count(q => q.Slot == 1);
+            c.Report.Add($"Bamboo litter: {bases.Count} stem bases ({sources}); trail anchors {anchors} + {filled} edge fill; " +
+                         $"{driedCount} dried + {flowerCount} flower quads in {keep.Count} batches; stale removed {stale}.");
+
+            void Ring(Vector3 center, float minR, float maxR, float fromDeg, float toDeg, LitterZone zone, float fallbackR, int kind)
+            {
+                var flat = new Vector2(center.x, center.z);
+                int bins = Mathf.CeilToInt((toDeg - fromDeg) / zone.Step * fallbackR * Mathf.Deg2Rad);
+                float binDeg = (toDeg - fromDeg) / bins;
+                var best = new Vector3?[bins];
+                foreach (Vector3 p in bases)
+                {
+                    Vector2 d = new Vector2(p.x, p.z) - flat;
+                    float r = d.magnitude;
+                    if (r < minR || r > maxR) continue;
+                    float a = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                    a = Mathf.Repeat(a - fromDeg, 360f);
+                    int bin = Mathf.FloorToInt(a / binDeg);
+                    if (bin < 0 || bin >= bins) continue;
+                    if (best[bin] == null || r < Vector2.Distance(new Vector2(best[bin].Value.x, best[bin].Value.z), flat)) best[bin] = p;
+                }
+                for (int b = 0; b < bins; b++)
+                {
+                    float a = (fromDeg + (b + 0.5f) * binDeg) * Mathf.Deg2Rad;
+                    Vector3 anchor = best[b] ?? center + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * fallbackR;
+                    if (best[b] != null) anchors++; else filled++;
+                    // Устье тропы обрабатывают кромки тропы.
+                    if (Mathf.Abs(anchor.x - CenterX) < HalfWidth + 3f && anchor.z > 8f && anchor.z < 170f) continue;
+                    if (!InsideBackdrop(anchor, -2f)) continue;
+                    Vector3 open = center - anchor;
+                    open.y = 0f;
+                    Scatter(anchor, open.normalized, zone, kind);
+                }
+            }
+
+            void Scatter(Vector3 anchor, Vector3 open, LitterZone zone, int kind)
+            {
+                Vector3 along = Vector3.Cross(Vector3.up, open);
+                for (int slot = 0; slot < 2; slot++)
+                {
+                    if (random.NextDouble() >= (slot == 0 ? zone.Dried : zone.Flowers)) continue;
+                    float size = Mathf.Lerp(1.2f, 4.5f, Mathf.Pow((float)random.NextDouble(), 1.3f));
+                    Vector3 center = anchor + open * Range(random, -0.8f, 2.5f) + along * Range(random, -0.6f, 0.6f);
+                    if (kind == 0)
+                    {
+                        // Квад не заходит в чистую полосу: мягкий край декали ≈ 0,4 размера от центра.
+                        float dx = Mathf.Abs(center.x - CenterX);
+                        float allowed = (dx - TrailClear) / 0.4f;
+                        if (allowed < 1.2f)
+                        {
+                            center.x = CenterX + Mathf.Sign(center.x - CenterX) * (TrailClear + 0.48f);
+                            allowed = 1.2f;
+                        }
+                        size = Mathf.Min(size, allowed);
+                    }
+                    else if (kind == 2)
+                    {
+                        // Внутри арены только песок: подстилка под травой, к песку — лишь краем.
+                        Vector3 d = center - ArenaCenter;
+                        d.y = 0f;
+                        float min = SandEdge + 0.35f * size;
+                        if (d.magnitude < min) center = ArenaCenter + d.normalized * min;
+                    }
+                    Add(center, size, slot);
+                }
+            }
+
+            void Add(Vector3 center, float size, int slot)
+            {
+                var q = new LitterQuad
+                {
+                    Center = center, Size = size, Aspect = Range(random, 0.8f, 1.25f), Yaw = Range(random, 0f, 360f),
+                    Lift = Range(random, 0.012f, 0.02f), Slot = slot
+                };
+                // Склон насыпи — не земля террейна: туда подстилку не кладём.
+                foreach (Vector3 corner in Corners(q))
+                    if (MoundY(corner.x, corner.z) > 0.005f) return;
+                quads.Add(q);
+            }
+        }
+
+        static IEnumerable<Vector3> Corners(LitterQuad q)
+        {
+            Quaternion yaw = Quaternion.Euler(0f, q.Yaw, 0f);
+            float hx = q.Size * q.Aspect * 0.5f, hz = q.Size * 0.5f;
+            yield return q.Center + yaw * new Vector3(-hx, 0f, -hz);
+            yield return q.Center + yaw * new Vector3(hx, 0f, -hz);
+            yield return q.Center + yaw * new Vector3(hx, 0f, hz);
+            yield return q.Center + yaw * new Vector3(-hx, 0f, hz);
+        }
+
+        // Квад 2×2 ячейки: каждая вершина на своей высоте террейна + подъём квада (без висения на перепадах).
+        static void LitterGeometry(Context c, Geometry geometry, int slot, LitterQuad q)
+        {
+            Vector3[] k = Corners(q).ToArray();
+            var index = new int[9];
+            for (int iz = 0; iz < 3; iz++)
+            for (int ix = 0; ix < 3; ix++)
+            {
+                float u = ix * 0.5f, v = iz * 0.5f;
+                Vector3 p = Vector3.Lerp(Vector3.Lerp(k[0], k[1], u), Vector3.Lerp(k[3], k[2], u), v);
+                p.y = Ground(c.Terrain, p) + q.Lift;
+                index[iz * 3 + ix] = geometry.Vertex(p, Vector3.up, new Vector2(u, v));
+            }
+            for (int iz = 0; iz < 2; iz++)
+            for (int ix = 0; ix < 2; ix++)
+            {
+                int a = index[iz * 3 + ix], b = index[iz * 3 + ix + 1], d = index[(iz + 1) * 3 + ix], e = index[(iz + 1) * 3 + ix + 1];
+                geometry.Triangle(slot, a, d, e);
+                geometry.Triangle(slot, a, e, b);
+            }
+        }
+
+        // Самый передний (ближний к тропе) стебель стороны side в полосе z ± 0,5 м, не глубже 2,6 м за кромкой.
+        static bool FrontBase(Dictionary<Vector2Int, List<Vector3>> grid, int side, float z, out Vector3 best)
+        {
+            best = default;
+            float bestDepth = float.MaxValue;
+            int x0 = Mathf.FloorToInt(CenterX + side * HalfWidth - 1f), x1 = Mathf.FloorToInt(CenterX + side * (HalfWidth + 2.6f));
+            for (int x = Mathf.Min(x0, x1); x <= Mathf.Max(x0, x1); x++)
+            for (int iz = Mathf.FloorToInt(z - 0.5f); iz <= Mathf.FloorToInt(z + 0.5f); iz++)
+            {
+                if (!grid.TryGetValue(new Vector2Int(x, iz), out var list)) continue;
+                foreach (Vector3 p in list)
+                {
+                    if (Mathf.Abs(p.z - z) > 0.5f) continue;
+                    float depth = side * (p.x - CenterX) - HalfWidth;
+                    if (depth < -0.3f || depth > 2.6f || depth >= bestDepth) continue;
+                    bestDepth = depth;
+                    best = p;
+                }
+            }
+            return bestDepth < float.MaxValue;
+        }
+
+        // Основания стеблей из запечённой геометрии (подсетка стеблей): вершины ниже 1,2 м над террейном,
+        // прорежены до 0,4 м. Выключенные объекты не учитываются.
+        static List<Vector3> BambooBases(Context c, out string summary)
+        {
+            var points = new List<Vector3>();
+            var cells = new Dictionary<Vector2Int, List<Vector3>>();
+            var counts = new List<string>();
+
+            void Add(MeshFilter filter, string label)
+            {
+                if (filter == null || !filter.gameObject.activeInHierarchy || filter.sharedMesh == null) return;
+                Mesh mesh = filter.sharedMesh;
+                Vector3[] vertices = mesh.vertices;
+                Matrix4x4 matrix = filter.transform.localToWorldMatrix;
+                var seen = new bool[vertices.Length];
+                int before = points.Count;
+                foreach (int i in mesh.GetTriangles(0))
+                {
+                    if (seen[i]) continue;
+                    seen[i] = true;
+                    Vector3 p = matrix.MultiplyPoint3x4(vertices[i]);
+                    float h = p.y - Ground(c.Terrain, p);
+                    if (h > BaseHeight || h < -0.6f) continue;
+                    p.y = 0f;
+                    var cell = new Vector2Int(Mathf.FloorToInt(p.x / BaseSpacing), Mathf.FloorToInt(p.z / BaseSpacing));
+                    bool near = false;
+                    for (int dx = -1; dx <= 1 && !near; dx++)
+                    for (int dz = -1; dz <= 1 && !near; dz++)
+                        if (cells.TryGetValue(cell + new Vector2Int(dx, dz), out var list))
+                            near = list.Any(q => (q - p).sqrMagnitude < BaseSpacing * BaseSpacing);
+                    if (near) continue;
+                    if (!cells.TryGetValue(cell, out var own)) cells[cell] = own = new List<Vector3>();
+                    own.Add(p);
+                    points.Add(p);
+                }
+                if (points.Count > before) counts.Add($"{label} {points.Count - before}");
+            }
+
+            int chunks = 0;
+            foreach (Transform chunk in c.Forest)
+            {
+                if (!chunk.name.StartsWith("ForestBake_Chunk_", StringComparison.Ordinal) || !chunk.gameObject.activeInHierarchy) continue;
+                Transform lod = chunk.Find(chunk.name + "_LOD0");
+                int before = points.Count;
+                Add(lod != null ? lod.GetComponent<MeshFilter>() : null, chunk.name);
+                if (points.Count > before) chunks++;
+            }
+            counts.RemoveAll(s => s.StartsWith("ForestBake_Chunk_", StringComparison.Ordinal));
+            counts.Insert(0, $"{chunks} chunks {points.Count}");
+            foreach (var name in new[] { "ForestBake_Grove_Left", "ForestBake_Grove_Right" })
+                Add(c.Forest.Find(name)?.GetComponent<MeshFilter>(), name);
+            Add(c.Clearing.Find("Entrance_ClearingCulm")?.GetComponent<MeshFilter>(), "Entrance_ClearingCulm");
+            Add(c.Polish.Find("EntranceUnderstory")?.GetComponent<MeshFilter>(), "EntranceUnderstory");
+            for (int i = 0; i < 3; i++) Add(c.Polish.Find($"Canopy_{i}")?.GetComponent<MeshFilter>(), $"Canopy_{i}");
+            summary = string.Join(", ", counts);
+            return points;
         }
 
         // ------------------------------------------------------------------ 7. arena grass streaming

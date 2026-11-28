@@ -3,15 +3,14 @@ using UnityEngine;
 
 namespace TanShadow.Autumn
 {
-    // Все звуки испытания Байху в одном ассете. Пустой слот = в игре звучит синтезированная заглушка,
-    // поэтому звук можно подкладывать по одному, ничего не ломая. Звукорежиссёр меняет только этот ассет.
+    // Все готовые звуки испытания Байху. Пустые слоты молчат.
     [CreateAssetMenu(menuName = "Tan Shadow/Autumn/Baihu Sound Bank", fileName = "BaihuSoundBank")]
     public sealed class BaihuSoundBank : ScriptableObject
     {
         [Serializable]
         public sealed class Slot
         {
-            [Tooltip("Клипы; играется случайный. Пусто — синтезированная заглушка")]
+            [Tooltip("Клипы; играется случайный. Пусто — тишина")]
             public AudioClip[] clips;
             [Range(0, 1)] public float volume = 1f;
             [Tooltip("Случайный разброс высоты тона, ±")]
@@ -29,10 +28,13 @@ namespace TanShadow.Autumn
         [Header("Окружение")]
         [Tooltip("Петля: ветер в бамбуке, шорох травы. Играет, пока лес живой")]
         public Slot forestAmbience = new Slot { volume = 0.35f, spatial = 0f };
+        public Slot forestOneShot = new Slot { volume = .32f };
 
         [Header("Тигр в траве")]
         [Tooltip("Шевеление бамбука и травы перед появлением глаз (по нему читается направление)")]
         public Slot rustle = new Slot { volume = 0.8f };
+        public Slot fleetingRustle = new Slot { volume = .48f };
+        public Slot tigerRoar = new Slot { volume = .55f };
         [Tooltip("Появились глаза")]
         public Slot eyesAppear = new Slot { volume = 0.6f };
         [Tooltip("Петля нарастающего шума: громкость идёт за агрессией тигра")]
@@ -62,6 +64,7 @@ namespace TanShadow.Autumn
         public Slot monumentImpact = new Slot { volume = 1f };
         [Tooltip("Треск основания после удара (громче с каждым ударом)")]
         public Slot monumentCrack = new Slot { volume = 0.8f };
+        public Slot monumentDebris = new Slot { volume = .35f };
         [Tooltip("Столб начинает падать")]
         public Slot monumentFall = new Slot { volume = 1f };
         [Tooltip("Столб рухнул")]

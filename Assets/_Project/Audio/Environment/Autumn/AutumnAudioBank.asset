@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 874aabab01233f44a9238f92892393ff, type: 3}
+  m_Name: AutumnAudioBank
+  m_EditorClassIdentifier: ShadowTan.Gameplay.Autumn::ShadowTan.Gameplay.Autumn.AutumnAudioBank
+  bambooAmbience: {fileID: 8300000, guid: ea81eaa65ffd5d045b789ac3bf4cd5fc, type: 3}
+  forestOneShot: {fileID: 8300000, guid: 9adf8d31b23aa2a4ebcc7027e8de583d, type: 3}
+  surfaceClips:
+  - surface: {fileID: 11400000, guid: d42409a35013a5e4f82b916a1a872235, type: 2}
+    footstep: {fileID: 8300000, guid: 8d053edfbc56fe14f9ee66c3302559eb, type: 3}
+    roll: {fileID: 8300000, guid: 6677cb3d325e5ef4081b52a4355f6ca4, type: 3}
+  - surface: {fileID: 11400000, guid: bc2169d50c7e48947911d2a4b5af03f7, type: 2}
+    footstep: {fileID: 8300000, guid: fb60fa6d0a05f1e48ba2293e1016a0b6, type: 3}
+    roll: {fileID: 8300000, guid: a2e8f2b3a42e1244fbef67dc594022e7, type: 3}

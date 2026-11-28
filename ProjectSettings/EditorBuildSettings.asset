@@ -4,6 +4,45 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Project/Scenes/Slideshows/Slideshow_Qinglong.unity
+    guid: 7973f328eb9852e4aa1715a5d420c503
+  - enabled: 1
+    path: Assets/_Project/Scenes/Slideshows/Slideshow_Zhuque.unity
+    guid: fef5db7fd8903084f9f08c43fa562eb0
+  - enabled: 1
+    path: Assets/_Project/Scenes/Slideshows/Slideshow_Baihu.unity
+    guid: 6422502ac3c97a84b85599320033535c
+  - enabled: 1
+    path: Assets/_Project/Scenes/Slideshows/Slideshow_Xuanwu.unity
+    guid: 07bdadf9c983509479636956b49c237a
+  - enabled: 1
+    path: Assets/_Project/Scenes/Slideshows/Slideshow_Finale.unity
+    guid: 6678b8fbffea21c48a0ecda352137246
+  - enabled: 1
+    path: Assets/_Game/Scenes/Spring_Qinglong.unity
+    guid: 4d6192f37ec921f47897a774db693b91
+  - enabled: 1
+    path: Assets/_Game/Scenes/Summer_Zhuque_01_Dry.unity
+    guid: 47215f1f7e54dd24baed08276aba1030
+  - enabled: 1
+    path: Assets/_Game/Scenes/Autumn_Baihu.unity
+    guid: 4f552413abe52f048b8f811c3075b953
+  - enabled: 1
+    path: Assets/_Game/Scenes/Winter_Xuanwu.unity
+    guid: ba84cef81fa84c540bce681c5c8343d7
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterQinglong.unity
+    guid: d6b6db556415d6a4a9dc84578d75d0db
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterZhuque.unity
+    guid: 799f22dac7a490f4aa067953baafb600
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterBaihu.unity
+    guid: 503ec8d5f9792f54b998278ad539bc8d
+  - enabled: 1
+    path: Assets/_Game/Scenes/Space_AfterXuanwu.unity
+    guid: d2bf765a97302904885692cfd251aa8c
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

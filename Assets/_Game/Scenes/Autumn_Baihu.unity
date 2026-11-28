@@ -10636,7 +10636,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307058820}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 0.81, g: 0.88, b: 1, a: 1}
   m_Intensity: 2600
@@ -10688,7 +10688,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0.025
   m_ShadowAngle: 0
   m_LightUnit: 2
   m_LuxAtDistance: 1
@@ -10716,6 +10716,12 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: -1
+  m_ShapeRadius: -1
+  m_Version: 15
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -10724,7 +10730,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
   m_CustomSpotLightShadowCone: 30
@@ -10762,7 +10767,6 @@ MonoBehaviour:
   m_FilterTracedShadow: 1
   m_FilterSizeTraced: 16
   m_SunLightConeAngle: 0.5
-  m_LightShadowRadius: 0.5
   m_SemiTransparentShadow: 0
   m_ColorShadow: 1
   m_DistanceBasedFiltering: 0
@@ -10830,11 +10834,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!4 &307058823
 Transform:
   m_ObjectHideFlags: 0
@@ -17634,6 +17633,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 499165692}
   m_Mesh: {fileID: 4300000, guid: 8e5b0e5a41efc99448972d0dc11cc82a, type: 2}
+--- !u!1 &502840369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 502840371}
+  - component: {fileID: 502840370}
+  m_Layer: 0
+  m_Name: "Victory \u2192 space"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &502840370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502840369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0380c22150951a4792471745cd3d84f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Seasons.VictoryToSpace
+  season: 2
+  spaceScene: Space_AfterBaihu
+  loadingConfig: {fileID: 11400000, guid: 864ed0203166ab9458aaf3b55b25a216, type: 2}
+--- !u!4 &502840371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502840369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &509258651
 GameObject:
   m_ObjectHideFlags: 0
@@ -29308,7 +29354,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0ad1a9791b883c147b92006c0310fb8b, type: 2}
+  - {fileID: 2100000, guid: 0629700346052784aa07cdd21a75ec3e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30956,6 +31002,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865354775}
   m_Mesh: {fileID: 4300000, guid: dbbc3512ea25c05458c1416ed38c0479, type: 2}
+--- !u!1 &870244221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 870244222}
+  m_Layer: 0
+  m_Name: Preview Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &870244222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870244221}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 4, y: 0, z: 415}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1373802720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &874526987
 GameObject:
   m_ObjectHideFlags: 0
@@ -42043,6 +42120,73 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7, y: 5, z: 11.911944}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &1172629326
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1373802720}
+    m_Modifications:
+    - target: {fileID: 446767081230574857, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_Name
+      value: PF_Autumn_Leaves
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+--- !u!4 &1172629327 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7086492359433667041, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+  m_PrefabInstance: {fileID: 1172629326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1172629328 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6079575534982374483, guid: b55a43602f02c18468aa295e9c13a9ba, type: 3}
+  m_PrefabInstance: {fileID: 1172629326}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1175123149
 GameObject:
   m_ObjectHideFlags: 0
@@ -44269,11 +44413,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuMonument
   shaftCollider: {fileID: 837001469}
-  crackMaterial: {fileID: 2100000, guid: 34c59e44476deea489d62a6491aae156, type: 2}
-  initialCracks: 4
-  cracksPerHit: 6
+  crackStages:
+  - {fileID: 2100000, guid: 0629700346052784aa07cdd21a75ec3e, type: 2}
+  - {fileID: 2100000, guid: 819cd72a9a3776d418bf03f084722527, type: 2}
+  - {fileID: 2100000, guid: a4e1565f5f9d2674b931e6fc5b50a0f4, type: 2}
+  - {fileID: 2100000, guid: 42a134d0be10d8f4ea1e3fc5fb1a1b22, type: 2}
+  damagedShaft: {fileID: 4300000, guid: b2e3356cc9fde2d4e948300d21876dd7, type: 2}
   stages: 4
-  crackZone: 0.28
   sinkPerHit: 0.04
   tiltPerHit: 0.8
 --- !u!1 &1245317687
@@ -49047,6 +49193,274 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373375030}
   m_Mesh: {fileID: 4300000, guid: 8e5b0e5a41efc99448972d0dc11cc82a, type: 2}
+--- !u!1 &1373802719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1373802720}
+  - component: {fileID: 1373802724}
+  - component: {fileID: 1373802723}
+  - component: {fileID: 1373802722}
+  - component: {fileID: 1373802721}
+  m_Layer: 0
+  m_Name: '[Autumn VFX]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1373802720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373802719}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1614023666}
+  - {fileID: 1837600860}
+  - {fileID: 1172629327}
+  - {fileID: 870244222}
+  m_Father: {fileID: 1902573693}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1373802721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373802719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90a65f0322ed5247954ebad4cf6c9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShadowTan.Gameplay.Autumn::ShadowTan.Gameplay.Autumn.AutumnMonumentFx
+  impactDust: {fileID: 1614023667}
+  shards: {fileID: 1837600861}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 73
+--- !u!114 &1373802722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373802719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5e8f53354d0bf40bc1bb8d5b2a2592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShadowTan.Gameplay.Autumn::ShadowTan.Gameplay.Autumn.AutumnVegetationImpulse
+  wind: {fileID: 0}
+  legacyStems:
+  - {fileID: 1307088884}
+  - {fileID: 140375577}
+  - {fileID: 1391563704}
+  - {fileID: 1932344450}
+  - {fileID: 1517547632}
+  - {fileID: 859650424}
+  - {fileID: 1817814161}
+  - {fileID: 821239938}
+  - {fileID: 1998831753}
+  - {fileID: 1352786779}
+  - {fileID: 1981111399}
+  - {fileID: 450603420}
+  - {fileID: 977513688}
+  - {fileID: 1145854927}
+  - {fileID: 1183139042}
+  - {fileID: 1315822256}
+  - {fileID: 1367731870}
+  - {fileID: 1416287267}
+  - {fileID: 1985992694}
+  - {fileID: 1937604957}
+  - {fileID: 1295583852}
+  - {fileID: 1002646166}
+  - {fileID: 1973290817}
+  - {fileID: 1916373104}
+  - {fileID: 2022822847}
+  - {fileID: 2031546538}
+  - {fileID: 1802340777}
+  - {fileID: 878169785}
+  - {fileID: 328352415}
+  - {fileID: 625407473}
+  - {fileID: 2101630016}
+  - {fileID: 428334246}
+  - {fileID: 1110350237}
+  - {fileID: 675155103}
+  - {fileID: 2026081432}
+  - {fileID: 466097991}
+  - {fileID: 669622909}
+  - {fileID: 293087923}
+  - {fileID: 309211340}
+  - {fileID: 1312703617}
+  - {fileID: 1498279242}
+  - {fileID: 1169737133}
+  - {fileID: 2076506389}
+  - {fileID: 64132810}
+  - {fileID: 291610911}
+  - {fileID: 1099954611}
+  - {fileID: 1080496434}
+  - {fileID: 29518975}
+  - {fileID: 529135349}
+  - {fileID: 144783638}
+  - {fileID: 984578414}
+  - {fileID: 1022641189}
+  - {fileID: 750219540}
+  - {fileID: 15096648}
+  - {fileID: 610555704}
+  - {fileID: 1514754902}
+  - {fileID: 629223329}
+  - {fileID: 626011844}
+  - {fileID: 2112910441}
+  - {fileID: 676003750}
+  - {fileID: 573852837}
+  - {fileID: 1343294760}
+  - {fileID: 1621539117}
+  - {fileID: 1290326916}
+  - {fileID: 686403093}
+  - {fileID: 1964990496}
+  - {fileID: 853370522}
+  - {fileID: 1875959047}
+  - {fileID: 1395770183}
+  - {fileID: 1034896730}
+  - {fileID: 2049240707}
+  - {fileID: 693285361}
+  - {fileID: 457095643}
+  - {fileID: 432783607}
+  - {fileID: 370718637}
+  - {fileID: 91677974}
+  - {fileID: 2082458906}
+  - {fileID: 664078646}
+  - {fileID: 360763312}
+  - {fileID: 841578298}
+  - {fileID: 10189153}
+  - {fileID: 2079931355}
+  - {fileID: 1783216373}
+  - {fileID: 754179708}
+  - {fileID: 989342783}
+  - {fileID: 1868550094}
+  - {fileID: 1073799050}
+  - {fileID: 1163553010}
+  - {fileID: 1150430216}
+  - {fileID: 657524782}
+  - {fileID: 1452959909}
+  - {fileID: 824581619}
+  - {fileID: 1799426110}
+  - {fileID: 1004097646}
+  - {fileID: 220027104}
+  - {fileID: 1439825306}
+  - {fileID: 2109058982}
+  - {fileID: 2074721148}
+  - {fileID: 202019801}
+  - {fileID: 713054605}
+  - {fileID: 941081020}
+  - {fileID: 16708947}
+  - {fileID: 511122289}
+  - {fileID: 269501115}
+  - {fileID: 1463676307}
+  - {fileID: 667367964}
+  - {fileID: 1526366824}
+  - {fileID: 1360187138}
+  - {fileID: 1221007804}
+  - {fileID: 710603602}
+  - {fileID: 247510130}
+  - {fileID: 294718371}
+  - {fileID: 314447923}
+  - {fileID: 1937434770}
+  - {fileID: 676782850}
+  - {fileID: 952593788}
+  - {fileID: 775549847}
+  - {fileID: 947679605}
+  - {fileID: 113428604}
+  - {fileID: 120732493}
+  - {fileID: 598126273}
+  - {fileID: 1162836458}
+  - {fileID: 480492103}
+  - {fileID: 1232976307}
+  - {fileID: 319725616}
+  - {fileID: 18548190}
+  - {fileID: 1535230284}
+  - {fileID: 608158430}
+  - {fileID: 936843987}
+  - {fileID: 327746560}
+  - {fileID: 464110576}
+  - {fileID: 301843263}
+  - {fileID: 951294273}
+  - {fileID: 754228112}
+  - {fileID: 1421597874}
+  - {fileID: 993155776}
+  - {fileID: 347085933}
+  - {fileID: 1939960517}
+  - {fileID: 999989137}
+  - {fileID: 174369084}
+  - {fileID: 1103414860}
+  - {fileID: 1027516840}
+  - {fileID: 1850466451}
+  - {fileID: 571292886}
+  - {fileID: 1714640567}
+  - {fileID: 1135743630}
+  - {fileID: 194568792}
+  - {fileID: 442225709}
+  - {fileID: 799097017}
+  - {fileID: 922731452}
+  - {fileID: 1923903443}
+  - {fileID: 1119809080}
+  - {fileID: 592921106}
+  - {fileID: 461106573}
+  - {fileID: 1136550797}
+  - {fileID: 1057738878}
+  - {fileID: 173426782}
+--- !u!114 &1373802723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373802719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185c104a74d268140b586baec45a912d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShadowTan.Gameplay.Autumn::ShadowTan.Gameplay.Autumn.AutumnLeafFx
+  leaves: {fileID: 1172629328}
+  observer: {fileID: 1256352583}
+  xRange: {x: -12, y: 12}
+  zRange: {x: 15, y: 406}
+--- !u!114 &1373802724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373802719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d498a109cb671458b57d939664f075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShadowTan.Gameplay.Autumn::ShadowTan.Gameplay.Autumn.AutumnVfxDirector
+  vegetation: {fileID: 1373802722}
+  eyes: {fileID: 0}
+  monument: {fileID: 1373802721}
+  leaves: {fileID: 1373802723}
+  surface: {fileID: 0}
+  debris: {fileID: 0}
+  systems:
+  - {fileID: 0}
+  - {fileID: 1614023667}
+  - {fileID: 0}
+  - {fileID: 1837600861}
+  - {fileID: 1172629328}
+  previewPoint: {fileID: 870244222}
 --- !u!1 &1376478563
 GameObject:
   m_ObjectHideFlags: 0
@@ -50860,6 +51274,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.HDAdditionalCameraData
+  m_Version: 9
+  m_ObsoleteRenderingPath: 0
+  m_ObsoleteFrameSettings:
+    overrides: 0
+    enableShadow: 0
+    enableContactShadows: 0
+    enableShadowMask: 0
+    enableSSR: 0
+    enableSSAO: 0
+    enableSubsurfaceScattering: 0
+    enableTransmission: 0
+    enableAtmosphericScattering: 0
+    enableVolumetrics: 0
+    enableReprojectionForVolumetrics: 0
+    enableLightLayers: 0
+    enableExposureControl: 1
+    diffuseGlobalDimmer: 0
+    specularGlobalDimmer: 0
+    shaderLitMode: 0
+    enableDepthPrepassWithDeferredRendering: 0
+    enableTransparentPrepass: 0
+    enableMotionVectors: 0
+    enableObjectMotionVectors: 0
+    enableDecals: 0
+    enableRoughRefraction: 0
+    enableTransparentPostpass: 0
+    enableDistortion: 0
+    enablePostprocess: 0
+    enableOpaqueObjects: 0
+    enableTransparentObjects: 0
+    enableRealtimePlanarReflection: 0
+    enableMSAA: 0
+    enableAsyncCompute: 0
+    runLightListAsync: 0
+    runSSRAsync: 0
+    runSSAOAsync: 0
+    runContactShadowsAsync: 0
+    runVolumeVoxelizationAsync: 0
+    lightLoopSettings:
+      overrides: 0
+      enableDeferredTileAndCluster: 0
+      enableComputeLightEvaluation: 0
+      enableComputeLightVariants: 0
+      enableComputeMaterialVariants: 0
+      enableFptlForForwardOpaque: 0
+      enableBigTilePrepass: 0
+      isFptlEnabled: 0
   clearColorMode: 1
   backgroundColorHDR: {r: 0.62, g: 0.78, b: 0.92, a: 1}
   clearDepth: 1
@@ -50940,53 +51401,6 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
-  m_Version: 9
-  m_ObsoleteRenderingPath: 0
-  m_ObsoleteFrameSettings:
-    overrides: 0
-    enableShadow: 0
-    enableContactShadows: 0
-    enableShadowMask: 0
-    enableSSR: 0
-    enableSSAO: 0
-    enableSubsurfaceScattering: 0
-    enableTransmission: 0
-    enableAtmosphericScattering: 0
-    enableVolumetrics: 0
-    enableReprojectionForVolumetrics: 0
-    enableLightLayers: 0
-    enableExposureControl: 1
-    diffuseGlobalDimmer: 0
-    specularGlobalDimmer: 0
-    shaderLitMode: 0
-    enableDepthPrepassWithDeferredRendering: 0
-    enableTransparentPrepass: 0
-    enableMotionVectors: 0
-    enableObjectMotionVectors: 0
-    enableDecals: 0
-    enableRoughRefraction: 0
-    enableTransparentPostpass: 0
-    enableDistortion: 0
-    enablePostprocess: 0
-    enableOpaqueObjects: 0
-    enableTransparentObjects: 0
-    enableRealtimePlanarReflection: 0
-    enableMSAA: 0
-    enableAsyncCompute: 0
-    runLightListAsync: 0
-    runSSRAsync: 0
-    runSSAOAsync: 0
-    runContactShadowsAsync: 0
-    runVolumeVoxelizationAsync: 0
-    lightLoopSettings:
-      overrides: 0
-      enableDeferredTileAndCluster: 0
-      enableComputeLightEvaluation: 0
-      enableComputeLightVariants: 0
-      enableComputeMaterialVariants: 0
-      enableFptlForForwardOpaque: 0
-      enableBigTilePrepass: 0
-      isFptlEnabled: 0
 --- !u!20 &1422878817
 Camera:
   m_ObjectHideFlags: 0
@@ -57556,6 +57970,73 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611273182}
   m_Mesh: {fileID: 4300000, guid: 18cf3bc7d6a3e3240aaa2dd66d4f7ae3, type: 2}
+--- !u!1001 &1614023665
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1373802720}
+    m_Modifications:
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185756336057920940, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+      propertyPath: m_Name
+      value: PF_Autumn_ImpactDust
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+--- !u!4 &1614023666 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 288979545248217722, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+  m_PrefabInstance: {fileID: 1614023665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1614023667 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3505649529853100505, guid: b2ae8a4807df51e4ea04fd1ce576b2f6, type: 3}
+  m_PrefabInstance: {fileID: 1614023665}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1621004181
 GameObject:
   m_ObjectHideFlags: 0
@@ -62560,7 +63041,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753374454}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.89, b: 0.72, a: 1}
   m_Intensity: 8500
@@ -62612,7 +63093,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0.025
   m_ShadowAngle: 0
   m_LightUnit: 2
   m_LuxAtDistance: 1
@@ -62640,6 +63121,12 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: -1
+  m_ShapeRadius: -1
+  m_Version: 15
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -62648,7 +63135,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
   m_CustomSpotLightShadowCone: 30
@@ -62686,7 +63172,6 @@ MonoBehaviour:
   m_FilterTracedShadow: 1
   m_FilterSizeTraced: 16
   m_SunLightConeAngle: 0.5
-  m_LightShadowRadius: 0.5
   m_SemiTransparentShadow: 0
   m_ColorShadow: 1
   m_DistanceBasedFiltering: 0
@@ -62754,11 +63239,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!4 &1753374457
 Transform:
   m_ObjectHideFlags: 0
@@ -64984,6 +65464,73 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836949048}
   m_Mesh: {fileID: 4300000, guid: 66ad904b1abbcf94f839c433a641e46b, type: 2}
+--- !u!1001 &1837600859
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1373802720}
+    m_Modifications:
+    - target: {fileID: 2127435355636989288, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_Name
+      value: PF_Autumn_MonumentShards
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+--- !u!4 &1837600860 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3437726026614008479, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+  m_PrefabInstance: {fileID: 1837600859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1837600861 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6269830423913987128, guid: 63852090ec102ef40a96314d302fbfe2, type: 3}
+  m_PrefabInstance: {fileID: 1837600859}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1839512424
 GameObject:
   m_ObjectHideFlags: 0
@@ -67506,6 +68053,7 @@ Transform:
   - {fileID: 2060499973}
   - {fileID: 224681867}
   - {fileID: 1936755635}
+  - {fileID: 1373802720}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1904444515
@@ -68690,6 +69238,7 @@ GameObject:
   - component: {fileID: 1936755638}
   - component: {fileID: 1936755637}
   - component: {fileID: 1936755636}
+  - component: {fileID: 1936755641}
   m_Layer: 0
   m_Name: Baihu encounter
   m_TagString: Untagged
@@ -68745,6 +69294,8 @@ MonoBehaviour:
   encounter: {fileID: 1936755638}
   cover: {fileID: 1936755640}
   bank: {fileID: 11400000, guid: 591df474eca07ca4f89108a077e8c76c, type: 2}
+  ambienceMix: {fileID: 201522852083853647, guid: d2114e2e3d32dbc48925a078d6c9b041, type: 2}
+  effectsMix: {fileID: 24300002, guid: d2114e2e3d32dbc48925a078d6c9b041, type: 2}
 --- !u!114 &1936755638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68819,6 +69370,169 @@ MonoBehaviour:
   dotBeatGrow: 0.35
   dotSize: 0.032
   dotMargin: 0.05
+--- !u!114 &1936755641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936755634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d60d74d150cceac4e949ee4338bce360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Autumn.BaihuVfxBridge
+  encounter: {fileID: 1936755638}
+  rustled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: Rustle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  eyesShown:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: EyesShown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  scared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: Scared
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  pounced:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: Leap
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  leaptAway:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: Takeoff
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  landed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: Landing
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  impact:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: MonumentHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  monumentLanded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: MonumentLanded
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  stopped:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: StopEffects
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  reset:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373802724}
+        m_TargetAssemblyTypeName: ShadowTan.Gameplay.Autumn.AutumnVfxDirector, ShadowTan.Gameplay.Autumn
+        m_MethodName: ResetEffects
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1937434768
 GameObject:
   m_ObjectHideFlags: 0
@@ -76447,3 +77161,4 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1902573693}
+  - {fileID: 502840371}

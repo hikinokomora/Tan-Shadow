@@ -1,20 +1,26 @@
 using UnityEngine;
 
-/// <summary>Add to the Guardian model root. Drives the two unanimated glute deform bones.</summary>
+/// <summary>Adds a damped offset to the two glute deform bones after animation evaluation.</summary>
 [DefaultExecutionOrder(1000)]
 [DisallowMultipleComponent]
 public sealed class GuardianSecondaryMotion : MonoBehaviour
 {
-    private const float Frequency = 4.2f;
-    private const float Damping = 0.77f;
-    [SerializeField, Range(0f, 0.025f)] private float maxOffsetMetres = 0.012f;
-    [SerializeField, Range(0f, 1f)] private float response = 0.42f;
+    private const float Frequency = 3.4f;
+    // Underdamped so the bones rebound even after the animated anchor comes to rest.
+    private const float DampingRatio = 0.19f;
+    [SerializeField, Range(0f, 2f), InspectorName("Сила мягкой физики ягодиц")]
+    [Tooltip("0 — выключено, 1 — исходная сила, 2 — вдвое сильнее.")]
+    private float strength = 1f;
+
+    [SerializeField, HideInInspector] private float maxOffsetMetres = 0.006f;
+    [SerializeField, HideInInspector] private float response = 0.31f;
     private readonly Spring[] springs = new Spring[2];
 
     private sealed class Spring
     {
         public Transform bone;
-        public Vector3 restLocal, lastAnchor, lastVelocity, offset, velocity;
+        public Vector3 authoredLocal, appliedLocal, lastAnchor, lastVelocity, offset, velocity;
+        public bool applied;
         public int samples;
     }
 
@@ -31,32 +37,40 @@ public sealed class GuardianSecondaryMotion : MonoBehaviour
                 enabled = false;
                 return;
             }
-            springs[side] = new Spring { bone = bone, restLocal = bone.localPosition };
+            springs[side] = new Spring { bone = bone };
         }
     }
 
     private void OnDisable()
     {
         foreach (var s in springs)
-            if (s != null && s.bone != null)
-                s.bone.localPosition = s.restLocal;
+            if (s != null && s.bone && s.applied && s.bone.localPosition.Equals(s.appliedLocal))
+                s.bone.localPosition = s.authoredLocal;
     }
 
     private void LateUpdate()
     {
-        float dt = Time.deltaTime;
+        Step(Time.deltaTime);
+    }
+
+    private void Step(float dt)
+    {
         if (dt <= 0f) return;
         float omega = 2f * Mathf.PI * Frequency;
         foreach (var s in springs)
         {
-            Vector3 anchor = s.bone.parent.TransformPoint(s.restLocal);
+            Vector3 local = s.bone.localPosition;
+            if (!s.applied || !local.Equals(s.appliedLocal))
+                s.authoredLocal = local;
+            Vector3 anchor = s.bone.parent.TransformPoint(s.authoredLocal);
             Vector3 delta = anchor - s.lastAnchor;
             if (s.samples == 0 || dt > 0.1f || delta.sqrMagnitude > 0.25f)
             {
                 s.samples = 1;
                 s.lastAnchor = anchor;
                 s.lastVelocity = s.offset = s.velocity = Vector3.zero;
-                s.bone.localPosition = s.restLocal;
+                s.bone.localPosition = s.authoredLocal;
+                s.applied = false;
                 continue;
             }
             Vector3 anchorVelocity = delta / dt;
@@ -70,10 +84,18 @@ public sealed class GuardianSecondaryMotion : MonoBehaviour
             for (int i = 0; i < steps; i++)
             {
                 s.velocity += (-response * acceleration - omega * omega * s.offset
-                    - 2f * Damping * omega * s.velocity) * step;
-                s.offset = Vector3.ClampMagnitude(s.offset + s.velocity * step, maxOffsetMetres);
+                    - 2f * DampingRatio * omega * s.velocity) * step;
+                Vector3 nextOffset = s.offset + s.velocity * step;
+                s.offset = Vector3.ClampMagnitude(nextOffset, maxOffsetMetres);
+                if (nextOffset.sqrMagnitude > maxOffsetMetres * maxOffsetMetres)
+                {
+                    Vector3 direction = nextOffset.normalized;
+                    s.velocity -= direction * Mathf.Max(0f, Vector3.Dot(s.velocity, direction));
+                }
             }
-            s.bone.position = anchor + s.offset;
+            s.bone.position = anchor + s.offset * strength;
+            s.appliedLocal = s.bone.localPosition;
+            s.applied = true;
         }
     }
 }

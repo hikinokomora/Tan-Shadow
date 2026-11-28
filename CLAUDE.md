@@ -16,7 +16,7 @@
 
 ## Состояние репозитория
 
-- Unity 6000.3.8f1. Рендер **временно HDRP**, целевой — URP (ARCHITECTURE.md, ADR-014).
+- Unity 6000.6.7f1 (ProjectSettings/ProjectVersion.txt). Рендер **временно HDRP**, целевой — URP (ARCHITECTURE.md, ADR-014).
 - Новый контент кладётся в `Assets/_Project/` по структуре ARCHITECTURE.md §5.
 - Героиня пока — заглушка `Assets/_Project/Art/Characters/Heroine/_Placeholder/Yinniang`.
 - Код героини (`ShadowTan.Core/Combat/Player`) реализован; префаб, Animator и 3D-клипы — задачи в `C:\Users\aam85\Downloads\ShadowTan_ChatGPT_Prompts.md`.

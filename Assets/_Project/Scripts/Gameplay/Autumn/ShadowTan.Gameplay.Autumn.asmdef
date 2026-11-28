@@ -1,0 +1,5 @@
+{
+    "name": "ShadowTan.Gameplay.Autumn",
+    "rootNamespace": "ShadowTan.Gameplay.Autumn",
+    "references": ["ShadowTan.Core", "ShadowTan.Combat", "ShadowTan.Player"]
+}

@@ -1600,9 +1600,6 @@ PrefabInstance:
       addedObject: {fileID: 1849465214}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aa394df161fc34c4ea804fc27b33c71f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1849465213}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aa394df161fc34c4ea804fc27b33c71f, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1849465212}
   m_SourcePrefab: {fileID: 100100000, guid: aa394df161fc34c4ea804fc27b33c71f, type: 3}
 --- !u!4 &1849465209 stripped
@@ -1632,24 +1629,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959708332513c5d418339c2dfc198ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuardianSecondaryMotion
-  maxOffsetMetres: 0.012
-  response: 0.42
---- !u!114 &1849465213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1849465211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14e8587ca36b65641b7605781cadaa9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SwordRopePhysics
-  simulationEnabled: 1
-  gravityScale: 1
-  damping: 4
-  bendStiffness: 0.12
+  maxOffsetMetres: 0.006
+  response: 0.31
 --- !u!95 &1849465214
 Animator:
   serializedVersion: 7

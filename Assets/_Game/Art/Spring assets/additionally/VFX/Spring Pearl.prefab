@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3990362417272224945
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.3999999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.709
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 24459c3fef784fb4caf273b55074264a, type: 2}
+    - target: {fileID: 919132149155446097, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      propertyPath: m_Name
+      value: Spring Pearl
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5530752061685739004}
+  m_SourcePrefab: {fileID: 100100000, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+--- !u!1 &4296984538566443488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c7fc220066582f48aa6a7b7d0155af5, type: 3}
+  m_PrefabInstance: {fileID: 3990362417272224945}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5530752061685739004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4296984538566443488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d8fb591ee5a804296552ba80391e82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Spring.SpringPearlPulse
+  startingStage: 0
+  period: 2.4
+  cracks:
+  - albedo: {fileID: 2800000, guid: 8f56cd5514b6b694292076e1fd776edb, type: 3}
+    emissive: {fileID: 2800000, guid: 65e3c8f2c0b2c3e40b21c793fc9d7085, type: 3}
+  - albedo: {fileID: 2800000, guid: ce86b74deb0b1714498ca3ac4ef8313c, type: 3}
+    emissive: {fileID: 2800000, guid: 760617c68675fb74b9d5a686d9675378, type: 3}
+  - albedo: {fileID: 2800000, guid: d2348298f3c95754597fd18476443b28, type: 3}
+    emissive: {fileID: 2800000, guid: 5eb66a088c2a902439d6479a4358bb8e, type: 3}
+  auraMaterial: {fileID: 2100000, guid: 2e7e5e99573decb41b4a29e727813b82, type: 2}
+  auraOpacity: 0.58
+  flashMaterial: {fileID: 2100000, guid: f4fafb0ced046b04a8e529cdff9cb491, type: 2}
+  ringMaterial: {fileID: 2100000, guid: 6e1a59cc42bffc44fa1aca6f90bee931, type: 2}
+  sparkMaterial: {fileID: 2100000, guid: a05d6f16099240a44ba2274e79402c4a, type: 2}
+  shardMaterial: {fileID: 2100000, guid: 047ffaf672eac65489d9cba8a357076f, type: 2}
+  shardMesh: {fileID: 4300000, guid: 960866e836f217e408fe32fd1199c995, type: 2}

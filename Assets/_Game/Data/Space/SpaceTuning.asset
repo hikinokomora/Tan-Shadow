@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20733e15781260340bb55c98c1f82dcb, type: 3}
+  m_Name: SpaceTuning
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Cosmos.SpaceTuning
+  boundaryRadius: 400
+  spawnDistance: 250
+  spawnHeight: 30
+  arriveDistance: 12
+  speed: 25
+  fastMultiplier: 4
+  slowMultiplier: 4
+  wheelRange: {x: 0.25, y: 8}
+  smoothing: 0.25
+  lookSensitivity: 0.12
+  eyeForward: 0.12
+  eyeUp: 0.06
+  extinguishDelay: 1.5
+  extinguishSeconds: 4
+  starsPerSector: 1100
+  sectorSpan: 80
+  starElevation: {x: -70, y: 70}
+  starNits: 40000
+  starAngularSize: {x: 0.06, y: 0.22}

@@ -35,8 +35,12 @@ namespace TanShadow.Summer
         [Header("Перелёт на другой валун")]
         [Tooltip("TBD Не садится ближе этого к героине, м")]
         [Min(0)] public float minRelocateDistance = 30f;
-        [Tooltip("TBD Предпочитает валун примерно на таком расстоянии от героини (не на другом конце кольца), м")]
-        [Min(0)] public float preferredRelocateDistance = 45f;
+        [Tooltip("TBD Предпочитает валуны поближе к себе: валун, до которого лететь по кольцу столько метров, выбирается вдвое реже ближнего, м")]
+        [Min(1)] public float relocateNearDistance = 35f;
+        [Tooltip("TBD Во сколько раз реже птица летит назад по кольцу, против стороны прошлого перелёта (не мечется вперёд-назад)")]
+        [Range(0, 1)] public float relocateReverseWeight = 0.08f;
+        [Tooltip("TBD На сколько последних валунов птица не возвращается (если есть из чего выбрать)")]
+        [Min(0)] public int relocateMemory = 3;
         [Tooltip("TBD Скорость перелёта, м/с")]
         [Min(1)] public float relocateSpeed = 20f;
         [Tooltip("TBD Высота дуги перелёта, м")]
@@ -82,15 +86,14 @@ namespace TanShadow.Summer
         [Min(0)] public float lieTime = 0.6f;
         [Tooltip("TBD Восстановление: встаёт, расправляет крылья, вспыхивает, хвост отрастает, с")]
         [Min(0.1f)] public float regenerateTime = 2.4f;
+        [Tooltip("TBD Пик вспышки птицы при восстановлении (VFX SU-05), доля glowIntensity. Выше ~0.8 Bloom заливает весь кадр")]
+        [Min(0)] public float regenerateGlow = 0.6f;
         [Tooltip("TBD Сколько заливаются лавой русла на третьем восстановлении, с")]
         [Min(0.1f)] public float lavaOpenTime = 2.2f;
 
         [Header("Удар 4: над лавой")]
         [Tooltip("TBD Допуск: тень считается над лавой, если до реки не дальше этого, м")]
         [Min(0)] public float lavaShadowMargin = 1.5f;
-        [Tooltip("TBD Отсвет лавы на птице, пока она над рекой (0..1). Подсказка момента: тень на светящейся лаве " +
-                 "и в тени стены кальдеры почти не видна")]
-        [Range(0, 1)] public float overLavaGlow = 0.15f;
         [Tooltip("TBD Падение в лаву, с")]
         [Min(0.1f)] public float finalFallTime = 1.2f;
         [Tooltip("TBD Белая янь появляется на столько раньше, чем птица коснётся магмы, с")]

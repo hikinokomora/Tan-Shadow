@@ -1,0 +1,270 @@
+fileFormatVersion: 2
+guid: b468c1e4025871948b82329192149f61
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ceramic
+    second: {fileID: 2100000, guid: 2f2c8f59c1fdc0a4d8806f497af4bf58, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: ae57f8a81103a484da8720e49f51a895, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GrayMetal
+    second: {fileID: 2100000, guid: ec1c04aa9c5fc564b95956dff32c0c4a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HeatShieldFabric
+    second: {fileID: 2100000, guid: b2d4a4893b341424aa1961a59c828ba5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hull
+    second: {fileID: 2100000, guid: 36acd09bb92a0c34ea9e160548b6aa97, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_BlackMetal_albedo
+    second: {fileID: 2800000, guid: c4616cd1c22fc44478001c4a22fe9afc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_BlackMetal_normal
+    second: {fileID: 2800000, guid: 58e470de74a55e7498c9ac086ced7195, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_BlackMetal_specular
+    second: {fileID: 2800000, guid: f7c6118a5a2cee245825dca853389192, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Ceramic_albedo
+    second: {fileID: 2800000, guid: 7fb3e809f55d59942aca47ab0e809200, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Ceramic_normal
+    second: {fileID: 2800000, guid: 0bf3973e772dd4247a218d20a14024b9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Ceramic_specular
+    second: {fileID: 2800000, guid: 60a480832eafe0c418d3988596dbe4b5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Glass_albedo
+    second: {fileID: 2800000, guid: 3bd6d408b64d4dd439b053940add46d1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Glass_specular
+    second: {fileID: 2800000, guid: 576a3b0037100d64a903aa5fd0f4d3f4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_GrayMetal_albedo
+    second: {fileID: 2800000, guid: c1299c80c377fa94d8d1bf10dddeadd2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_GrayMetal_normal
+    second: {fileID: 2800000, guid: 88ecbb08d04f3da4ba63f7de5a3e30c3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_GrayMetal_specular
+    second: {fileID: 2800000, guid: 617aca572066a99448fe9dbb11aaea00, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_HullRed_albedo
+    second: {fileID: 2800000, guid: 6c74d15f56636a44a947845778f7af09, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Hull_albedo
+    second: {fileID: 2800000, guid: df263b93c9a3b364b8221eccfb2d2711, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Hull_normal
+    second: {fileID: 2800000, guid: 7f0ac268436b4dc49bf1160103aa3c7f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Hull_specular
+    second: {fileID: 2800000, guid: 9cea543470db68640ac65cff87fe2c53, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Isolation_albedo
+    second: {fileID: 2800000, guid: 900214aa5a65a694390c4437f4f9a69e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Isolation_normal
+    second: {fileID: 2800000, guid: 2f39e5f1c2f590d45a24b318c76b8b2d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Isolation_specular
+    second: {fileID: 2800000, guid: 83de0ce99eb69404aa14f19aa4554620, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_Light_albedo
+    second: {fileID: 2800000, guid: e8a09347ab08b794abeeddf73710149a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_SolarPanels_albedo
+    second: {fileID: 2800000, guid: fb70726222acc0f4d8bc5fef318d615b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_SolarPanels_normal
+    second: {fileID: 2800000, guid: f52b4c01d37f1a64bbd231f0cdce2c1f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_TechPanel_albedo
+    second: {fileID: 2800000, guid: a6dbac52acad6c044b360a76803f7c5b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_TechPanel_normal
+    second: {fileID: 2800000, guid: 2392792a293f8634aaa144546330517e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_TechPanel_specular
+    second: {fileID: 2800000, guid: 4349de00e2808fe45a355c5dfb039b1c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_YellowMetal_albedo
+    second: {fileID: 2800000, guid: f6e7ecda890db3642a889896f67eb35d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_YellowMetal_normal
+    second: {fileID: 2800000, guid: 92475b2f431ae5640bfd0a4351a7e11a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: KB3D_SPS_YellowMetal_specular
+    second: {fileID: 2800000, guid: 39e265543d3de1946ac4ab906d7da341, type: 3}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

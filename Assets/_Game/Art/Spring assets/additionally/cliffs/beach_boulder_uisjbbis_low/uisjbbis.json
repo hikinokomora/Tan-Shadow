@@ -1,0 +1,1041 @@
+{
+    "assetCategories": {
+        "3D asset": {
+            "nature": {
+                "rock": {
+                    "beach": {},
+                    "boulder": {}
+                }
+            }
+        }
+    },
+    "averageColor": "#2F2E29",
+    "brushes": [],
+    "categories": [
+        "3d",
+        "nature",
+        "rock"
+    ],
+    "comp_version": 1,
+    "displacement_bias_tier1": 0.678027,
+    "displacement_scale_tier1": 5.196859,
+    "environment": {
+        "biome": "ocean biome",
+        "region": "Europe"
+    },
+    "highest_available_res": 8192,
+    "id": "uisjbbis",
+    "is_uefn_compatible": true,
+    "json": {
+        "contentLength": 23867,
+        "uri": "uisjbbis.json"
+    },
+    "maps": [
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 63424560,
+            "mimeType": "image/x-exr",
+            "name": "Ao",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "ao",
+            "uri": "tier_0/uisjbbis_8K_AO.exr"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 37714714,
+            "mimeType": "image/jpeg",
+            "name": "Ao",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "ao",
+            "uri": "tier_0/uisjbbis_8K_AO.jpg"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 16,
+            "colorSpace": "sRGB",
+            "contentLength": 228463096,
+            "maxIntensity": 88,
+            "mimeType": "image/x-exr",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "basecolor",
+            "uri": "tier_0/uisjbbis_8K_Basecolor.exr"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 34033463,
+            "maxIntensity": 88,
+            "mimeType": "image/jpeg",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "basecolor",
+            "uri": "tier_0/uisjbbis_8K_Basecolor.jpg"
+        },
+        {
+            "averageColor": "#8282FA",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 180624056,
+            "maxIntensity": 173,
+            "mimeType": "image/x-exr",
+            "minIntensity": 114,
+            "name": "Bump",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "bump",
+            "uri": "tier_0/uisjbbis_8K_Bump.exr"
+        },
+        {
+            "averageColor": "#8282FA",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 9668080,
+            "maxIntensity": 173,
+            "mimeType": "image/jpeg",
+            "minIntensity": 114,
+            "name": "Bump",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "bump",
+            "uri": "tier_0/uisjbbis_8K_Bump.jpg"
+        },
+        {
+            "averageColor": "#EFEFEF",
+            "bitDepth": 32,
+            "colorSpace": "sRGB",
+            "contentLength": 192239830,
+            "maxIntensity": 255,
+            "mimeType": "image/x-exr",
+            "minIntensity": 197,
+            "name": "Cavity",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "cavity",
+            "uri": "tier_0/uisjbbis_8K_Cavity.exr"
+        },
+        {
+            "averageColor": "#EFEFEF",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 44017423,
+            "maxIntensity": 255,
+            "mimeType": "image/jpeg",
+            "minIntensity": 197,
+            "name": "Cavity",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "cavity",
+            "uri": "tier_0/uisjbbis_8K_Cavity.jpg"
+        },
+        {
+            "averageColor": "#202020",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 144410179,
+            "maxIntensity": 37,
+            "mimeType": "image/x-exr",
+            "minIntensity": 19,
+            "name": "Gloss",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "gloss",
+            "uri": "tier_0/uisjbbis_8K_Gloss.exr"
+        },
+        {
+            "averageColor": "#202020",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 15691738,
+            "maxIntensity": 37,
+            "mimeType": "image/jpeg",
+            "minIntensity": 19,
+            "name": "Gloss",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "gloss",
+            "uri": "tier_0/uisjbbis_8K_Gloss.jpg"
+        },
+        {
+            "bitDepth": 16,
+            "colorspace": "linear",
+            "contentLength": 181756404,
+            "mimeType": "image/x-exr",
+            "name": "Normal",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "normal",
+            "uri": "tier_0/uisjbbis_8K_Normal.exr"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 71365633,
+            "mimeType": "image/jpeg",
+            "name": "Normal",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "normal",
+            "uri": "tier_0/uisjbbis_8K_Normal.jpg"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 116795126,
+            "maxIntensity": 238,
+            "mimeType": "image/x-exr",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "roughness",
+            "uri": "tier_0/uisjbbis_8K_Roughness.exr"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 14926039,
+            "maxIntensity": 238,
+            "mimeType": "image/jpeg",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "roughness",
+            "uri": "tier_0/uisjbbis_8K_Roughness.jpg"
+        },
+        {
+            "averageColor": "#313131",
+            "bitDepth": 16,
+            "colorSpace": "sRGB",
+            "contentLength": 213730203,
+            "maxIntensity": 55,
+            "mimeType": "image/x-exr",
+            "minIntensity": 39,
+            "name": "Specular",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "specular",
+            "uri": "tier_0/uisjbbis_8K_Specular.exr"
+        },
+        {
+            "averageColor": "#313131",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 27503239,
+            "maxIntensity": 55,
+            "mimeType": "image/jpeg",
+            "minIntensity": 39,
+            "name": "Specular",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 0,
+            "type": "specular",
+            "uri": "tier_0/uisjbbis_8K_Specular.jpg"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 63424560,
+            "mimeType": "image/x-exr",
+            "name": "Ao",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "ao",
+            "uri": "tier_1/uisjbbis_8K_AO.exr"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 37714714,
+            "mimeType": "image/jpeg",
+            "name": "Ao",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "ao",
+            "uri": "tier_1/uisjbbis_8K_AO.jpg"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 16,
+            "colorSpace": "sRGB",
+            "contentLength": 228463096,
+            "maxIntensity": 88,
+            "mimeType": "image/x-exr",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "basecolor",
+            "uri": "tier_1/uisjbbis_8K_Basecolor.exr"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 34033463,
+            "maxIntensity": 88,
+            "mimeType": "image/jpeg",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "basecolor",
+            "uri": "tier_1/uisjbbis_8K_Basecolor.jpg"
+        },
+        {
+            "averageColor": "#8282FA",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 180624056,
+            "maxIntensity": 173,
+            "mimeType": "image/x-exr",
+            "minIntensity": 114,
+            "name": "Bump",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "bump",
+            "uri": "tier_1/uisjbbis_8K_Bump.exr"
+        },
+        {
+            "averageColor": "#8282FA",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 9668080,
+            "maxIntensity": 173,
+            "mimeType": "image/jpeg",
+            "minIntensity": 114,
+            "name": "Bump",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "bump",
+            "uri": "tier_1/uisjbbis_8K_Bump.jpg"
+        },
+        {
+            "averageColor": "#EFEFEF",
+            "bitDepth": 32,
+            "colorSpace": "sRGB",
+            "contentLength": 192239830,
+            "maxIntensity": 255,
+            "mimeType": "image/x-exr",
+            "minIntensity": 197,
+            "name": "Cavity",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "cavity",
+            "uri": "tier_1/uisjbbis_8K_Cavity.exr"
+        },
+        {
+            "averageColor": "#EFEFEF",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 44017423,
+            "maxIntensity": 255,
+            "mimeType": "image/jpeg",
+            "minIntensity": 197,
+            "name": "Cavity",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "cavity",
+            "uri": "tier_1/uisjbbis_8K_Cavity.jpg"
+        },
+        {
+            "averageColor": "#828282",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 267553830,
+            "maxIntensity": 135,
+            "mimeType": "image/x-exr",
+            "minIntensity": 124,
+            "name": "Displacement",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "displacement",
+            "uri": "tier_1/uisjbbis_8K_Displacement.exr"
+        },
+        {
+            "averageColor": "#828282",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 4016395,
+            "maxIntensity": 135,
+            "mimeType": "image/jpeg",
+            "minIntensity": 124,
+            "name": "Displacement",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "displacement",
+            "uri": "tier_1/uisjbbis_8K_Displacement.jpg"
+        },
+        {
+            "averageColor": "#202020",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 144410179,
+            "maxIntensity": 37,
+            "mimeType": "image/x-exr",
+            "minIntensity": 19,
+            "name": "Gloss",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "gloss",
+            "uri": "tier_1/uisjbbis_8K_Gloss.exr"
+        },
+        {
+            "averageColor": "#202020",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 15691738,
+            "maxIntensity": 37,
+            "mimeType": "image/jpeg",
+            "minIntensity": 19,
+            "name": "Gloss",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "gloss",
+            "uri": "tier_1/uisjbbis_8K_Gloss.jpg"
+        },
+        {
+            "bitDepth": 16,
+            "colorspace": "linear",
+            "contentLength": 169920895,
+            "mimeType": "image/x-exr",
+            "name": "Normal",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "normal",
+            "uri": "tier_1/uisjbbis_8K_Normal.exr"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 78277424,
+            "mimeType": "image/jpeg",
+            "name": "Normal",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "normal",
+            "uri": "tier_1/uisjbbis_8K_Normal.jpg"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 116795126,
+            "maxIntensity": 238,
+            "mimeType": "image/x-exr",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "roughness",
+            "uri": "tier_1/uisjbbis_8K_Roughness.exr"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 14926039,
+            "maxIntensity": 238,
+            "mimeType": "image/jpeg",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "roughness",
+            "uri": "tier_1/uisjbbis_8K_Roughness.jpg"
+        },
+        {
+            "averageColor": "#313131",
+            "bitDepth": 16,
+            "colorSpace": "sRGB",
+            "contentLength": 213730203,
+            "maxIntensity": 55,
+            "mimeType": "image/x-exr",
+            "minIntensity": 39,
+            "name": "Specular",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "specular",
+            "uri": "tier_1/uisjbbis_8K_Specular.exr"
+        },
+        {
+            "averageColor": "#313131",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 27503239,
+            "maxIntensity": 55,
+            "mimeType": "image/jpeg",
+            "minIntensity": 39,
+            "name": "Specular",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 1,
+            "type": "specular",
+            "uri": "tier_1/uisjbbis_8K_Specular.jpg"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 63424560,
+            "mimeType": "image/x-exr",
+            "name": "Ao",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "ao",
+            "uri": "tier_2/uisjbbis_8K_AO.exr"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 37714714,
+            "mimeType": "image/jpeg",
+            "name": "Ao",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "ao",
+            "uri": "tier_2/uisjbbis_8K_AO.jpg"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 16,
+            "colorSpace": "sRGB",
+            "contentLength": 228463096,
+            "maxIntensity": 88,
+            "mimeType": "image/x-exr",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "basecolor",
+            "uri": "tier_2/uisjbbis_8K_Basecolor.exr"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 34033463,
+            "maxIntensity": 88,
+            "mimeType": "image/jpeg",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "basecolor",
+            "uri": "tier_2/uisjbbis_8K_Basecolor.jpg"
+        },
+        {
+            "averageColor": "#8282FA",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 180624056,
+            "maxIntensity": 173,
+            "mimeType": "image/x-exr",
+            "minIntensity": 114,
+            "name": "Bump",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "bump",
+            "uri": "tier_2/uisjbbis_8K_Bump.exr"
+        },
+        {
+            "averageColor": "#8282FA",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 9668080,
+            "maxIntensity": 173,
+            "mimeType": "image/jpeg",
+            "minIntensity": 114,
+            "name": "Bump",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "bump",
+            "uri": "tier_2/uisjbbis_8K_Bump.jpg"
+        },
+        {
+            "averageColor": "#EFEFEF",
+            "bitDepth": 32,
+            "colorSpace": "sRGB",
+            "contentLength": 192239830,
+            "maxIntensity": 255,
+            "mimeType": "image/x-exr",
+            "minIntensity": 197,
+            "name": "Cavity",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "cavity",
+            "uri": "tier_2/uisjbbis_8K_Cavity.exr"
+        },
+        {
+            "averageColor": "#EFEFEF",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 44017423,
+            "maxIntensity": 255,
+            "mimeType": "image/jpeg",
+            "minIntensity": 197,
+            "name": "Cavity",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "cavity",
+            "uri": "tier_2/uisjbbis_8K_Cavity.jpg"
+        },
+        {
+            "averageColor": "#202020",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 144410179,
+            "maxIntensity": 37,
+            "mimeType": "image/x-exr",
+            "minIntensity": 19,
+            "name": "Gloss",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "gloss",
+            "uri": "tier_2/uisjbbis_8K_Gloss.exr"
+        },
+        {
+            "averageColor": "#202020",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 15691738,
+            "maxIntensity": 37,
+            "mimeType": "image/jpeg",
+            "minIntensity": 19,
+            "name": "Gloss",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "gloss",
+            "uri": "tier_2/uisjbbis_8K_Gloss.jpg"
+        },
+        {
+            "bitDepth": 16,
+            "colorspace": "linear",
+            "contentLength": 188951917,
+            "mimeType": "image/x-exr",
+            "name": "Normal",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "normal",
+            "uri": "tier_2/uisjbbis_8K_Normal.exr"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 71140153,
+            "mimeType": "image/jpeg",
+            "name": "Normal",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "normal",
+            "uri": "tier_2/uisjbbis_8K_Normal.jpg"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 32,
+            "colorSpace": "Linear",
+            "contentLength": 116795126,
+            "maxIntensity": 238,
+            "mimeType": "image/x-exr",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "roughness",
+            "uri": "tier_2/uisjbbis_8K_Roughness.exr"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 14926039,
+            "maxIntensity": 238,
+            "mimeType": "image/jpeg",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "roughness",
+            "uri": "tier_2/uisjbbis_8K_Roughness.jpg"
+        },
+        {
+            "averageColor": "#313131",
+            "bitDepth": 16,
+            "colorSpace": "sRGB",
+            "contentLength": 213730203,
+            "maxIntensity": 55,
+            "mimeType": "image/x-exr",
+            "minIntensity": 39,
+            "name": "Specular",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "specular",
+            "uri": "tier_2/uisjbbis_8K_Specular.exr"
+        },
+        {
+            "averageColor": "#313131",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 27503239,
+            "maxIntensity": 55,
+            "mimeType": "image/jpeg",
+            "minIntensity": 39,
+            "name": "Specular",
+            "physicalSize": "1x1",
+            "resolution": "8192x8192",
+            "tier": 2,
+            "type": "specular",
+            "uri": "tier_2/uisjbbis_8K_Specular.jpg"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 9472066,
+            "mimeType": "image/jpeg",
+            "name": "Ao",
+            "resolution": "4096x4096",
+            "tier": 3,
+            "type": "ao",
+            "uri": "tier_3/uisjbbis_4K_AO.jpg"
+        },
+        {
+            "averageColor": "#2F2E29",
+            "bitDepth": 8,
+            "colorSpace": "sRGB",
+            "contentLength": 10567212,
+            "maxIntensity": 88,
+            "mimeType": "image/jpeg",
+            "minIntensity": 0,
+            "name": "Basecolor",
+            "physicalSize": "1x1",
+            "resolution": "4096x4096",
+            "tier": 3,
+            "type": "basecolor",
+            "uri": "tier_3/uisjbbis_4K_Basecolor.jpg"
+        },
+        {
+            "bitDepth": 8,
+            "colorspace": "linear",
+            "contentLength": 16467337,
+            "mimeType": "image/jpeg",
+            "name": "Normal",
+            "resolution": "4096x4096",
+            "tier": 3,
+            "type": "normal",
+            "uri": "tier_3/uisjbbis_4K_Normal.jpg"
+        },
+        {
+            "averageColor": "#E0E0E0",
+            "bitDepth": 8,
+            "colorSpace": "Linear",
+            "contentLength": 4814487,
+            "maxIntensity": 238,
+            "mimeType": "image/jpeg",
+            "minIntensity": 219,
+            "name": "Roughness",
+            "physicalSize": "1x1",
+            "resolution": "4096x4096",
+            "tier": 3,
+            "type": "roughness",
+            "uri": "tier_3/uisjbbis_4K_Roughness.jpg"
+        }
+    ],
+    "meta": [
+        {
+            "key": "assembly",
+            "name": "Assembly",
+            "value": "false"
+        },
+        {
+            "key": "small3dasset",
+            "name": "Small3dAsset",
+            "value": "false"
+        },
+        {
+            "key": "color",
+            "name": "Color",
+            "value": "Gray"
+        },
+        {
+            "key": "points",
+            "name": "Points",
+            "value": 4
+        },
+        {
+            "key": "texelDensity",
+            "name": "Texel Density",
+            "value": "11 px/m"
+        },
+        {
+            "key": "splitSubmeshes",
+            "name": "Split Submeshes",
+            "value": false
+        },
+        {
+            "key": "isScaleFixed",
+            "name": "Is scale fixed",
+            "value": "true"
+        },
+        {
+            "key": "length",
+            "name": "Length",
+            "value": "1.19m"
+        },
+        {
+            "key": "width",
+            "name": "Width",
+            "value": "0.78m"
+        },
+        {
+            "key": "height",
+            "name": "Height",
+            "value": "0.52m"
+        }
+    ],
+    "models": [
+        {
+            "contentLength": 64542480,
+            "mimeType": "application/x-fbx",
+            "tier": 0,
+            "tris": 999999,
+            "uri": "tier_0/uisjbbis.fbx"
+        },
+        {
+            "contentLength": 725856,
+            "mimeType": "application/x-fbx",
+            "tier": 1,
+            "tris": 15491,
+            "uri": "tier_1/uisjbbis.fbx"
+        },
+        {
+            "contentLength": 188832,
+            "mimeType": "application/x-fbx",
+            "tier": 2,
+            "tris": 3953,
+            "uri": "tier_2/uisjbbis.fbx"
+        },
+        {
+            "contentLength": 177264,
+            "mimeType": "application/x-fbx",
+            "tier": 3,
+            "tris": 1375,
+            "uri": "tier_3/uisjbbis.fbx"
+        },
+        {
+            "contentLength": 696358302,
+            "mimeType": "application/x-ztl",
+            "uri": "tier_0/uisjbbis_ZTool.ztl"
+        }
+    ],
+    "name": "Beach Boulder",
+    "pack": {
+        "_id": "hartland-quay-shore",
+        "name": "Hartland Quay Shore"
+    },
+    "physicalSize": "1x1",
+    "points": 4,
+    "previews": {
+        "images": [
+            {
+                "contentLength": 2597743,
+                "content_length": 645782,
+                "resolution": "1920x1080",
+                "uri": "uisjbbis_preview.png"
+            }
+        ],
+        "relativeSize": "2x1"
+    },
+    "process_date": "2023-11-22 19:04:29",
+    "properties": [
+        {
+            "key": "size",
+            "value": "medium"
+        },
+        {
+            "key": "mesh type",
+            "value": "Closed"
+        }
+    ],
+    "referencePreviews": {
+        "maps": [],
+        "models": [
+            {
+                "contentLength": 735600,
+                "mimeType": "application/x-fbx",
+                "tris": 15491,
+                "uri": "uisjbbis_layout.fbx"
+            }
+        ]
+    },
+    "references": [],
+    "revised": false,
+    "revision": 0,
+    "semanticTags": {
+        "3d_mesh": "Closed",
+        "architectural_style": {},
+        "asset_type": "3D asset",
+        "color": [
+            "Gray",
+            "Brown",
+            "Black"
+        ],
+        "contains": [
+            "Rock",
+            "boulder",
+            "barnacles",
+            "limpets"
+        ],
+        "country": "United Kingdom",
+        "descriptive": [
+            "Eroded",
+            "Weathered",
+            "Stained",
+            "cracked",
+            "worn",
+            "dull"
+        ],
+        "environment": [
+            "ocean biome",
+            "tropical biome"
+        ],
+        "industry": [
+            "archviz",
+            "games",
+            "VFX"
+        ],
+        "interior_exterior": [
+            "exterior"
+        ],
+        "locations": {
+            "Europe": {
+                "United Kingdom": {}
+            }
+        },
+        "maxSize": 1.19,
+        "minSize": 0.52,
+        "name": "Beach Boulder",
+        "region": "Europe",
+        "resolution": 8192,
+        "state": [
+            "old"
+        ],
+        "subject_matter": "nature",
+        "theme": [
+            "coastal",
+            "Sea",
+            "Ocean",
+            "Shorelines",
+            "beaches",
+            "Hartland-Quay",
+            "Devon",
+            "UK"
+        ]
+    },
+    "tags": [
+        "gray",
+        "brown",
+        "black",
+        "beach",
+        "nature",
+        "coastline",
+        "shoreline",
+        "coastal",
+        "shore",
+        "seaside",
+        "coast",
+        "sea",
+        "ocean",
+        "rock",
+        "barnacles",
+        "stones",
+        "limpets",
+        "fungus",
+        "smooth",
+        "eroded",
+        "weathered",
+        "stained"
+    ],
+    "texelDensity": 5982,
+    "texture_type": "basic",
+    "ue_plugin_archives": [
+        {
+            "contentLength": 280236534,
+            "gltfVersion": "2.0",
+            "tier": 0,
+            "type": "gltf",
+            "uri": "ue_plugin_archives/tier_0/uisjbbis_tier_0.zip",
+            "version": 1
+        },
+        {
+            "contentLength": 76765300,
+            "gltfVersion": "2.0",
+            "tier": 1,
+            "type": "gltf",
+            "uri": "ue_plugin_archives/tier_1/uisjbbis_tier_1.zip",
+            "version": 1
+        },
+        {
+            "contentLength": 19587303,
+            "gltfVersion": "2.0",
+            "tier": 2,
+            "type": "gltf",
+            "uri": "ue_plugin_archives/tier_2/uisjbbis_tier_2.zip",
+            "version": 1
+        },
+        {
+            "contentLength": 1905795,
+            "gltfVersion": "2.0",
+            "tier": 3,
+            "type": "gltf",
+            "uri": "ue_plugin_archives/tier_3/uisjbbis_tier_3.zip",
+            "version": 1
+        }
+    ],
+    "version": 2
+}

@@ -12,93 +12,159 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 596b504e8450ee64fb72d192f4738c89, type: 3}
   m_Name: ZhuqueSoundBank
   m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Summer.ZhuqueSoundBank
+  master: 0.23
+  placeholders: 0.25
   ashAmbience:
     clips: []
     volume: 0.3
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   lavaAmbience:
-    clips: []
-    volume: 0.5
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: 3b2d3c496f8542d4c8299996abec3ff3, type: 3}
+    volume: 0.7
+    pitchJitter: 0
     spatial: 0
+    accent: 0
+  lavaGurgle:
+    clips:
+    - {fileID: 8300000, guid: 1903b8a5a69fe694190b252baadbb9b6, type: 3}
+    volume: 1
+    pitchJitter: 0.12
+    spatial: 1
+    accent: 0.2
+  lavaGurgleInterval: {x: 2.5, y: 6}
+  lavaGurgleRadius: 18
   detectionLoop:
     clips: []
     volume: 0.6
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   flightWind:
-    clips: []
-    volume: 0.6
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: 23dba36160023e44b933bdd89fbea514, type: 3}
+    volume: 1
+    pitchJitter: 0
     spatial: 0
+    accent: 0
   deadWorldAmbience:
     clips: []
     volume: 0.3
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   alertCry:
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: fd95152f4ff5f9743897d74471a3be9a, type: 3}
     volume: 1
-    pitchJitter: 0.05
+    pitchJitter: 0.04
     spatial: 1
+    accent: 0.74
   wingsTakeOff:
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: 724937ecb87e93c4fbf35b6f85018d1d, type: 3}
     volume: 1
-    pitchJitter: 0.05
+    pitchJitter: 0.08
     spatial: 1
+    accent: 0.18
+  flapMinRise: 0.6
   perchLand:
-    clips: []
-    volume: 0.6
-    pitchJitter: 0.05
+    clips:
+    - {fileID: 8300000, guid: a14934df0e6940b42a983378160598c2, type: 3}
+    volume: 1
+    pitchJitter: 0.06
     spatial: 1
+    accent: 0.32
+  loseControl:
+    clips:
+    - {fileID: 8300000, guid: 43ac372387c4bce4fb59053d53389104, type: 3}
+    volume: 1
+    pitchJitter: 0.03
+    spatial: 1
+    accent: 1.26
   birdFall:
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: 0f48c8c086653d341bce3b991e837c4a, type: 3}
     volume: 1
     pitchJitter: 0.05
     spatial: 1
+    accent: 0.04
+  birdTumble:
+    clips:
+    - {fileID: 8300000, guid: 96708cf2bf5ca004aadcb651e9e1605b, type: 3}
+    volume: 1
+    pitchJitter: 0.05
+    spatial: 1
+    accent: 0.26
   regenerate:
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: b4d9704c0c0764b4996cb1b46403bc43, type: 3}
     volume: 1
-    pitchJitter: 0.05
+    pitchJitter: 0.03
     spatial: 1
+    accent: 0.7
   lavaOpen:
     clips: []
     volume: 1
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   fallIntoLava:
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: e44a16c1828249e408759839daf4b967, type: 3}
     volume: 1
-    pitchJitter: 0.05
+    pitchJitter: 0.02
     spatial: 1
+    accent: 0.94
+  heroStep:
+    clips:
+    - {fileID: 8300000, guid: e16d9318edfc2c64e9afde50a31ab57c, type: 3}
+    volume: 0.71
+    pitchJitter: 0.1
+    spatial: 0.3
+    accent: 0.04
+  heroRoll:
+    clips:
+    - {fileID: 8300000, guid: 61d9f8f736aa4c54ba3f83713aa15d28, type: 3}
+    volume: 0.62
+    pitchJitter: 0.05
+    spatial: 0.3
+    accent: 0.4
   grab:
     clips: []
     volume: 0.8
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   featherCut:
     clips: []
     volume: 1
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   cutRefused:
     clips: []
     volume: 0.8
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   shakeOff:
     clips: []
     volume: 0.8
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   cutYin:
     clips: []
     volume: 1
     pitchJitter: 0.05
     spatial: 0
+    accent: 0
   cutYang:
     clips: []
     volume: 1
     pitchJitter: 0.05
     spatial: 0
+    accent: 0

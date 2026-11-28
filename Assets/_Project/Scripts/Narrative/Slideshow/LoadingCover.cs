@@ -8,7 +8,8 @@ namespace ShadowTan.Narrative
     // Заливка-загрузка, которая переживает смену сцены.
     //   Yang — белый экран, чёрная точка: все загрузки между сценами (до и после слайд-шоу, в космос и из него).
     //   Yin  — чёрный экран, белая точка: смерть героини (сейчас между сценами не используется).
-    // Появляется резко, держится не меньше minSeconds, а если сцена грузится дольше — пока не загрузится.
+    // Появляется мгновенно непрозрачным серым (сцена скрыта сразу) и за settleSeconds плавно доходит до белого
+    // или чёрного. Держится не меньше minSeconds, а если сцена грузится дольше — пока не загрузится.
     // Временная замена TransitionService (§13), пока нет GameFlow.
     public sealed class LoadingCover : MonoBehaviour
     {
@@ -27,6 +28,7 @@ namespace ShadowTan.Narrative
         private bool dotVisible;
         private float shownAt;
         private Color dotColor;
+        private Kind kind;
 
         // Загрузить сцену под заливкой.
         public static void LoadScene(string sceneName, Kind kind, LoadingCoverConfig config)
@@ -93,7 +95,8 @@ namespace ShadowTan.Narrative
             covering = true;
             dotVisible = true;
             shownAt = Time.unscaledTime;
-            fill.color = kind == Kind.Yin ? Color.black : Color.white;
+            this.kind = kind;
+            fill.color = FillColor(0f);
             dotColor = kind == Kind.Yin ? Color.white : Color.black;
             SetAlpha(1f);
             UpdateDot();
@@ -142,7 +145,21 @@ namespace ShadowTan.Narrative
 
         private void Update()
         {
-            if (covering) UpdateDot();
+            if (!covering) return;
+            var c = FillColor(Time.unscaledTime - shownAt);
+            c.a = fill.color.a;
+            fill.color = c;
+            UpdateDot();
+        }
+
+        // Серый в момент появления → белый (Yang) или чёрный (Yin) за settleSeconds, со сглаживанием.
+        private Color FillColor(float elapsed)
+        {
+            float start = kind == Kind.Yin ? config.yinStartGrey : config.yangStartGrey;
+            float target = kind == Kind.Yin ? 0f : 1f;
+            float k = config.settleSeconds > 0f ? Mathf.SmoothStep(0f, 1f, elapsed / config.settleSeconds) : 1f;
+            float g = Mathf.Lerp(start, target, k);
+            return new Color(g, g, g, 1f);
         }
 
         private void UpdateDot()

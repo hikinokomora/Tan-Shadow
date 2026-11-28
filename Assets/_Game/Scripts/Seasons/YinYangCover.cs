@@ -7,7 +7,8 @@ namespace TanShadow.Seasons
     // Заливка смерти и победы. Она же — экран загрузки: всё, что меняет мир, делается под ней.
     //   Инь — смерть героини: чёрный экран, белая точка.
     //   Янь — смерть колосса: белый экран, чёрная точка.
-    // Экран появляется резко, без затухания. Точка в правом нижнем углу (GDD-00 §06) проявляется
+    // Экран появляется мгновенно непрозрачным серым (момент смерти не виден) и за settleSeconds плавно доходит
+    // до чёрного (Инь) или белого (Янь). Точка в правом нижнем углу (GDD-00 §06) проявляется
     // с задержкой и пульсирует в ритме сердцебиения: удар — второй удар — пауза.
     public sealed class YinYangCover : MonoBehaviour
     {
@@ -21,6 +22,15 @@ namespace TanShadow.Seasons
         public float yangMinHold = 3.5f;
         [Tooltip("Время исчезновения заливки, с (плавное, со сглаживанием)")]
         public float fadeOut = 0.3f;
+
+        [Header("Появление: сразу непрозрачный серый, потом плавно к белому (Янь) или чёрному (Инь)")]
+        [Tooltip("[Tbd] Серый, с которого начинается белая заливка (0 — чёрный, 1 — белый)")]
+        [Range(0, 1)] public float yangStartGrey = 0.6f;
+        [Tooltip("[Tbd] Серый, с которого начинается чёрная заливка (0 — чёрный, 1 — белый)")]
+        [Range(0, 1)] public float yinStartGrey = 0.3f;
+        [Tooltip("[Tbd] За сколько серый доходит до белого или чёрного, с. Должно совпадать с LoadingCoverConfig.settleSeconds: " +
+                 "после победы поверх этой заливки сразу встаёт заливка загрузки космоса")]
+        [Min(0)] public float settleSeconds = 1.2f;
 
         [Header("Точка-сердцебиение в углу")]
         public bool showCornerDot = true;
@@ -90,13 +100,15 @@ namespace TanShadow.Seasons
             EnsureTextures();
             GUI.depth = -1000;
 
-            Color fill = kind == Kind.Yin ? Color.black : Color.white;
+            float elapsed = Time.unscaledTime - shownAt;
+            float start = kind == Kind.Yin ? yinStartGrey : yangStartGrey;
+            float settle = settleSeconds > 0f ? Mathf.SmoothStep(0f, 1f, elapsed / settleSeconds) : 1f;
+            float g = Mathf.Lerp(start, kind == Kind.Yin ? 0f : 1f, settle);
             Color other = kind == Kind.Yin ? Color.white : Color.black;
 
-            GUI.color = new Color(fill.r, fill.g, fill.b, alpha);
+            GUI.color = new Color(g, g, g, alpha);
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), pixel);
 
-            float elapsed = Time.unscaledTime - shownAt;
             if (showCornerDot && dotVisible && elapsed > dotDelay)
             {
                 float appear = dotFadeIn > 0f ? Mathf.SmoothStep(0f, 1f, (elapsed - dotDelay) / dotFadeIn) : 1f;

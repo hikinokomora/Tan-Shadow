@@ -53,6 +53,8 @@ namespace TanShadow.Autumn
         public Transform tigerBody;
         [Tooltip("Поправка поворота модели, если её «вперёд» не совпадает с +Z, °")]
         public float tigerBodyYawOffset;
+        [Tooltip("Скелетная модель с клипами. Пусто — тело-болванка, наклон и падение на бок делает код")]
+        public BaihuBody body;
         [Tooltip("Часть морды с глазами, выглядывающая из травы")]
         public BaihuPeek peek;
         public BaihuMonument monument;
@@ -208,6 +210,7 @@ namespace TanShadow.Autumn
                     // Прыжок дугой: нос вверх на взлёте, вниз на приземлении.
                     Vector3 leap = Vector3.Lerp(moveFrom, moveTo, t) + Vector3.up * (tuning.retreatLeapHeight * 4f * t * (1f - t));
                     PlaceTiger(leap, moveTo - moveFrom, Mathf.Lerp(-20f, 20f, t));
+                    if (body != null) body.Leap(t);
                     if (t >= 1f)
                     {
                         HideTiger();
@@ -218,6 +221,9 @@ namespace TanShadow.Autumn
                 case BaihuState.Stunned:
                     timer += dt;
                     PoseKnockFall(timer);
+                    // Четвёртый удар: тигр так и лежит, не поднимаясь, пока не рухнет столб.
+                    if (body != null && timer > tuning.knockFallTime)
+                        body.Knock(1f, Mathf.Clamp01((timer - tuning.knockFallTime) / Mathf.Max(0.01f, tuning.stunBeforeFall)), 0f);
                     if (timer >= tuning.knockFallTime + tuning.stunBeforeFall)
                     {
                         monument.BeginFall(knockTo);
@@ -394,6 +400,7 @@ namespace TanShadow.Autumn
             pounceTarget = PounceAim();
             pounceDir = Flat(pounceTarget - pounceFrom).normalized;
             PlaceTiger(groundPoint, pounceDir);
+            if (body != null) body.Pounce(0f);
             Enter(BaihuState.Pounce);
             Pounced?.Invoke(groundPoint);
         }
@@ -443,6 +450,7 @@ namespace TanShadow.Autumn
             }
 
             PlaceTiger(next, pounceDir, Mathf.Lerp(-20f, 20f, s));
+            if (body != null) body.Pounce(s);
             ThreatPoint = next;
 
             // Чёрная инь — за cutLeadTime до того, как тигр накроет героиню (если между ними не столб).
@@ -497,6 +505,7 @@ namespace TanShadow.Autumn
             float slide = 1f - (1f - k) * (1f - k);
             Vector3 position = Vector3.Lerp(knockFrom, knockTo, slide) + Vector3.up * (Mathf.Sin(Mathf.PI * k) * 0.8f);
             PlaceTiger(position, knockFacing, -10f * (1f - k), knockRoll * Mathf.SmoothStep(0f, 1f, k));
+            if (body != null) body.Knock(k, 0f, 0f);
             if (k >= 1f && !fellEventSent)
             {
                 fellEventSent = true;
@@ -514,12 +523,15 @@ namespace TanShadow.Autumn
             if (timer < lieEnd)
             {
                 PoseKnockFall(timer);
+                if (body != null && timer > tuning.knockFallTime)
+                    body.Knock(1f, (timer - tuning.knockFallTime) / Mathf.Max(0.01f, tuning.knockLieTime), 0f);
             }
             else if (timer < upEnd)
             {
                 if (!gotUpEventSent) { gotUpEventSent = true; TigerGotUp?.Invoke(knockTo); }
                 float k = (timer - lieEnd) / tuning.knockGetUpTime;
                 PlaceTiger(knockTo, knockFacing, 0f, knockRoll * (1f - Mathf.SmoothStep(0f, 1f, k)));
+                if (body != null) body.Knock(1f, 1f, k);
             }
             else if (timer < wanderEnd)
             {
@@ -533,6 +545,7 @@ namespace TanShadow.Autumn
                 heading = Vector3.Slerp(heading, leap, Mathf.SmoothStep(0f, 1f, (k - 0.65f) / 0.35f));
                 Vector3 facing = Quaternion.Euler(0f, Mathf.Sin(k * Mathf.PI * 3f) * 18f * (1f - k), 0f) * heading;
                 PlaceTiger(position, facing, 0f, Mathf.Sin(k * Mathf.PI * 4f) * 6f);
+                if (body != null) body.Wander(k);
                 ThreatPoint = position;
             }
             else
@@ -673,6 +686,8 @@ namespace TanShadow.Autumn
         void PlaceTiger(Vector3 position, Vector3 facing, float pitch = 0f, float roll = 0f)
         {
             if (tigerBody == null) return;
+            // Наклон в полёте и падение на бок уже есть в клипах — поверх них не крутим.
+            if (body != null) pitch = roll = 0f;
             facing = Flat(facing);
             var heading = facing.sqrMagnitude > 0.0001f
                 ? Quaternion.LookRotation(facing)

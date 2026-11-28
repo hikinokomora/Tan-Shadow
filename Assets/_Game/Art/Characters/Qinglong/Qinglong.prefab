@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6260141529117382609
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_Name
+      value: Qinglong
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571216311673650818, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 908479ca27f58ea41b8edbc83a9c3429, type: 2}
+    - target: {fileID: 5866666021909216657, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7348989134363794785}
+  m_SourcePrefab: {fileID: 100100000, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+--- !u!1 &6494494524939397760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d91ce1858efeca943a49c10a26ee47ff, type: 3}
+  m_PrefabInstance: {fileID: 6260141529117382609}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7348989134363794785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494494524939397760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef56bd6a4f541940ab85dedf7150647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TanShadow.Spring.QinglongDragon
+  flightPath: {fileID: 0}
+  loopPath: 1
+  endMargin: 11
+  autoBehaviour: 1
+  calmSeconds: {x: 6, y: 12}
+  lookWeight: 0.4
+  pushWeight: 0.3
+  dashWeight: 0.3
+  secondsAway: 0
+  pearlPushed:
+    m_PersistentCalls:
+      m_Calls: []

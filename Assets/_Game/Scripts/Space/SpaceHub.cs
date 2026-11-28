@@ -8,7 +8,7 @@ namespace TanShadow.Cosmos
     // Космос с МКС в центре; четыре сцены, по одной после каждого босса (`defeated`).
     //   Спавн: белая заливка-загрузка, через миг — чёрная точка-пульс (LoadingCover слайд-шоу; если пришли из сезона,
     //   она уже висит). Игрок стоит на стороне света убитого босса (весна — восток, лето — юг, осень — запад,
-    //   зима — север) и смотрит на МКС. Когда заливка спала — гаснет сектор звёзд этого босса.
+    //   зима — север) и смотрит на МКС. Небо сцены — созвездия ещё живых боссов (сектор убитого уже пуст).
     //   Подлёт к корпусу станции ближе arriveDistance: та же белая заливка, под ней грузится слайд-шоу `nextScene`.
     public sealed class SpaceHub : MonoBehaviour
     {
@@ -16,8 +16,7 @@ namespace TanShadow.Cosmos
         public SpaceFlyer flyer;
         [Tooltip("Корень МКС: подлёт считается до ближайшего коллайдера внутри")]
         public Transform station;
-        public StarSectors stars;
-        [Tooltip("Какой босс только что убит: сторона спавна и гаснущий сектор звёзд")]
+        [Tooltip("Какой босс только что убит: сторона спавна")]
         public Season defeated;
         [Tooltip("Сцена слайд-шоу после подлёта к МКС (должна быть в Build Settings)")]
         public string nextScene;
@@ -38,7 +37,6 @@ namespace TanShadow.Cosmos
             flyer.enabled = false;
             Vector3 p = SpawnPoint;
             flyer.Place(p, Quaternion.LookRotation(Center - p, Vector3.up));
-            if (stars != null) stars.Prepare(defeated);
         }
 
         IEnumerator Start()
@@ -47,7 +45,6 @@ namespace TanShadow.Cosmos
             if (!LoadingCover.IsCovering) LoadingCover.CoverCurrentScene(LoadingCover.Kind.Yang, loadingConfig);
             while (LoadingCover.IsCovering) yield return null;
             flyer.enabled = true;
-            if (stars != null) stars.Extinguish();
         }
 
         void Update()

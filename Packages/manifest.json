@@ -3,6 +3,7 @@
     "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.unity.animation.rigging": "6.6.0",
     "com.unity.cinemachine": "6.6.0",
+    "com.unity.cloud.gltfast": "6.21.0",
     "com.unity.feature.development": "1.0.2",
     "com.unity.inputsystem": "1.20.1",
     "com.unity.probuilder": "6.1.3",

@@ -36,21 +36,5 @@ namespace TanShadow.Cosmos
         public float eyeForward = 0.12f;
         [Tooltip("[Tbd] Глаз выше центра головы, м")]
         public float eyeUp = 0.06f;
-
-        [Header("Звёзды: четыре сектора по сторонам света, сектор убитого босса гаснет")]
-        [Tooltip("[Tbd] Через сколько после того, как спадёт белая заливка, начинает гаснуть сектор, с")]
-        [Min(0)] public float extinguishDelay = 1.5f;
-        [Tooltip("[Tbd] За сколько секунд сектор гаснет полностью")]
-        [Min(0.01f)] public float extinguishSeconds = 4f;
-        [Tooltip("[Tbd] Звёзд в секторе (билдер)")]
-        [Min(1)] public int starsPerSector = 1100;
-        [Tooltip("[Tbd] Ширина сектора по горизонту, градусов (90 — без зазоров между секторами)")]
-        [Range(10, 90)] public float sectorSpan = 80f;
-        [Tooltip("[Tbd] Звёзды по высоте: от и до, градусов над горизонтом (билдер)")]
-        public Vector2 starElevation = new Vector2(-70f, 70f);
-        [Tooltip("[Tbd] Яркость самых ярких звёзд, нит (билдер)")]
-        [Min(0)] public float starNits = 40000f;
-        [Tooltip("[Tbd] Угловой размер звезды, градусов: от и до (билдер)")]
-        public Vector2 starAngularSize = new Vector2(0.06f, 0.22f);
     }
 }

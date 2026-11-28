@@ -30,11 +30,5 @@ namespace TanShadow.Cosmos
         [Min(0.01f)] public float smoothing = 0.25f;
         [Tooltip("[Tbd] Чувствительность мыши, градусов на пиксель")]
         [Min(0.001f)] public float lookSensitivity = 0.12f;
-
-        [Header("Тело героини (вид от первого лица)")]
-        [Tooltip("[Tbd] Глаз впереди центра головы, м: камера не должна видеть плечи изнутри")]
-        public float eyeForward = 0.12f;
-        [Tooltip("[Tbd] Глаз выше центра головы, м")]
-        public float eyeUp = 0.06f;
     }
 }

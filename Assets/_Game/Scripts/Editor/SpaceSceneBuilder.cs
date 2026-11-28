@@ -76,6 +76,8 @@ public static class SpaceSceneBuilder
         foreach (var old in new[] { "ISS hull MLI.mat", "ISS hull Russian segment.mat", "ISS truss.mat", "ISS joints.mat",
                                     "ISS radiator.mat", "ISS array mast.mat", "ISS solar blanket.mat", "ISS solar cells.png" })
             AssetDatabase.DeleteAsset(ArtDir + "/" + old);
+        // тело героини в космосе убрано: камера — просто свободный полёт
+        AssetDatabase.DeleteAsset(ArtDir + "/AC_Heroine_Space.controller");
         AssetDatabase.SaveAssets();
         EditorSceneManager.OpenScene(paths[0]);
         Debug.Log("Space: собраны " + string.Join(", ", SpaceScenes));
@@ -132,7 +134,6 @@ public static class SpaceSceneBuilder
         flyer.enabled = false;   // включает SpaceHub, когда спадёт заливка
         Vector3 spawn = SeasonProgress.Direction(defeated) * tuning.spawnDistance + Vector3.up * tuning.spawnHeight;
         cam.transform.SetPositionAndRotation(spawn, Quaternion.LookRotation(-spawn, Vector3.up));
-        Heroine(root, cam.transform, tuning);
 
         var hub = new GameObject("Space hub").AddComponent<SpaceHub>();
         hub.transform.SetParent(root, false);
@@ -144,42 +145,6 @@ public static class SpaceSceneBuilder
         hub.loadingConfig = loading;
 
         EditorSceneManager.SaveScene(scene, SceneDir + "/" + SpaceScenes[i] + ".unity");
-    }
-
-    // Героиня (визуальная модель из Player, без боевого контроллера): камера в её голове, тело видно снизу.
-    // Поза — стоячий idle: в невесомости он читается как парение. [Tbd] отдельная поза полёта.
-    const string HeroineModel = "Assets/_Game/Prefabs/Characters/Yinniang_Model.prefab";
-    const string HeroineIdle = "Assets/_Project/Art/Characters/Heroine/_Placeholder/Yinniang/Animations/Locomotion/idle.fbx";
-
-    static void Heroine(Transform root, Transform view, SpaceTuning tuning)
-    {
-        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(HeroineModel);
-        if (prefab == null) { Debug.LogWarning("Space: нет модели героини " + HeroineModel); return; }
-        var model = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-        model.name = "Heroine (first-person body)";
-        model.transform.SetParent(root, false);
-        model.transform.SetPositionAndRotation(view.position - Vector3.up * 1.6f, Quaternion.Euler(0f, view.eulerAngles.y, 0f));
-
-        var animator = model.GetComponent<Animator>();
-        animator.runtimeAnimatorController = SpaceController();
-        animator.applyRootMotion = false;
-        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-
-        var body = model.AddComponent<SpaceBody>();
-        body.tuning = tuning;
-        body.view = view;
-        body.body = animator;
-    }
-
-    static RuntimeAnimatorController SpaceController()
-    {
-        string path = ArtDir + "/AC_Heroine_Space.controller";
-        var existing = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(path);
-        if (existing != null) return existing;
-        AnimationClip idle = null;
-        foreach (var o in AssetDatabase.LoadAllAssetsAtPath(HeroineIdle))
-            if (o is AnimationClip c && !c.name.StartsWith("__preview__")) idle = c;
-        return UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPathWithClip(path, idle);
     }
 
     static void AddToBuildSettings(List<string> paths)
